@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="action_bar">@color/grey</color>
+    <color name="status_bar">@color/dark_grey</color>
+
+    <color name="window_background">#C8C8C8</color>
+
+    <color name="grey">#9E9E9E</color>
+    <color name="dark_grey">#757575</color>
+    <color name="darker_grey">#616161</color>
+
+    <color name="orange">#FF9800</color>
+    <color name="blue">#2196F3</color>
+    <color name="green">#4CAF50</color>
+
+    <color name="accent">#333333</color>
+</resources>
