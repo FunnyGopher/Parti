@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.funnygopher.parti.dummy.DummyFragment;
+import com.github.funnygopher.parti.event.EventListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new DummyFragment(R.color.orange), "Orange Tab");
-        adapter.addFragment(new DummyFragment(R.color.blue), "Blue Tab");
-        adapter.addFragment(new DummyFragment(R.color.green), "Green Tab");
+        adapter.addFragment(new EventListFragment(), "PUBLIC");
+        adapter.addFragment(new EventListFragment(), "RSVP");
+        adapter.addFragment(new EventListFragment(), "INVITATIONS");
         viewPager.setAdapter(adapter);
     }
 

@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti;
+package com.github.funnygopher.parti.event;
 
 public class Event {
     protected String name;
@@ -9,4 +9,9 @@ public class Event {
     protected String totalRSVP;
     protected String requirements;
     protected String description;
+
+    public Event(String name, String host) {
+        this.name = name;
+        this.host = host;
+    }
 }
