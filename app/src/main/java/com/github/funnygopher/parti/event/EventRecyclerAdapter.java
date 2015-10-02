@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.funnygopher.parti.ExpandableCardView;
 import com.github.funnygopher.parti.R;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.
                 from(parent.getContext()).
-                inflate(R.layout.cardview_event, parent, false);
+                inflate(R.layout.event_cardview, parent, false);
 
         return new EventViewHolder(itemView);
     }

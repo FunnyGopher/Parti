@@ -10,26 +10,53 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import junit.framework.Assert;
+
 public class ExpandableCardView extends CardView {
-    private LinearLayout expandableLayout;
+
+    private int cardBodyId;
+    private View cardBody;
     private boolean expanded;
 
     public ExpandableCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
 
+        // Retrieves the attributes and
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ExpandableCardView, 0, 0);
         try {
+            cardBodyId = a.getResourceId(R.styleable.ExpandableCardView_card_body, -1);
             expanded = a.getBoolean(R.styleable.ExpandableCardView_card_expanded, false);
         } finally {
-            a.recycle();
+            if(a != null) {
+                a.recycle();
+            }
         }
+    }
 
-        setOnClickListener(new View.OnClickListener() {
+    private void init() {
+        this.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setExpanded(!isExpanded());
             }
         });
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+        if(cardBodyId == -1) {
+            return;
+        }
+
+        cardBody = findViewById(cardBodyId);
+        if(expanded) {
+            cardBody.setVisibility(View.VISIBLE);
+        } else {
+            cardBody.setVisibility(View.GONE);
+        }
     }
 
     public boolean isExpanded() {
@@ -38,6 +65,11 @@ public class ExpandableCardView extends CardView {
 
     public void setExpanded(boolean expand) {
         expanded = expand;
+
+        if(cardBodyId == -1) {
+            return;
+        }
+
         if(expand) {
             expand();
         } else {
@@ -49,19 +81,17 @@ public class ExpandableCardView extends CardView {
     }
 
     private void expand() {
-        expandableLayout = (LinearLayout) findViewById(R.id.expandable);
-        expandableLayout.setVisibility(View.VISIBLE);
+        cardBody.setVisibility(View.VISIBLE);
         final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        expandableLayout.measure(widthSpec, heightSpec);
+        cardBody.measure(widthSpec, heightSpec);
 
-        ValueAnimator animator = slideAnimator(0, expandableLayout.getMeasuredHeight());
+        ValueAnimator animator = slideAnimator(0, cardBody.getMeasuredHeight());
         animator.start();
     }
 
     private void collapse() {
-        expandableLayout = (LinearLayout) findViewById(R.id.expandable);
-        int finalHeight = expandableLayout.getHeight();
+        int finalHeight = cardBody.getHeight();
 
         ValueAnimator animator = slideAnimator(finalHeight, 0);
         animator.addListener(new Animator.AnimatorListener() {
@@ -72,7 +102,7 @@ public class ExpandableCardView extends CardView {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                expandableLayout.setVisibility(View.GONE);
+                cardBody.setVisibility(View.GONE);
             }
 
             @Override
@@ -90,16 +120,15 @@ public class ExpandableCardView extends CardView {
 
     private ValueAnimator slideAnimator(int start, int end) {
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
-        expandableLayout = (LinearLayout) findViewById(R.id.expandable);
 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 //Update Height
                 int value = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = expandableLayout.getLayoutParams();
+                ViewGroup.LayoutParams layoutParams = cardBody.getLayoutParams();
                 layoutParams.height = value;
-                expandableLayout.setLayoutParams(layoutParams);
+                cardBody.setLayoutParams(layoutParams);
             }
         });
         return animator;

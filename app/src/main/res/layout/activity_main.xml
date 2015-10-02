@@ -22,7 +22,8 @@
             android:id="@+id/main_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/action_bar"/>
+            android:background="@color/action_bar"
+            android:elevation="4dp"/>
 
     </android.support.design.widget.AppBarLayout>
 

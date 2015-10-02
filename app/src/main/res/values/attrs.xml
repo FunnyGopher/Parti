@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ExpandableCardView">
+        <attr name="card_body" format="reference"/>
         <attr name="card_expanded" format="boolean"/>
     </declare-styleable>
 </resources>
