@@ -9,5 +9,8 @@
     <color name="dark_grey">#757575</color>
     <color name="darker_grey">#616161</color>
 
+    <color name="blue">#0007ff</color>
+    <color name="black">#000000</color>
+
     <color name="accent">#333333</color>
 </resources>
