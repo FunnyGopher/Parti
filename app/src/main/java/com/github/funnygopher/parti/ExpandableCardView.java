@@ -15,7 +15,7 @@ import junit.framework.Assert;
 public class ExpandableCardView extends CardView {
 
     private int cardBodyId;
-    private View cardBody;
+    private ViewGroup cardBody;
     private boolean expanded;
 
     public ExpandableCardView(Context context, AttributeSet attrs) {
@@ -51,7 +51,7 @@ public class ExpandableCardView extends CardView {
             return;
         }
 
-        cardBody = findViewById(cardBodyId);
+        cardBody = (ViewGroup) findViewById(cardBodyId);
         if(expanded) {
             cardBody.setVisibility(View.VISIBLE);
         } else {
@@ -82,18 +82,19 @@ public class ExpandableCardView extends CardView {
 
     private void expand() {
         cardBody.setVisibility(View.VISIBLE);
-        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int widthSpec = ViewGroup.MeasureSpec.makeMeasureSpec(1080, MeasureSpec.EXACTLY);
+        final int heightSpec = ViewGroup.MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
         cardBody.measure(widthSpec, heightSpec);
 
+        int height = cardBody.getMeasuredHeight();
         ValueAnimator animator = slideAnimator(0, cardBody.getMeasuredHeight());
         animator.start();
     }
 
     private void collapse() {
-        int finalHeight = cardBody.getHeight();
+        int currentHeight = cardBody.getHeight();
 
-        ValueAnimator animator = slideAnimator(finalHeight, 0);
+        ValueAnimator animator = slideAnimator(currentHeight, 0);
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {

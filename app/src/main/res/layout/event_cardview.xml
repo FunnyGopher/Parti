@@ -4,64 +4,125 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="3dp"
-    card_view:cardCornerRadius="1dp"
-    card_view:cardElevation="2dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="4dp"
     custom:card_body="@+id/event_card_body"
-    custom:card_expanded="false">
+    custom:card_expanded="true">
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:paddingLeft="16dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/event_name"
+                android:id="@+id/event_detail_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="Jim's Birthday"
+                android:textSize="24sp"
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/event_detail_card_host"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:textColor="#000000"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"/>
-        </FrameLayout>
+                android:paddingTop="6dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:text="Hosted by: Jim"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/event_card_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#1F000000"/>
 
             <TextView
-                android:id="@+id/host_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/event_detail_card_desc"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:textColor="#000000"/>
+                android:paddingTop="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="It's Jim's birthday! Everybody come out for some fun and good food!"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text"/>
 
             <TextView
-                android:id="@+id/start_date"
+                android:id="@+id/event_detail_card_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"/>
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="Sat Oct 31, 2015 @ 6:00pm - Fri Nov 06, 2015 @ 10:00 PM"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
 
             <TextView
-                android:id="@+id/event_description"
+                android:id="@+id/event_detail_card_requirements"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"/>
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:text="Bring a bathing suit and towel!"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
 
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#1F000000"/>
+
+            <!-- Actions -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"/>
+                android:paddingLeft="8dp"
+                android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/event_detail_card_action_button_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:borderlessButtonStyle"
+                    android:text="Action 1"
+                    android:textColor="@color/primary_dark"/>
+
+                <Button
+                    android:id="@+id/event_detail_card_action_button_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:borderlessButtonStyle"
+                    android:text="Action 2"
+                    android:textColor="@color/primary_dark"/>
+
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </com.github.funnygopher.parti.ExpandableCardView>
