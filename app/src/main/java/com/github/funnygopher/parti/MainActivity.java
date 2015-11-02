@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new EventCreationFragment(), "PUBLIC");
         adapter.addFragment(new EventListFragment(), "RSVP");
         adapter.addFragment(new EventListFragment(), "INVITATIONS");
+        adapter.addFragment(new EventListFragment(), "HOSTING");
         viewPager.setAdapter(adapter);
     }
 
