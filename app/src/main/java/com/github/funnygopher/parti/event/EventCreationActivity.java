@@ -44,16 +44,16 @@ public class EventCreationActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("New Event");
 
-        eventNameInput = (EditText) findViewById(R.id.event_name_input);
-        hostNameInput = (EditText) findViewById(R.id.host_name_input);
-        addressInput = (EditText) findViewById(R.id.address_input);
-        startDateInput = (TextView) findViewById(R.id.start_date_input);
-        endDateInput = (TextView) findViewById(R.id.end_date_input);
-        startTimeInput = (TextView) findViewById(R.id.start_time_input);
-        endTimeInput = (TextView) findViewById(R.id.end_time_input);
-        eventDescriptionInput = (EditText) findViewById(R.id.event_description_input);
-        maxInvitesInput = (EditText) findViewById(R.id.max_invites_input);
-        additionalInfo = (EditText) findViewById(R.id.additional_info_input);
+        eventNameInput = (EditText) findViewById(R.id.event_creation_name_input);
+        hostNameInput = (EditText) findViewById(R.id.event_creation_host_input);
+        addressInput = (EditText) findViewById(R.id.event_creation_address_input);
+        startDateInput = (TextView) findViewById(R.id.event_creation_start_date_input);
+        endDateInput = (TextView) findViewById(R.id.event_creation_end_date_input);
+        startTimeInput = (TextView) findViewById(R.id.event_creation_start_time_input);
+        endTimeInput = (TextView) findViewById(R.id.event_creation_end_time_input);
+        eventDescriptionInput = (EditText) findViewById(R.id.event_creation_description_input);
+        maxInvitesInput = (EditText) findViewById(R.id.event_creation_max_invites_input);
+        additionalInfo = (EditText) findViewById(R.id.event_creation_additional_info_input);
         createEventButton = (Button) findViewById(R.id.create_event_button);
 
         setOnClickForDate(startDateInput);
