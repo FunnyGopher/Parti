@@ -31,6 +31,7 @@ public class EventCreationActivity extends AppCompatActivity {
     private EditText eventDescriptionInput;
     private EditText maxInvitesInput;
     private EditText additionalInfo;
+    private Button createEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class EventCreationActivity extends AppCompatActivity {
         eventDescriptionInput = (EditText) findViewById(R.id.event_description_input);
         maxInvitesInput = (EditText) findViewById(R.id.max_invites_input);
         additionalInfo = (EditText) findViewById(R.id.additional_info_input);
+        createEventButton = (Button) findViewById(R.id.create_event_button);
 
         setOnClickForDate(startDateInput);
         setOnClickForDate(endDateInput);
