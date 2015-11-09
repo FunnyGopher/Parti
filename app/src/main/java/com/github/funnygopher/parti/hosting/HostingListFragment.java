@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti.event;
+package com.github.funnygopher.parti.hosting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.funnygopher.parti.EventCreationActivity;
+import com.github.funnygopher.parti.event.EventCreationActivity;
 import com.github.funnygopher.parti.R;
+import com.github.funnygopher.parti.event.Event;
+import com.github.funnygopher.parti.event.EventRecyclerAdapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class HostingListFragment extends Fragment {

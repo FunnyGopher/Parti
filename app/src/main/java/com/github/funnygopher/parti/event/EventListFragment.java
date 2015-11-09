@@ -12,7 +12,6 @@ import com.github.funnygopher.parti.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class EventListFragment extends Fragment {

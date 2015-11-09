@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti;
+package com.github.funnygopher.parti.event;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -13,6 +13,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.github.funnygopher.parti.R;
 
 import java.util.Calendar;
 
