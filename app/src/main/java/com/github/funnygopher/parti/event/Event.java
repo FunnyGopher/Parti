@@ -12,7 +12,10 @@ public class Event {
 
     private String requirements;
     private String address;
+    private String totalInvitations;
     private String totalRSVP;
+    private String acceptedInvitations;
+    private String declinedInitations;
 
     private boolean rsvp;
 
@@ -23,6 +26,11 @@ public class Event {
         this.requirements = requirements;
         this.startTime = startTime;
         this.endTime = endTime;
+        // TODO: Change the constructor to include new values
+        this.totalInvitations = "0";
+        this.totalRSVP = "0";
+        this.acceptedInvitations = "0";
+        this.declinedInitations = "0";
     }
 
     public String getName() {
@@ -48,6 +56,10 @@ public class Event {
     public String getRequirements() {
         return requirements;
     }
+
+    public String getTotalInvitations() {return totalInvitations;}
+
+    public String getAcceptedInvitations() {return totalInvitations;}
 
     public boolean isRsvp() {
         return rsvp;
