@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.github.funnygopher.parti.event.EventListFragment;
 import com.github.funnygopher.parti.hosting.HostingListFragment;
+import com.github.funnygopher.parti.rsvp.RSVPListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new EventListFragment(), "RSVP");
+        adapter.addFragment(new RSVPListFragment(), "RSVP");
         adapter.addFragment(new EventListFragment(), "INVITATIONS");
         adapter.addFragment(new HostingListFragment(), "HOSTING");
         viewPager.setAdapter(adapter);

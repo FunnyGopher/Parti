@@ -16,13 +16,14 @@ public class Event {
 
     private boolean rsvp;
 
-    public Event(String name, String host, String description, String requirements, Calendar startTime, Calendar endTime) {
+    public Event(String name, String host, String description, String requirements, Calendar startTime, Calendar endTime, String address) {
         this.name = name;
         this.description = description;
         this.host = host;
         this.requirements = requirements;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.address = address;
     }
 
     public String getName() {
@@ -47,6 +48,10 @@ public class Event {
 
     public String getRequirements() {
         return requirements;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public boolean isRsvp() {
