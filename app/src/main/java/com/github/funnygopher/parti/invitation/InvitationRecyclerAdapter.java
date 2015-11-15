@@ -1,16 +1,12 @@
 package com.github.funnygopher.parti.invitation;
 
-import android.support.v7.widget.ActionMenuPresenter;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.github.funnygopher.parti.R;
@@ -95,7 +91,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
 
         private Toolbar toolbar;
         private TextView eventName, hostName, desc, date, requirements;
-        private Button action1, action2;
+        private Button actionAccept, actionDecline;
 
         public InvitationViewHolder(View itemView) {
             super(itemView);
@@ -121,7 +117,10 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
             date = (TextView) itemView.findViewById(R.id.invitation_card_date);
             requirements = (TextView) itemView.findViewById(R.id.invitation_card_requirements);
 
-            action1 = (Button) itemView.findViewById(R.id.invitation_card_action_button_1);
+            actionAccept = (Button) itemView.findViewById(R.id.invitation_card_action_accept);
+            actionAccept.setText(R.string.invitation_card_action_accept);
+            actionDecline = (Button) itemView.findViewById(R.id.invitation_card_action_decline);
+            actionDecline.setText(R.string.invitation_card_action_decline);
         }
     }
 }

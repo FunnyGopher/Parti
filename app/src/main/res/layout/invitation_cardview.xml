@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
@@ -9,14 +8,12 @@
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
     card_view:cardCornerRadius="2dp"
-    card_view:cardElevation="4dp"
-    custom:card_body="@+id/event_card_body"
-    custom:card_expanded="true">
+    card_view:cardElevation="4dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/invitation_card_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?android:actionBarSize"/>
+        android:layout_height="?android:actionBarSize" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,17 +101,26 @@
 
             <!-- Actions -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/invitation_card_action_button_1"
+                    android:id="@+id/invitation_card_action_accept"
                     style="?android:borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="Action 1"
+                    android:text="Accept"
+                    android:textColor="@color/primary_dark" />
+
+                <Button
+                    android:id="@+id/invitation_card_action_decline"
+                    style="?android:borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Decline"
                     android:textColor="@color/primary_dark" />
             </LinearLayout>
         </LinearLayout>

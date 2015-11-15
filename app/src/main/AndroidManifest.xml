@@ -20,5 +20,6 @@
         </activity>
         <activity android:name=".event.EventCreationActivity"/>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

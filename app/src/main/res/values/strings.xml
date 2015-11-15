@@ -14,4 +14,8 @@
     <string name="max_invites">Max Invites</string>
     <string name="additional_info">Additional Info</string>
 
+    // Strings for invitation cards
+    <string name="invitation_card_action_accept">Accept</string>
+    <string name="invitation_card_action_decline">Decline</string>
+
 </resources>
