@@ -58,7 +58,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         }
         holder.date.setText(dateString.toString());
 
-        holder.requirements.setText(event.getRequirements());
+        holder.requirements.setText(event.getAdditionalInfo());
     }
 
     @Override

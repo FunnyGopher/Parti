@@ -64,7 +64,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         }
         holder.date.setText(dateString.toString());
 
-        holder.requirements.setText(event.getRequirements());
+        holder.requirements.setText(event.getAdditionalInfo());
     }
 
     public void add(Event event) {

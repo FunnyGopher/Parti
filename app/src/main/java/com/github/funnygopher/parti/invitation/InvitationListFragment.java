@@ -1,42 +1,28 @@
 package com.github.funnygopher.parti.invitation;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.github.funnygopher.parti.CreateEventAsyncTask;
-import com.github.funnygopher.parti.HttpRequest;
+import com.github.funnygopher.parti.InsertEventTask;
 import com.github.funnygopher.parti.R;
 import com.github.funnygopher.parti.event.Event;
-import com.github.funnygopher.parti.event.EventCreationActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Kyle on 11/9/2015.
  */
-public class InvitationListFragment extends Fragment {
+public class InvitationListFragment extends Fragment implements InsertEventTask.ResponseCallback {
 
     private final int REQUEST_CREATE_INVITATION = 0;
 
@@ -79,7 +65,24 @@ public class InvitationListFragment extends Fragment {
     }
 
     private void createEventForDatabase(Event event) {
-        CreateEventAsyncTask task = new CreateEventAsyncTask(event);
+        InsertEventTask task = new InsertEventTask(this, event);
         task.execute();
+    }
+
+    @Override
+    public void onResponseCallback(String response) {
+        try {
+            JSONObject jsoonObject = new JSONObject(response);
+            int id = jsoonObject.getInt("new_id");
+            RSVPEventTask rsvpTask = new RSVPEventTask(new RSVPEventTask.ResponseCallback() {
+                @Override
+                public void onResponseCallback(String response) {
+
+                }
+            }, id);
+            rsvpTask.execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

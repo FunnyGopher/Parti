@@ -50,7 +50,7 @@ public class EventListFragment extends Fragment {
                 "The Crazy Rave", "The Rave Boys",
                 "The craziest rave you've ever been to. Strap on your leaderhosen. It's about to get bumpy.",
                 "$5.00 at the door. Glowsticks are a must.", raveStartDate, raveEndDate);
-        event2.rsvp();
+
         list.add(event2);
 
         for(int i = 3; i < 20; i++) {

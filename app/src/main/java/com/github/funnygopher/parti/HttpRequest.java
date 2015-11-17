@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -17,6 +18,7 @@ public class HttpRequest {
     private int requestType;
     private URL url;
     private HttpURLConnection conn;
+    private String parameters;
     private OutputStream out;
 
     public HttpRequest(int requestType, String address) throws IOException {
@@ -28,55 +30,66 @@ public class HttpRequest {
 
     private void prepare() throws IOException {
         conn = (HttpURLConnection) url.openConnection();
-        conn.setConnectTimeout(1000);
-        if(requestType == 1) {
+        if(requestType == POST) {
             conn.setRequestMethod("POST");
+        }
+        if(requestType == GET) {
+            conn.setRequestMethod("GET");
         }
         conn.setDoOutput(true);
         conn.setDoInput(true);
-        out = conn.getOutputStream();
+        conn.setReadTimeout(1000);
+        conn.setConnectTimeout(1000);
     }
 
-    public HttpRequest withParameters(Map<String, String> parameters) throws IOException {
+    public HttpRequest withParameters(Map<String, String> parameterMap) throws IOException {
         StringBuffer params = new StringBuffer();
 
         boolean first = true;
-        for (String key : parameters.keySet()) {
+        for (String key : parameterMap.keySet()) {
             if(!first)
                 params.append("&");
-            params.append(key + "=" + URLEncoder.encode(parameters.get(key), "UTF-8"));
+            params.append(key + "=" + URLEncoder.encode(parameterMap.get(key), "UTF-8"));
 
             if(first)
                 first = false;
         }
 
-        out.write(params.toString().getBytes());
-        out.flush();
+        parameters = params.toString();
+        conn.setFixedLengthStreamingMode(parameters.getBytes("UTF-8").length);
 
         return this;
     }
 
-    public boolean send() throws IOException {
-        boolean status = conn.getResponseCode() == HttpURLConnection.HTTP_OK;
-        finish();
-        return status;
+    public HttpRequest withString(String string) throws IOException {
+        parameters = string;
+        conn.setFixedLengthStreamingMode(string.getBytes("UTF-8").length);
+        return this;
     }
 
-    public String sendAndGetResponse() throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String inputLine;
-        StringBuilder responseBuilder = new StringBuilder();
+    public String send() throws IOException {
+        out = conn.getOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+        writer.write(parameters);
+        writer.flush();
+        writer.close();
 
-        while((inputLine = in.readLine()) != null) {
-            responseBuilder.append(inputLine);
-        }
-        finish();
+        String response = getResponse();
 
-        return responseBuilder.toString();
-    }
-
-    private void finish() throws IOException {
         conn.disconnect();
-        out.close();
+        return response;
+    }
+
+    private String getResponse() throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        return response.toString();
     }
 }
