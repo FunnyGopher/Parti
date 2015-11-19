@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * Created by Kyle on 11/9/2015.
- */
-public class InvitationListFragment extends Fragment implements InsertEventTask.ResponseCallback {
-
-    private final int REQUEST_CREATE_INVITATION = 0;
+public class InvitationListFragment extends Fragment {
 
     private FloatingActionButton mCreateInvitationFab;
     private InvitationRecyclerAdapter mRecyclerAdapter;
@@ -65,24 +61,30 @@ public class InvitationListFragment extends Fragment implements InsertEventTask.
     }
 
     private void createEventForDatabase(Event event) {
-        InsertEventTask task = new InsertEventTask(this, event);
+        InsertEventTask task = new InsertEventTask(event);
+        task.setOnResponseListener(new InsertEventTask.OnResponseListener() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsoonObject = new JSONObject(response);
+                    int id = jsoonObject.getInt("new_id");
+                    acceptEvent(id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("Invitation#createEvent", e.toString());
+                }
+            }
+        });
         task.execute();
     }
 
-    @Override
-    public void onResponseCallback(String response) {
-        try {
-            JSONObject jsoonObject = new JSONObject(response);
-            int id = jsoonObject.getInt("new_id");
-            RSVPEventTask rsvpTask = new RSVPEventTask(new RSVPEventTask.ResponseCallback() {
-                @Override
-                public void onResponseCallback(String response) {
+    private void acceptEvent(int eventId) {
+        AcceptEventTask acceptEventTask = new AcceptEventTask(eventId);
+        acceptEventTask.execute();
+    }
 
-                }
-            }, id);
-            rsvpTask.execute();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    private void declineEvent(int eventId) {
+        DeclineEventTask declineEventTask = new DeclineEventTask(eventId);
+        declineEventTask.execute();
     }
 }
