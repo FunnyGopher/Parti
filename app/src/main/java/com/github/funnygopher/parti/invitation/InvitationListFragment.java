@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.funnygopher.parti.InsertEventTask;
+import com.github.funnygopher.parti.hosting.InsertEventTask;
 import com.github.funnygopher.parti.R;
 import com.github.funnygopher.parti.event.Event;
 

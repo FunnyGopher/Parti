@@ -1,9 +1,10 @@
-package com.github.funnygopher.parti;
+package com.github.funnygopher.parti.hosting;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.github.funnygopher.parti.event.Event;
+import com.github.funnygopher.parti.util.HttpRequest;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

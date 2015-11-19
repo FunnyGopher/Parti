@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti;
+package com.github.funnygopher.parti.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

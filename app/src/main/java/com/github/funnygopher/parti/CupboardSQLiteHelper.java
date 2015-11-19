@@ -9,7 +9,7 @@ import com.github.funnygopher.parti.event.Event;
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
- * Created by kylhunts on 11/14/2015.
+ * Created by Kyle on 11/14/2015.
  */
 public class CupboardSQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "parti.db";
@@ -20,16 +20,16 @@ public class CupboardSQLiteHelper extends SQLiteOpenHelper {
     }
 
     public CupboardSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        cupboard().withDatabase(db).createTables();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        cupboard().withDatabase(db).upgradeTables();
     }
 }

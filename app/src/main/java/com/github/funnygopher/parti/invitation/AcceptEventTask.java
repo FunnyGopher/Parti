@@ -3,7 +3,7 @@ package com.github.funnygopher.parti.invitation;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.github.funnygopher.parti.HttpRequest;
+import com.github.funnygopher.parti.util.HttpRequest;
 
 import java.io.IOException;
 
