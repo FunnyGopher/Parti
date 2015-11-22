@@ -145,6 +145,7 @@ public class Event implements IEntity {
     public String toJSON() {
         try {
             JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", _id);
             jsonObject.put(NAME_KEY, name);
             jsonObject.put(HOST_KEY, host);
             jsonObject.put(DESC_KEY, description);

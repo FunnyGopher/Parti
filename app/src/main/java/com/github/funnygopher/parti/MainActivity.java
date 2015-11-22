@@ -1,14 +1,13 @@
 package com.github.funnygopher.parti;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.github.funnygopher.parti.event.EventListFragment;
 import com.github.funnygopher.parti.hosting.HostingListFragment;
 import com.github.funnygopher.parti.invitation.InvitationListFragment;
 
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new EventListFragment(), "RSVP");
+        //adapter.addFragment(new EventListFragment(), "RSVP");
         adapter.addFragment(new InvitationListFragment(), "INVITATIONS");
         adapter.addFragment(new HostingListFragment(), "HOSTING");
         viewPager.setAdapter(adapter);

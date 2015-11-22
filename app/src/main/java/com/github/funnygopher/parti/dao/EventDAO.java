@@ -17,9 +17,9 @@ public class EventDAO implements IDAO<Event> {
     @Override
     public Event create(final Event entity) {
         CreateEventTask task = new CreateEventTask(entity);
-        task.setOnResponseListener(new CreateEventTask.OnResponseListener() {
+        task.setOnResponseListener(new CreateEventTask.OnCreateEvent() {
             @Override
-            public void onResponse(String response) {
+            public void onCreateEvent(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     Long id = jsonObject.getLong("id");
@@ -30,6 +30,7 @@ public class EventDAO implements IDAO<Event> {
                 }
             }
         });
+        task.execute();
 
         return entity;
     }
@@ -39,9 +40,9 @@ public class EventDAO implements IDAO<Event> {
         final Event event = new Event();
 
         GetEventTask task = new GetEventTask(id);
-        task.setOnResponseListener(new GetEventTask.OnResponseListener() {
+        task.setOnResponseListener(new GetEventTask.OnGetEvent() {
             @Override
-            public void onResponse(String response) {
+            public void onGetEvent(String response) {
                 try {
                     JSONObject json = new JSONObject(response);
                     JSONArray result = json.getJSONArray("result");
@@ -72,9 +73,9 @@ public class EventDAO implements IDAO<Event> {
     @Override
     public Event update(Event entity) {
         UpdateEventTask task = new UpdateEventTask(entity);
-        task.setOnResponseListener(new UpdateEventTask.OnResponseListener() {
+        task.setOnResponseListener(new UpdateEventTask.OnUpdateEvent() {
             @Override
-            public void onResponse(String response) {
+            public void onUpdateEvent(String response) {
                 Log.i("EventDAO#update", response);
             }
         });
@@ -85,6 +86,13 @@ public class EventDAO implements IDAO<Event> {
 
     @Override
     public void delete(Long id) {
-
+        DeleteEventTask task = new DeleteEventTask(id);
+        task.setOnResponseListener(new DeleteEventTask.OnDeleteEvent() {
+            @Override
+            public void onDeleteEvent(String response) {
+                Log.i("EventDAO#delete", response);
+            }
+        });
+        task.execute();
     }
 }

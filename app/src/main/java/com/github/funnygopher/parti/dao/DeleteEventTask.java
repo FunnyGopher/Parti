@@ -6,26 +6,26 @@ import com.github.funnygopher.parti.util.HttpRequest;
 
 import java.io.IOException;
 
-public class GetEventTask extends AsyncTask<Void, Void, String> {
+public class DeleteEventTask extends AsyncTask<Void, Void, String> {
 
-    private final String address = "http://pumpuptheparti.netne.net/api/get_event.php";
+    private final String address = "http://pumpuptheparti.netne.net/api/delete_event.php";
     private Long id;
-    private OnGetEvent responseListener = new OnGetEvent() {
+    private OnDeleteEvent responseListener = new OnDeleteEvent() {
         @Override
-        public void onGetEvent(String response) {
+        public void onDeleteEvent(String response) {
             // Do nothing...
         }
     };
 
-    public GetEventTask(Long id) {
+    public DeleteEventTask(Long id) {
         this.id = id;
     }
 
     @Override
     protected String doInBackground(Void... params) {
         try {
-            HttpRequest httpRequest = new HttpRequest(HttpRequest.GET, address);
-            httpRequest.withString("id=" + Long.toString(id));
+            HttpRequest httpRequest = new HttpRequest(HttpRequest.POST, address);
+            httpRequest.withString("id=" + id);
             String response = httpRequest.send();
             return response;
         } catch (IOException e) {
@@ -36,15 +36,15 @@ public class GetEventTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        responseListener.onGetEvent(s);
+        responseListener.onDeleteEvent(s);
         super.onPostExecute(s);
     }
 
-    public void setOnResponseListener(OnGetEvent responseListener) {
+    public void setOnResponseListener(OnDeleteEvent responseListener) {
         this.responseListener = responseListener;
     }
 
-    public interface OnGetEvent {
-        void onGetEvent(String response);
+    public interface OnDeleteEvent {
+        void onDeleteEvent(String response);
     }
 }

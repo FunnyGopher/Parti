@@ -10,7 +10,7 @@ import java.io.IOException;
 public class DeclineEventTask extends AsyncTask<Void, Void, String> {
 
     private static final String ADDRESS = "http://pumpuptheparti.netne.net/api/decline_event.php";
-    private int eventId;
+    private Long eventId;
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onResponse(String response) {
@@ -18,7 +18,7 @@ public class DeclineEventTask extends AsyncTask<Void, Void, String> {
         }
     };
 
-    public DeclineEventTask(int eventId) {
+    public DeclineEventTask(Long eventId) {
         this.eventId = eventId;
     }
 
@@ -26,7 +26,7 @@ public class DeclineEventTask extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... params) {
         try {
             HttpRequest httpRequest = new HttpRequest(HttpRequest.POST, ADDRESS);
-            httpRequest.withString("id=" + Integer.toString(eventId));
+            httpRequest.withString("id=" + Long.toString(eventId));
             String response = httpRequest.send();
             Log.i("DeclineEvent#Response", response);
             return response;

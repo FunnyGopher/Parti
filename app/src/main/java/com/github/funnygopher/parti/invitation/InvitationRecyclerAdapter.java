@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.funnygopher.parti.R;
+import com.github.funnygopher.parti.dao.DeleteEventTask;
 import com.github.funnygopher.parti.model.Event;
 
 import java.text.SimpleDateFormat;
@@ -39,7 +40,21 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
 
     @Override
     public void onBindViewHolder(InvitationViewHolder holder, int position) {
-        Event event = invitations.get(position);
+        final Event event = invitations.get(position);
+
+        holder.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_invitation_card_delete:
+                        remove(event);
+                        DeleteEventTask deleteTask = new DeleteEventTask(event.getId());
+                        deleteTask.execute();
+                        break;
+                }
+                return false;
+            }
+        });
 
         holder.eventName.setText(event.getName());
         holder.desc.setText(event.getDescription());
@@ -63,8 +78,25 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
             }
         }
         holder.date.setText(dateString.toString());
-
         holder.requirements.setText(event.getAdditionalInfo());
+
+        // When the user presses the attend button
+        holder.actionAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AttendEventTask task = new AttendEventTask(event.getId());
+                task.execute();
+            }
+        });
+
+        // When the user presses the decline button
+        holder.actionDecline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeclineEventTask task = new DeclineEventTask(event.getId());
+                task.execute();
+            }
+        });
     }
 
     public void add(Event event) {
@@ -75,11 +107,6 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
     public void remove(Event event) {
         invitations.remove(event);
         notifyItemRemoved(invitations.indexOf(event));
-    }
-
-    public void remove(RecyclerView.ViewHolder holder) {
-        invitations.remove(holder.getAdapterPosition());
-        notifyItemRemoved(holder.getAdapterPosition());
     }
 
     @Override
@@ -96,20 +123,8 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         public InvitationViewHolder(View itemView) {
             super(itemView);
 
-            // Toolbar for overflow menu
             toolbar = (Toolbar) itemView.findViewById(R.id.invitation_card_toolbar);
             toolbar.inflateMenu(R.menu.menu_invitation_card);
-            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.menu_invitation_card_delete:
-                            remove(InvitationViewHolder.this);
-                            break;
-                    }
-                    return false;
-                }
-            });
 
             eventName = (TextView) itemView.findViewById(R.id.invitation_card_title);
             desc = (TextView) itemView.findViewById(R.id.invitation_card_desc);

@@ -1,5 +1,7 @@
 package com.github.funnygopher.parti.util;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,10 +52,6 @@ public class HttpRequest {
     }
 
     public String send() throws IOException {
-        conn.setDoInput(true);
-        conn.setReadTimeout(1000);
-        conn.setConnectTimeout(1000);
-
         if(requestType == GET) {
             prepareGet();
         }
@@ -82,10 +80,15 @@ public class HttpRequest {
     }
 
     private void preparePost() throws IOException {
-        conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setDoOutput(true);
-        prepare();
+        try {
+            url = new URL(address);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            prepare();
+        } catch (IOException e) {
+            Log.e("HttpRequest#send", e.toString());
+        }
     }
 
     private void prepare() {

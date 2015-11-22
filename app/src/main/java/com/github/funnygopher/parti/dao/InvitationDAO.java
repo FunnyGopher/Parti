@@ -5,7 +5,7 @@ import android.content.Context;
 import com.github.funnygopher.parti.invitation.Invitation;
 
 /**
- * Created by kylhunts on 11/21/2015.
+ * Created by Kyle on 11/21/2015.
  */
 public class InvitationDAO extends AbstractCupboardDAO<Invitation> {
 
