@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.github.funnygopher.parti.event.EventCreationActivity;
 import com.github.funnygopher.parti.R;
-import com.github.funnygopher.parti.event.Event;
+import com.github.funnygopher.parti.model.Event;
 import com.github.funnygopher.parti.event.EventRecyclerAdapter;
 
 import java.util.ArrayList;

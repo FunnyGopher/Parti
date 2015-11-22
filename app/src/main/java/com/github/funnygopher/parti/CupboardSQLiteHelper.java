@@ -23,7 +23,7 @@ public class CupboardSQLiteHelper extends SQLiteOpenHelper {
         cupboard().register(HostedEvent.class);
     }
 
-    public CupboardSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public CupboardSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

@@ -16,6 +16,7 @@ public class HttpRequest {
     public static final int POST = 1;
 
     private int requestType;
+    private String address;
     private URL url;
     private HttpURLConnection conn;
     private String parameters;
@@ -23,23 +24,7 @@ public class HttpRequest {
 
     public HttpRequest(int requestType, String address) throws IOException {
         this.requestType = requestType;
-        this.url = new URL(address);
-
-        prepare();
-    }
-
-    private void prepare() throws IOException {
-        conn = (HttpURLConnection) url.openConnection();
-        if(requestType == POST) {
-            conn.setRequestMethod("POST");
-        }
-        if(requestType == GET) {
-            conn.setRequestMethod("GET");
-        }
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-        conn.setReadTimeout(1000);
-        conn.setConnectTimeout(1000);
+        this.address = address;
     }
 
     public HttpRequest withParameters(Map<String, String> parameterMap) throws IOException {
@@ -56,28 +41,57 @@ public class HttpRequest {
         }
 
         parameters = params.toString();
-        conn.setFixedLengthStreamingMode(parameters.getBytes("UTF-8").length);
-
         return this;
     }
 
     public HttpRequest withString(String string) throws IOException {
         parameters = string;
-        conn.setFixedLengthStreamingMode(string.getBytes("UTF-8").length);
         return this;
     }
 
     public String send() throws IOException {
-        out = conn.getOutputStream();
-        OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
-        writer.write(parameters);
-        writer.flush();
-        writer.close();
+        conn.setDoInput(true);
+        conn.setReadTimeout(1000);
+        conn.setConnectTimeout(1000);
+
+        if(requestType == GET) {
+            prepareGet();
+        }
+
+        if(requestType == POST) {
+            preparePost();
+            conn.setFixedLengthStreamingMode(parameters.getBytes("UTF-8").length);
+            out = conn.getOutputStream();
+            OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+            writer.write(parameters);
+            writer.flush();
+            writer.close();
+        }
 
         String response = getResponse();
-
         conn.disconnect();
         return response;
+
+    }
+
+    private void prepareGet() throws IOException {
+        url = new URL(address + "?" + parameters);
+        conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        prepare();
+    }
+
+    private void preparePost() throws IOException {
+        conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        prepare();
+    }
+
+    private void prepare() {
+        conn.setDoInput(true);
+        conn.setReadTimeout(1000);
+        conn.setConnectTimeout(1000);
     }
 
     private String getResponse() throws IOException {

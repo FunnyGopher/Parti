@@ -1,26 +1,26 @@
-package com.github.funnygopher.parti.hosting;
+package com.github.funnygopher.parti.dao;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.github.funnygopher.parti.event.Event;
+import com.github.funnygopher.parti.model.Event;
 import com.github.funnygopher.parti.util.HttpRequest;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public class InsertEventTask extends AsyncTask<Void, Void, String> {
+public class CreateEventTask extends AsyncTask<Void, Void, String> {
 
-    private final String address = "http://pumpuptheparti.netne.net/api/insert_event.php";
+    private final String address = "http://pumpuptheparti.netne.net/api/create_event.php";
     private Event event;
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onResponse(String response) {
-
+            // Do nothing...
         }
     };
 
-    public InsertEventTask(Event event) {
+    public CreateEventTask(Event event) {
         this.event = event;
     }
 
@@ -30,7 +30,7 @@ public class InsertEventTask extends AsyncTask<Void, Void, String> {
             HttpRequest httpRequest = new HttpRequest(HttpRequest.POST, address);
             httpRequest.withString("body=" + event.toJSON());
             String response = httpRequest.send();
-            Log.i("InsertEvent#Response", response);
+            Log.i("CreateEvent#Response", response);
             return response;
         } catch (MalformedURLException e) {
             e.printStackTrace();

@@ -7,18 +7,18 @@ import com.github.funnygopher.parti.util.HttpRequest;
 
 import java.io.IOException;
 
-public class AcceptEventTask extends AsyncTask<Void, Void, String> {
+public class AttendEventTask extends AsyncTask<Void, Void, String> {
 
-    private static final String ADDRESS = "http://pumpuptheparti.netne.net/api/accept_event.php";
+    private static final String ADDRESS = "http://pumpuptheparti.netne.net/api/attend_event.php";
     private int eventId;
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onResponse(String response) {
-
+            // Do nothing...
         }
     };
 
-    public AcceptEventTask(int eventId) {
+    public AttendEventTask(int eventId) {
         this.eventId = eventId;
     }
 
@@ -28,7 +28,7 @@ public class AcceptEventTask extends AsyncTask<Void, Void, String> {
             HttpRequest httpRequest = new HttpRequest(HttpRequest.POST, ADDRESS);
             httpRequest.withString("id=" + Integer.toString(eventId));
             String response = httpRequest.send();
-            Log.i("AcceptEvent#Response", response);
+            Log.i("AttendEvent#Response", response);
             return response;
         } catch (IOException e) {
             e.printStackTrace();

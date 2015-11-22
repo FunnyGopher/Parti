@@ -1,16 +1,18 @@
-package com.github.funnygopher.parti.invitation;
+package com.github.funnygopher.parti.dao;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.github.funnygopher.parti.model.Event;
 import com.github.funnygopher.parti.util.HttpRequest;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
-public class DeclineEventTask extends AsyncTask<Void, Void, String> {
+public class UpdateEventTask extends AsyncTask<Void, Void, String> {
 
-    private static final String ADDRESS = "http://pumpuptheparti.netne.net/api/decline_event.php";
-    private int eventId;
+    private final String address = "http://pumpuptheparti.netne.net/api/update_event.php";
+    private Event event;
     private OnResponseListener responseListener = new OnResponseListener() {
         @Override
         public void onResponse(String response) {
@@ -18,21 +20,26 @@ public class DeclineEventTask extends AsyncTask<Void, Void, String> {
         }
     };
 
-    public DeclineEventTask(int eventId) {
-        this.eventId = eventId;
+    public UpdateEventTask(Event event) {
+        this.event = event;
     }
 
     @Override
     protected String doInBackground(Void... params) {
         try {
-            HttpRequest httpRequest = new HttpRequest(HttpRequest.POST, ADDRESS);
-            httpRequest.withString("id=" + Integer.toString(eventId));
+            HttpRequest httpRequest = new HttpRequest(HttpRequest.POST, address);
+            httpRequest.withString("body=" + event.toJSON());
             String response = httpRequest.send();
-            Log.i("DeclineEvent#Response", response);
+            Log.i("UpdateEvent#Response", response);
             return response;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            Log.e("Malformed URL Exception", "Malformed URL Exception");
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("IOException", "IOException");
         }
+
         return null;
     }
 
