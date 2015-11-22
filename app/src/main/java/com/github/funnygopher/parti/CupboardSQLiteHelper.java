@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.github.funnygopher.parti.event.Event;
+import com.github.funnygopher.parti.hosting.HostedEvent;
+import com.github.funnygopher.parti.invitation.Invitation;
+import com.github.funnygopher.parti.rsvp.RSVP;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -16,7 +18,9 @@ public class CupboardSQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     static {
-        cupboard().register(Event.class);
+        cupboard().register(RSVP.class);
+        cupboard().register(Invitation.class);
+        cupboard().register(HostedEvent.class);
     }
 
     public CupboardSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
