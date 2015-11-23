@@ -10,7 +10,7 @@ public class DeleteEventTask extends AsyncTask<Void, Void, String> {
 
     private final String address = "http://pumpuptheparti.netne.net/api/delete_event.php";
     private Long id;
-    private OnDeleteEvent responseListener = new OnDeleteEvent() {
+    private OnDeleteEventListener listener = new OnDeleteEventListener() {
         @Override
         public void onDeleteEvent(String response) {
             // Do nothing...
@@ -36,15 +36,15 @@ public class DeleteEventTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        responseListener.onDeleteEvent(s);
+        listener.onDeleteEvent(s);
         super.onPostExecute(s);
     }
 
-    public void setOnResponseListener(OnDeleteEvent responseListener) {
-        this.responseListener = responseListener;
+    public void setOnDeleteEventListener(OnDeleteEventListener listener) {
+        this.listener = listener;
     }
 
-    public interface OnDeleteEvent {
+    public interface OnDeleteEventListener {
         void onDeleteEvent(String response);
     }
 }

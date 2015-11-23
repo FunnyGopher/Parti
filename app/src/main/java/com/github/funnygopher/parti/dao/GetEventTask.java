@@ -10,7 +10,7 @@ public class GetEventTask extends AsyncTask<Void, Void, String> {
 
     private final String address = "http://pumpuptheparti.netne.net/api/get_event.php";
     private Long id;
-    private OnGetEvent responseListener = new OnGetEvent() {
+    private OnGetEventListener listener = new OnGetEventListener() {
         @Override
         public void onGetEvent(String response) {
             // Do nothing...
@@ -36,15 +36,15 @@ public class GetEventTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        responseListener.onGetEvent(s);
+        listener.onGetEvent(s);
         super.onPostExecute(s);
     }
 
-    public void setOnResponseListener(OnGetEvent responseListener) {
-        this.responseListener = responseListener;
+    public void setOnGetEventListener(OnGetEventListener listener) {
+        this.listener = listener;
     }
 
-    public interface OnGetEvent {
+    public interface OnGetEventListener {
         void onGetEvent(String response);
     }
 }

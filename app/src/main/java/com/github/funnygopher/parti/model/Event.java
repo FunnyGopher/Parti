@@ -39,6 +39,20 @@ public class Event implements IEntity {
 
     public Event() {}
 
+    public Event(JSONObject eventJson) throws JSONException {
+        setId(eventJson.getLong("id"));
+        setName(eventJson.getString(NAME_KEY));
+        setDescription(eventJson.getString(DESC_KEY));
+        setHost(eventJson.getString(HOST_KEY));
+        setAdditionalInfo(eventJson.getString(ADDITIONAL_INFO_KEY));
+        setStartTime(Calendar.getInstance());
+        setEndTime(Calendar.getInstance());
+        setLongitude(eventJson.getDouble(LONGITUDE_KEY));
+        setLatitude(eventJson.getDouble(LATITUDE_KEY));
+        setAttending(eventJson.getInt(ATTENDING_KEY));
+        setDeclined(eventJson.getInt(DECLINED_KEY));
+    }
+
     public Event(String name, String host, String description, Calendar startTime, Calendar endTime, String additionalInfo, double longitude, double latitude, int attending, int declined) {
         this.name = name;
         this.host = host;

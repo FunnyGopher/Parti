@@ -11,7 +11,7 @@ public class CreateEventTask extends AsyncTask<Void, Void, String> {
 
     private final String address = "http://pumpuptheparti.netne.net/api/create_event.php";
     private Event event;
-    private OnCreateEvent responseListener = new OnCreateEvent() {
+    private OnCreateEventListener listener = new OnCreateEventListener() {
         @Override
         public void onCreateEvent(String response) {
             // Do nothing...
@@ -37,15 +37,15 @@ public class CreateEventTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        responseListener.onCreateEvent(s);
+        listener.onCreateEvent(s);
         super.onPostExecute(s);
     }
 
-    public void setOnResponseListener(OnCreateEvent responseListener) {
-        this.responseListener = responseListener;
+    public void setOnCreateEventListener(OnCreateEventListener listener) {
+        this.listener = listener;
     }
 
-    public interface OnCreateEvent {
+    public interface OnCreateEventListener {
         void onCreateEvent(String response);
     }
 }

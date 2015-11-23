@@ -11,7 +11,7 @@ public class UpdateEventTask extends AsyncTask<Void, Void, String> {
 
     private final String address = "http://pumpuptheparti.netne.net/api/update_event.php";
     private Event event;
-    private OnUpdateEvent responseListener = new OnUpdateEvent() {
+    private OnUpdateEventListener listener = new OnUpdateEventListener() {
         @Override
         public void onUpdateEvent(String response) {
             // Do nothing...
@@ -37,15 +37,15 @@ public class UpdateEventTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        responseListener.onUpdateEvent(s);
+        listener.onUpdateEvent(s);
         super.onPostExecute(s);
     }
 
-    public void setOnResponseListener(OnUpdateEvent responseListener) {
-        this.responseListener = responseListener;
+    public void setOnUpdateEventListener(OnUpdateEventListener listener) {
+        this.listener = listener;
     }
 
-    public interface OnUpdateEvent {
+    public interface OnUpdateEventListener {
         void onUpdateEvent(String response);
     }
 }
