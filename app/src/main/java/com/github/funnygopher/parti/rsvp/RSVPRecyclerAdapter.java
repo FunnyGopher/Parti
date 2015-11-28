@@ -60,18 +60,19 @@ public class RSVPRecyclerAdapter extends RecyclerView.Adapter<RSVPRecyclerAdapte
             }
         }
 
-        final String address = event.getAddress();
+        final double longitude = event.getLongitude();
+        final double latitude = event.getLatitude();
 
         holder.directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchAddress = new  Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + address));
+                String uriString = "geo:" + longitude + "," + latitude;
+                Intent searchAddress = new  Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
                 context.startActivity(searchAddress);
             }
         });
+        holder.additional_info.setText(event.getAdditionalInfo());
         holder.date.setText(dateString.toString());
-
-        holder.requirements.setText(event.getRequirements());
     }
 
     @Override
@@ -81,7 +82,7 @@ public class RSVPRecyclerAdapter extends RecyclerView.Adapter<RSVPRecyclerAdapte
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView eventName, hostName, desc, date, requirements;
+        private TextView eventName, hostName, desc, date, additional_info;
         private Button directions;
 
         public EventViewHolder(View itemView) {
@@ -89,34 +90,10 @@ public class RSVPRecyclerAdapter extends RecyclerView.Adapter<RSVPRecyclerAdapte
             eventName = (TextView) itemView.findViewById(R.id.event_detail_card_title);
             desc = (TextView) itemView.findViewById(R.id.event_detail_card_desc);
             hostName = (TextView) itemView.findViewById(R.id.event_detail_card_host);
+            additional_info = (TextView) itemView.findViewById(R.id.event_detail_card_requirements);
             date = (TextView) itemView.findViewById(R.id.event_detail_card_date);
-            requirements = (TextView) itemView.findViewById(R.id.event_detail_card_requirements);
 
             directions = (Button) itemView.findViewById(R.id.rsvp_directions_action_button);
-        }
-
-        public TextView getEventName() {
-            return eventName;
-        }
-
-        public TextView getDescription() {
-            return desc;
-        }
-
-        public TextView getHostName() {
-            return hostName;
-        }
-
-        public TextView getDate() {
-            return date;
-        }
-
-        public TextView getRequirements() {
-            return requirements;
-        }
-
-        public Button getDirectionsButton() {
-            return directions;
         }
     }
 }
