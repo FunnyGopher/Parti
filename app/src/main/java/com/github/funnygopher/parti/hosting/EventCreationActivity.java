@@ -27,11 +27,12 @@ public class EventCreationActivity extends AppCompatActivity {
     private EditText hostNameInput;
     private EditText addressInput;
 
-    private DatePickerDialog datePickerDialog;
+    private Calendar startDateTime;
+    private Calendar endDateTime;
+
     private TextView startDateInput;
     private TextView endDateInput;
 
-    private TimePickerDialog timePickerDialog;
     private TextView startTimeInput;
     private TextView endTimeInput;
 
@@ -62,10 +63,13 @@ public class EventCreationActivity extends AppCompatActivity {
         additionalInfo = (EditText) findViewById(R.id.event_creation_additional_info_input);
         createEventButton = (Button) findViewById(R.id.hosting_list_create_event);
 
-        setOnClickForDate(startDateInput);
-        setOnClickForDate(endDateInput);
-        setOnClickForTime(startTimeInput);
-        setOnClickForTime(endTimeInput);
+        startDateTime = Calendar.getInstance();
+        endDateTime = Calendar.getInstance();
+
+        setOnClickForDate(startDateInput, startDateTime);
+        setOnClickForDate(endDateInput, endDateTime);
+        setOnClickForTime(startTimeInput, startDateTime);
+        setOnClickForTime(endTimeInput, endDateTime);
 
         Button saveButton = (Button) findViewById(R.id.event_creation_button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -82,42 +86,46 @@ public class EventCreationActivity extends AppCompatActivity {
         });
     }
 
-    private void setOnClickForTime(final TextView textView) {
+    private void setOnClickForTime(final TextView textView, final Calendar calendar) {
         final TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
                 textView.setText(String.valueOf(hourOfDay + ":" + String.valueOf(minute)));
             }
         };
 
-        final Calendar now = Calendar.getInstance();
         View.OnClickListener onTimeClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new TimePickerDialog(getApplicationContext(),
-                        timeSetListener, now.get(Calendar.HOUR_OF_DAY),
-                        now.get(Calendar.MINUTE), false)
+                        timeSetListener,
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE), false)
                     .show();
             }
         };
         textView.setOnClickListener(onTimeClick);
     }
 
-    private void setOnClickForDate(final TextView textView) {
+    private void setOnClickForDate(final TextView textView, final Calendar calendar) {
         final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendar.set(year, monthOfYear, dayOfMonth);
                 textView.setText(String.valueOf(monthOfYear + "/" + dayOfMonth + "/" + year));
             }
         };
 
-        final Calendar now = Calendar.getInstance();
         View.OnClickListener onDateClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(getApplicationContext(),
-                        dateSetListener, now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
+                        dateSetListener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH))
                     .show();
             }
         };
