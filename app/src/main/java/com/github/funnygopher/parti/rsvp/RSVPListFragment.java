@@ -10,14 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.funnygopher.parti.event.EventCreationActivity;
 import com.github.funnygopher.parti.R;
-import com.github.funnygopher.parti.event.Event;
-import com.github.funnygopher.parti.event.EventRecyclerAdapter;
+import com.github.funnygopher.parti.event.EventCreationActivity;
+import com.github.funnygopher.parti.model.Event;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 public class RSVPListFragment extends Fragment {
     private RSVPRecyclerAdapter adapter;
@@ -42,7 +39,7 @@ public class RSVPListFragment extends Fragment {
             }
         });
 
-        adapter = new RSVPRecyclerAdapter(getContext(), list);
+        adapter = new RSVPRecyclerAdapter(getContext(), new ArrayList<Event>());
         recyclerView.setAdapter(adapter);
 
         return view;
