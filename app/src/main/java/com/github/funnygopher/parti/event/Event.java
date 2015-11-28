@@ -1,7 +1,6 @@
 package com.github.funnygopher.parti.event;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Event {
     private String name;
