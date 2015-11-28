@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti.dao;
+package com.github.funnygopher.parti.dao.tasks;
 
 import android.os.AsyncTask;
 

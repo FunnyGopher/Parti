@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.funnygopher.parti.R;
-import com.github.funnygopher.parti.event.EventCreationActivity;
+import com.github.funnygopher.parti.hosting.EventCreationActivity;
 import com.github.funnygopher.parti.model.Event;
 
 import java.util.ArrayList;
@@ -25,13 +25,13 @@ public class RSVPListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hosting_list, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.eventlist_recyclerview);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.hosting_list_recyclerview);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        createEventButton = (FloatingActionButton) view.findViewById(R.id.create_event_button);
+        createEventButton = (FloatingActionButton) view.findViewById(R.id.hosting_list_create_event);
         createEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

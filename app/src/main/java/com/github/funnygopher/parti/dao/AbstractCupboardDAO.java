@@ -3,8 +3,6 @@ package com.github.funnygopher.parti.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.github.funnygopher.parti.CupboardSQLiteHelper;
-
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**

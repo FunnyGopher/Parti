@@ -1,5 +1,9 @@
 package com.github.funnygopher.parti.dao;
 
+import com.github.funnygopher.parti.dao.tasks.CreateEventTask;
+import com.github.funnygopher.parti.dao.tasks.DeleteEventTask;
+import com.github.funnygopher.parti.dao.tasks.GetEventTask;
+import com.github.funnygopher.parti.dao.tasks.UpdateEventTask;
 import com.github.funnygopher.parti.model.Event;
 
 /**

@@ -72,17 +72,6 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/invitation_card_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
-                android:text="Sat Oct 31, 2015 @ 6:00pm - Fri Nov 06, 2015 @ 10:00 PM"
-                android:textColor="@color/secondary_text"
-                android:textSize="14sp" />
-
-            <TextView
                 android:id="@+id/invitation_card_requirements"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,6 +82,18 @@
                 android:text="Bring a bathing suit and towel!"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/invitation_card_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:text="Sat Oct 31, 2015 @ 6:00pm - Fri Nov 06, 2015 @ 10:00 PM"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
 
             <View
                 android:layout_width="match_parent"

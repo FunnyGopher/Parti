@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#e0e0e0">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/invitation_list_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp">
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -18,13 +18,13 @@
         android:id="@+id/invitation_list_create_invitation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        app:layout_anchor="@id/invitation_list_recyclerview"
         android:src="@android:drawable/ic_dialog_email"
         app:backgroundTint="@color/primary"
+        app:layout_anchor="@id/invitation_list_recyclerview"
         app:rippleColor="@color/accent" />
 </RelativeLayout>

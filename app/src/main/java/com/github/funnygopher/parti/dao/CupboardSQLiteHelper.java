@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti;
+package com.github.funnygopher.parti.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

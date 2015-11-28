@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti;
+package com.github.funnygopher.parti.hosting;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

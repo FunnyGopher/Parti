@@ -32,7 +32,7 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     public HostingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.
                 from(parent.getContext()).
-                inflate(R.layout.hosting_card, parent, false);
+                inflate(R.layout.hosting_cardview, parent, false);
 
         return new HostingViewHolder(itemView);
     }

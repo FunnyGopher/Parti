@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti.event;
+package com.github.funnygopher.parti.hosting;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -54,7 +54,7 @@ public class EventCreationActivity extends AppCompatActivity {
         eventDescriptionInput = (EditText) findViewById(R.id.event_creation_description_input);
         maxInvitesInput = (EditText) findViewById(R.id.event_creation_max_invites_input);
         additionalInfo = (EditText) findViewById(R.id.event_creation_additional_info_input);
-        createEventButton = (Button) findViewById(R.id.create_event_button);
+        createEventButton = (Button) findViewById(R.id.hosting_list_create_event);
 
         setOnClickForDate(startDateInput);
         setOnClickForDate(endDateInput);

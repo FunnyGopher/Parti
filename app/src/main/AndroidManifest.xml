@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" /> <!-- This will change -->
             </intent-filter>
         </activity>
-        <activity android:name=".event.EventCreationActivity"/>
+        <activity android:name=".hosting.EventCreationActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

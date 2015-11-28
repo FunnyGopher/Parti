@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.funnygopher.parti.R;
-import com.github.funnygopher.parti.dao.DeleteEventTask;
+import com.github.funnygopher.parti.dao.tasks.DeleteEventTask;
 import com.github.funnygopher.parti.model.Event;
 
 import java.text.SimpleDateFormat;
