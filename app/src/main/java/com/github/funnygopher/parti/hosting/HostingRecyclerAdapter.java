@@ -22,10 +22,10 @@ import java.util.Locale;
  */
 public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecyclerAdapter.HostingViewHolder> {
 
-    public List<Event> hostedEvents;
+    public List<Event> mHostedEventList;
 
     public HostingRecyclerAdapter(List<Event> hostedEvents) {
-        this.hostedEvents = hostedEvents;
+        this.mHostedEventList = hostedEvents;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
 
     @Override
     public void onBindViewHolder(HostingViewHolder hostingViewHolder, int position) {
-        Event currentEvent = hostedEvents.get(position);
+        Event currentEvent = mHostedEventList.get(position);
         Log.d("HostingRecyclerAdapter", "CurrentEventName: " + currentEvent.getName());
         hostingViewHolder.title.setText(currentEvent.getName());
 
@@ -67,7 +67,7 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
 
     @Override
     public int getItemCount() {
-        return hostedEvents.size();
+        return mHostedEventList.size();
     }
 
     public static class HostingViewHolder extends RecyclerView.ViewHolder{

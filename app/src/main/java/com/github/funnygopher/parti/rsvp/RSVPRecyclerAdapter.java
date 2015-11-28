@@ -20,12 +20,12 @@ import java.util.Locale;
 
 public class RSVPRecyclerAdapter extends RecyclerView.Adapter<RSVPRecyclerAdapter.EventViewHolder> {
 
-    private List<Event> eventList;
-    private Context context;
+    private List<Event> mRsvpList;
+    private Context mContext;
 
     public RSVPRecyclerAdapter(Context context, List<Event> list) {
-        this.eventList = list;
-        this.context = context;
+        this.mRsvpList = list;
+        this.mContext = context;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class RSVPRecyclerAdapter extends RecyclerView.Adapter<RSVPRecyclerAdapte
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        Event event = eventList.get(position);
+        Event event = mRsvpList.get(position);
 
         holder.eventName.setText(event.getName());
         holder.desc.setText(event.getDescription());
@@ -68,16 +68,26 @@ public class RSVPRecyclerAdapter extends RecyclerView.Adapter<RSVPRecyclerAdapte
             public void onClick(View v) {
                 String uriString = "geo:" + longitude + "," + latitude;
                 Intent searchAddress = new  Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
-                context.startActivity(searchAddress);
+                mContext.startActivity(searchAddress);
             }
         });
         holder.additional_info.setText(event.getAdditionalInfo());
         holder.date.setText(dateString.toString());
     }
 
+    public void add(Event event) {
+        mRsvpList.add(event);
+        notifyItemInserted(mRsvpList.indexOf(event));
+    }
+
+    public void remove(Event event) {
+        mRsvpList.remove(event);
+        notifyItemRemoved(mRsvpList.indexOf(event));
+    }
+
     @Override
     public int getItemCount() {
-        return eventList.size();
+        return mRsvpList.size();
     }
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
@@ -87,11 +97,11 @@ public class RSVPRecyclerAdapter extends RecyclerView.Adapter<RSVPRecyclerAdapte
 
         public EventViewHolder(View itemView) {
             super(itemView);
-            eventName = (TextView) itemView.findViewById(R.id.event_detail_card_title);
-            desc = (TextView) itemView.findViewById(R.id.event_detail_card_desc);
-            hostName = (TextView) itemView.findViewById(R.id.event_detail_card_host);
-            additional_info = (TextView) itemView.findViewById(R.id.event_detail_card_requirements);
-            date = (TextView) itemView.findViewById(R.id.event_detail_card_date);
+            eventName = (TextView) itemView.findViewById(R.id.rsvp_detail_card_title);
+            desc = (TextView) itemView.findViewById(R.id.rsvp_detail_card_desc);
+            hostName = (TextView) itemView.findViewById(R.id.rsvp_detail_card_host);
+            additional_info = (TextView) itemView.findViewById(R.id.rsvp_detail_card_requirements);
+            date = (TextView) itemView.findViewById(R.id.rsvp_detail_card_date);
 
             directions = (Button) itemView.findViewById(R.id.rsvp_directions_action_button);
         }

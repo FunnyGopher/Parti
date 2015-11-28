@@ -23,10 +23,10 @@ import java.util.Locale;
  */
 public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRecyclerAdapter.InvitationViewHolder> {
 
-    List<Event> invitations;
+    private List<Event> mInvitationList;
 
     public InvitationRecyclerAdapter(List<Event> invitations) {
-        this.invitations = invitations;
+        this.mInvitationList = invitations;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
 
     @Override
     public void onBindViewHolder(InvitationViewHolder holder, int position) {
-        final Event event = invitations.get(position);
+        final Event event = mInvitationList.get(position);
 
         holder.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -100,18 +100,18 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
     }
 
     public void add(Event event) {
-        invitations.add(event);
-        notifyItemInserted(invitations.indexOf(event));
+        mInvitationList.add(event);
+        notifyItemInserted(mInvitationList.indexOf(event));
     }
 
     public void remove(Event event) {
-        invitations.remove(event);
-        notifyItemRemoved(invitations.indexOf(event));
+        mInvitationList.remove(event);
+        notifyItemRemoved(mInvitationList.indexOf(event));
     }
 
     @Override
     public int getItemCount() {
-        return invitations.size();
+        return mInvitationList.size();
     }
 
     public class InvitationViewHolder extends RecyclerView.ViewHolder {

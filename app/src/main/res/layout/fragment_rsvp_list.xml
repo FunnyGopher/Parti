@@ -6,7 +6,7 @@
     android:background="#e0e0e0">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/hosting_list_recyclerview"
+        android:id="@+id/rsvp_list_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="4dp"
@@ -15,7 +15,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/hosting_list_create_event"
+        android:id="@+id/rsvp_list_test_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -25,6 +25,6 @@
         android:clickable="true"
         android:src="@android:drawable/ic_dialog_email"
         app:backgroundTint="@color/primary"
-        app:layout_anchor="@id/hosting_list_recyclerview"
+        app:layout_anchor="@id/rsvp_list_recyclerview"
         app:rippleColor="@color/accent" />
 </RelativeLayout>

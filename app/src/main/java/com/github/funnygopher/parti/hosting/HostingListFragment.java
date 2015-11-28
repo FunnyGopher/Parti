@@ -20,8 +20,7 @@ Created by Jackkell
  */
 public class HostingListFragment extends Fragment {
 
-    private HostingRecyclerAdapter mAdapter;
-    private FloatingActionButton mCreateEventButton;
+    private HostingRecyclerAdapter mRecyclerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,16 +32,16 @@ public class HostingListFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        mCreateEventButton = (FloatingActionButton) view.findViewById(R.id.hosting_list_create_event);
-        mCreateEventButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.hosting_list_create_event);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), EventCreationActivity.class));
             }
         });
 
-        mAdapter = new HostingRecyclerAdapter(new ArrayList<Event>());
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerAdapter = new HostingRecyclerAdapter(new ArrayList<Event>());
+        recyclerView.setAdapter(mRecyclerAdapter);
 
         return view;
     }

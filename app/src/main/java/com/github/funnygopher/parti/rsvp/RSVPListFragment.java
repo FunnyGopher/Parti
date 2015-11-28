@@ -1,6 +1,5 @@
 package com.github.funnygopher.parti.rsvp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -11,37 +10,50 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.funnygopher.parti.R;
-import com.github.funnygopher.parti.hosting.EventCreationActivity;
 import com.github.funnygopher.parti.model.Event;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class RSVPListFragment extends Fragment {
-    private RSVPRecyclerAdapter adapter;
 
-    private FloatingActionButton createEventButton;
+    private RSVPRecyclerAdapter mRecyclerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_hosting_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_rsvp_list, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.hosting_list_recyclerview);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rsvp_list_recyclerview);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        createEventButton = (FloatingActionButton) view.findViewById(R.id.hosting_list_create_event);
-        createEventButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.rsvp_list_test_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), EventCreationActivity.class));
+                fabAction();
             }
         });
 
-        adapter = new RSVPRecyclerAdapter(getContext(), new ArrayList<Event>());
-        recyclerView.setAdapter(adapter);
+        mRecyclerAdapter = new RSVPRecyclerAdapter(getContext(), new ArrayList<Event>());
+        recyclerView.setAdapter(mRecyclerAdapter);
 
         return view;
+    }
+
+    private void fabAction() {
+        // Creating a dummy event for the crazy rave
+        Calendar raveStartDate = Calendar.getInstance();
+        raveStartDate.set(2015, 9, 31, 22, 0, 0);
+        Calendar raveEndDate = Calendar.getInstance();
+        raveEndDate.set(2015, 10, 6, 22, 0, 0);
+        Event event = new Event(
+                "The Crazy Rave", "The Rave Boys",
+                "The craziest rave you've ever been to. Strap on your leaderhosen. It's about to get bumpy.",
+                raveStartDate, raveEndDate,
+                "$5.00 at the door. Glowsticks are a must.", 33.3775468, -111.9811847, 0, 0);
+        mRecyclerAdapter.add(event);
     }
 }

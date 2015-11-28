@@ -23,7 +23,7 @@ public class InvitationListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_invitation_list, container, false);
 
-        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.invitation_list_create_invitation);
+        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.invitation_list_test_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
