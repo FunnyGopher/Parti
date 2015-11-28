@@ -1,4 +1,4 @@
-package com.github.funnygopher.parti.hosting;
+package com.github.funnygopher.parti.model;
 
 /**
  * Created by Kyle on 11/21/2015.

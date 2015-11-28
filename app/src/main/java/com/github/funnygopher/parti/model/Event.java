@@ -11,6 +11,7 @@ import java.util.Calendar;
 
 public class Event implements IEntity {
 
+    public static final String ID_KEY = "id";
     public static final String NAME_KEY = "name";
     public static final String HOST_KEY = "host";
     public static final String DESC_KEY = "description";
@@ -40,7 +41,7 @@ public class Event implements IEntity {
     public Event() {}
 
     public Event(JSONObject eventJson) throws JSONException {
-        setId(eventJson.getLong("id"));
+        setId(eventJson.getLong(ID_KEY));
         setName(eventJson.getString(NAME_KEY));
         setDescription(eventJson.getString(DESC_KEY));
         setHost(eventJson.getString(HOST_KEY));
@@ -61,8 +62,8 @@ public class Event implements IEntity {
         this.endTime = endTime;
         this.additionalInfo = additionalInfo;
         this.longitude = longitude;
-        this.attending = attending;
         this.latitude = latitude;
+        this.attending = attending;
         this.declined = declined;
     }
 

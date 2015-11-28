@@ -69,25 +69,25 @@
                 android:textColor="@color/secondary_text"/>
 
             <TextView
-                android:id="@+id/event_detail_card_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:text="Sat Oct 31, 2015 @ 6:00pm - Fri Nov 06, 2015 @ 10:00 PM"
-                android:textSize="14sp"
-                android:textColor="@color/secondary_text" />
-
-            <TextView
                 android:id="@+id/event_detail_card_requirements"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="16dp"
                 android:text="Bring a bathing suit and towel!"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/event_detail_card_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:text="Sat Oct 31, 2015 @ 6:00pm - Fri Nov 06, 2015 @ 10:00 PM"
                 android:textSize="14sp"
                 android:textColor="@color/secondary_text" />
 

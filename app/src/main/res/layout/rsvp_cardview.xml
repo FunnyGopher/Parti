@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/event_detail_card_title"
+                android:id="@+id/rsvp_detail_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
@@ -33,7 +33,7 @@
                 android:textColor="@color/primary_text"/>
 
             <TextView
-                android:id="@+id/event_detail_card_host"
+                android:id="@+id/rsvp_detail_card_host"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="6dp"
@@ -47,7 +47,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/event_card_body"
+            android:id="@+id/rsvp_card_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -58,7 +58,7 @@
                 android:background="#1F000000"/>
 
             <TextView
-                android:id="@+id/event_detail_card_desc"
+                android:id="@+id/rsvp_detail_card_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
@@ -69,7 +69,7 @@
                 android:textColor="@color/secondary_text"/>
 
             <TextView
-                android:id="@+id/event_detail_card_requirements"
+                android:id="@+id/rsvp_detail_card_requirements"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -80,7 +80,7 @@
                 android:textColor="@color/secondary_text" />
 
             <TextView
-                android:id="@+id/event_detail_card_date"
+                android:id="@+id/rsvp_detail_card_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.github.funnygopher.parti.hosting.HostedEvent;
-import com.github.funnygopher.parti.invitation.Invitation;
-import com.github.funnygopher.parti.rsvp.RSVP;
+import com.github.funnygopher.parti.model.HostedEvent;
+import com.github.funnygopher.parti.model.Invitation;
+import com.github.funnygopher.parti.model.RSVP;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 

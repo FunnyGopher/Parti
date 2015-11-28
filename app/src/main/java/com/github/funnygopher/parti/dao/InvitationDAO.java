@@ -2,7 +2,7 @@ package com.github.funnygopher.parti.dao;
 
 import android.content.Context;
 
-import com.github.funnygopher.parti.invitation.Invitation;
+import com.github.funnygopher.parti.model.Invitation;
 
 /**
  * Created by Kyle on 11/21/2015.

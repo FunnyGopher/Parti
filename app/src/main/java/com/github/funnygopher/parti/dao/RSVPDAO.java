@@ -2,7 +2,7 @@ package com.github.funnygopher.parti.dao;
 
 import android.content.Context;
 
-import com.github.funnygopher.parti.rsvp.RSVP;
+import com.github.funnygopher.parti.model.RSVP;
 
 /**
  * Created by Kyle on 11/21/2015.
