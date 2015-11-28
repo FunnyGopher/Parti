@@ -61,8 +61,8 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
                 hostingViewHolder.endDate.setText(dateFormat.format(endDate.getTime()));
             }
         }
-        hostingViewHolder.invitationTotal.setText(currentEvent.getTotalInvitations());
-        hostingViewHolder.attendingTotal.setText(currentEvent.getAcceptedInvitations());
+        hostingViewHolder.acceptedTotal.setText(currentEvent.getAttending());
+        hostingViewHolder.declinedTotal.setText(currentEvent.getDeclined());
     }
 
     @Override
@@ -75,21 +75,21 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
         private TextView title;
         private TextView startDate;
         private TextView endDate;
-        private TextView invitationTotal;
-        private TextView attendingTotal;
+        private TextView acceptedTotal;
+        private TextView declinedTotal;
         private Button inviteButton;
         private Button editButton;
 
         public HostingViewHolder(View itemView) {
             super(itemView);
-            card = (CardView) itemView.findViewById(R.id.event_card);
-            title = (TextView) itemView.findViewById(R.id.event_detail_card_title);
-            startDate = (TextView) itemView.findViewById(R.id.event_start_date);
-            endDate = (TextView) itemView.findViewById(R.id.event_end_date);
-            invitationTotal = (TextView) itemView.findViewById(R.id.event_invitation_total);
-            attendingTotal = (TextView) itemView.findViewById(R.id.event_attending_total);
-            inviteButton = (Button) itemView.findViewById(R.id.event_detail_card_invite_button);
-            editButton = (Button) itemView.findViewById(R.id.event_detail_card_edit_button);
+            card = (CardView) itemView.findViewById(R.id.host_card);
+            title = (TextView) itemView.findViewById(R.id.host_detail_card_title);
+            startDate = (TextView) itemView.findViewById(R.id.host_start_date);
+            endDate = (TextView) itemView.findViewById(R.id.host_end_date);
+            acceptedTotal = (TextView) itemView.findViewById(R.id.host_accepted_total);
+            declinedTotal = (TextView) itemView.findViewById(R.id.host_declined_total);
+            inviteButton = (Button) itemView.findViewById(R.id.host_detail_card_invite_button);
+            editButton = (Button) itemView.findViewById(R.id.host_detail_card_edit_button);
         }
     }
 }

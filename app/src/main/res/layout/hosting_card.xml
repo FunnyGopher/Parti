@@ -3,7 +3,7 @@
 Author: Jackkell
 -->
 <android.support.v7.widget.CardView
-    android:id="@+id/event_card"
+    android:id="@+id/host_card"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -17,7 +17,7 @@ Author: Jackkell
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/event_detail_card_title"
+            android:id="@+id/host_detail_card_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
@@ -37,7 +37,7 @@ Author: Jackkell
         android:layout_height="wrap_content"
         android:orientation="horizontal">
             <TextView
-                android:id="@+id/event_start_date"
+                android:id="@+id/host_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -58,7 +58,7 @@ Author: Jackkell
                 android:textColor="@color/secondary_text" />
 
             <TextView
-                android:id="@+id/event_end_date"
+                android:id="@+id/host_end_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -81,12 +81,12 @@ Author: Jackkell
                 android:paddingLeft="16dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="16dp"
-                android:text="Invitation:"
+                android:text="Accepted:"
                 android:textSize="14sp"
                 android:textColor="@color/secondary_text" />
 
             <TextView
-                android:id="@+id/event_invitation_total"
+                android:id="@+id/host_accepted_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -104,12 +104,12 @@ Author: Jackkell
                 android:paddingLeft="16dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="16dp"
-                android:text="Is Attending:"
+                android:text="Declined:"
                 android:textSize="14sp"
                 android:textColor="@color/secondary_text" />
 
             <TextView
-                android:id="@+id/event_attending_total"
+                android:id="@+id/host_declined_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -134,7 +134,7 @@ Author: Jackkell
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/event_detail_card_invite_button"
+                android:id="@+id/host_detail_card_invite_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?android:borderlessButtonStyle"
@@ -142,7 +142,7 @@ Author: Jackkell
                 android:textColor="@color/primary_dark"/>
 
             <Button
-                android:id="@+id/event_detail_card_edit_button"
+                android:id="@+id/host_detail_card_edit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?android:borderlessButtonStyle"
