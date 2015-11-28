@@ -26,14 +26,20 @@ public class EventCreationActivity extends AppCompatActivity {
     private EditText eventNameInput;
     private EditText hostNameInput;
     private EditText addressInput;
+
+    private DatePickerDialog datePickerDialog;
     private TextView startDateInput;
     private TextView endDateInput;
+
+    private TimePickerDialog timePickerDialog;
     private TextView startTimeInput;
     private TextView endTimeInput;
+
     private EditText eventDescriptionInput;
     private EditText maxInvitesInput;
     private EditText additionalInfo;
     private Button createEventButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +96,8 @@ public class EventCreationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 new TimePickerDialog(getApplicationContext(),
                         timeSetListener, now.get(Calendar.HOUR_OF_DAY),
-                        now.get(Calendar.MINUTE), false);
+                        now.get(Calendar.MINUTE), false)
+                    .show();
             }
         };
         textView.setOnClickListener(onTimeClick);
@@ -110,7 +117,8 @@ public class EventCreationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 new DatePickerDialog(getApplicationContext(),
                         dateSetListener, now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+                        now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
+                    .show();
             }
         };
         textView.setOnClickListener(onDateClick);
