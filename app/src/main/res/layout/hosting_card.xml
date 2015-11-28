@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Author: Jackkell
+-->
+<android.support.v7.widget.CardView
+    android:id="@+id/event_card"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardElevation="2dp"
+    card_view:cardCornerRadius="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/event_detail_card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Event Title"
+            android:textSize="24sp"
+            android:textColor="@color/primary_text"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1F000000"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/event_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="4dp"
+                android:text="Start Date Time"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="-"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/event_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="End Date Time"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="16dp"
+                android:text="Invitation:"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/event_invitation_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:text="##"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="16dp"
+                android:text="Is Attending:"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+
+            <TextView
+                android:id="@+id/event_attending_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:text="##"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1F000000"/>
+
+        <!-- Actions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/event_detail_card_invite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:borderlessButtonStyle"
+                android:text="Invite"
+                android:textColor="@color/primary_dark"/>
+
+            <Button
+                android:id="@+id/event_detail_card_edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:borderlessButtonStyle"
+                android:text="Edit"
+                android:textColor="@color/primary_dark"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
