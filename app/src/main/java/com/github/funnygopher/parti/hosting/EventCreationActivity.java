@@ -17,7 +17,9 @@ import android.widget.TimePicker;
 import com.github.funnygopher.parti.R;
 import com.github.funnygopher.parti.model.Event;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class EventCreationActivity extends AppCompatActivity {
 
@@ -38,9 +40,12 @@ public class EventCreationActivity extends AppCompatActivity {
     private TextView endTimeInput;
 
     private EditText eventDescriptionInput;
-    private EditText maxInvitesInput;
-    private EditText additionalInfo;
-    private Button createEventButton;
+    private EditText additionalInfoInput;
+
+    private Button mSaveButton;
+    private boolean hasName = false;
+
+    private SimpleDateFormat timeFormat, dateFormat;
 
 
     @Override
@@ -60,45 +65,51 @@ public class EventCreationActivity extends AppCompatActivity {
         startTimeInput = (TextView) findViewById(R.id.event_creation_start_time_input);
         endTimeInput = (TextView) findViewById(R.id.event_creation_end_time_input);
         eventDescriptionInput = (EditText) findViewById(R.id.event_creation_description_input);
-        maxInvitesInput = (EditText) findViewById(R.id.event_creation_max_invites_input);
-        additionalInfo = (EditText) findViewById(R.id.event_creation_additional_info_input);
-        createEventButton = (Button) findViewById(R.id.hosting_list_create_event);
+        additionalInfoInput = (EditText) findViewById(R.id.event_creation_additional_info_input);
+        mSaveButton = (Button) findViewById(R.id.event_creation_button_save);
+
+        timeFormat = new SimpleDateFormat ("h:mm a", Locale.getDefault());
+        dateFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
 
         startDateTime = Calendar.getInstance();
-        endDateTime = startDateTime;
+        endDateTime = Calendar.getInstance();
 
         setOnClickForDate(startDateInput, startDateTime);
         setOnClickForDate(endDateInput, endDateTime);
         setOnClickForTime(startTimeInput, startDateTime);
         setOnClickForTime(endTimeInput, endDateTime);
 
-        String currentTime = String.valueOf(startDateTime.get(Calendar.HOUR)) +
-                ":" + String.valueOf(startDateTime.get(Calendar.MINUTE)) +
-                " " + (startDateTime.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM");
-        startTimeInput.setText(currentTime);
-        endTimeInput.setText(currentTime);
+        startTimeInput.setText(timeFormat.format(startDateTime.getTime()));
+        endTimeInput.setText(timeFormat.format(endDateTime.getTime()));
 
-        String currentDate = String.valueOf(startDateTime.get(Calendar.MONTH) +
-                "/" + startDateTime.get(Calendar.DAY_OF_MONTH) +
-                "/" + startDateTime.get(Calendar.YEAR));
-        startDateInput.setText(currentDate);
-        endDateInput.setText(currentDate);
-
-
+        startDateInput.setText(dateFormat.format(startDateTime.getTime()));
+        endDateInput.setText(dateFormat.format(endDateTime.getTime()));
 
         Button saveButton = (Button) findViewById(R.id.event_creation_button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create event
-                createEvent();
-
-                // Set result and return to previous activity
                 Intent intent = new Intent();
-                setResult(Activity.RESULT_CANCELED, intent); // For now just cancels the event creation
+
+                if (hasName) {
+                    Event event = createEvent();
+
+                    //TODO: Need to make Event class implement parcalable
+                    /*
+                    Bundle b = new Bundle();
+                    b.putParcelable("event", event);
+                    intent.putExtras(b);
+                    */
+                    setResult(Activity.RESULT_OK, intent);
+                } else {
+                    setResult(Activity.RESULT_CANCELED, intent);
+                }
+
                 finish();
             }
         });
+
+        updateSaveButton("");
     }
 
     private void setOnClickForTime(final TextView textView, final Calendar calendar) {
@@ -107,9 +118,7 @@ public class EventCreationActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                textView.setText(String.valueOf(calendar.get(Calendar.HOUR)) +
-                        ":" + String.valueOf(minute) +
-                        " " + (calendar.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM"));
+                textView.setText(timeFormat.format(calendar.getTime()));
             }
         };
 
@@ -131,7 +140,7 @@ public class EventCreationActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 calendar.set(year, monthOfYear, dayOfMonth);
-                textView.setText(String.valueOf(monthOfYear + "/" + dayOfMonth + "/" + year));
+                textView.setText(dateFormat.format(calendar.getTime()));
             }
         };
 
@@ -174,8 +183,24 @@ public class EventCreationActivity extends AppCompatActivity {
         }
     }
 
-    private void createEvent() {
+    private void updateSaveButton(String s) {
+        hasName = s.length() > 0;
+        if(hasName) {
+            mSaveButton.setText("Save");
+        } else {
+            mSaveButton.setText("Cancel");
+        }
+    }
+
+    private Event createEvent() {
         // Get all the information into variables
         // Store object in database
+        String name = eventNameInput.getText().toString();
+        String host = hostNameInput.getText().toString();
+        String description = eventDescriptionInput.getText().toString();
+        String additionalInfo = additionalInfoInput.getText().toString();
+        
+        Event event = new Event(name, host, description, startDateTime, endDateTime, additionalInfo, 33.3774338, -111.9759768, 0, 0);
+        return event;
     }
 }
