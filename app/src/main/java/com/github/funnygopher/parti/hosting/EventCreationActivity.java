@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.github.funnygopher.parti.R;
+import com.github.funnygopher.parti.model.Event;
 
 import java.util.Calendar;
 
@@ -64,12 +65,26 @@ public class EventCreationActivity extends AppCompatActivity {
         createEventButton = (Button) findViewById(R.id.hosting_list_create_event);
 
         startDateTime = Calendar.getInstance();
-        endDateTime = Calendar.getInstance();
+        endDateTime = startDateTime;
 
         setOnClickForDate(startDateInput, startDateTime);
         setOnClickForDate(endDateInput, endDateTime);
         setOnClickForTime(startTimeInput, startDateTime);
         setOnClickForTime(endTimeInput, endDateTime);
+
+        String currentTime = String.valueOf(startDateTime.get(Calendar.HOUR)) +
+                ":" + String.valueOf(startDateTime.get(Calendar.MINUTE)) +
+                " " + (startDateTime.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM");
+        startTimeInput.setText(currentTime);
+        endTimeInput.setText(currentTime);
+
+        String currentDate = String.valueOf(startDateTime.get(Calendar.MONTH) +
+                "/" + startDateTime.get(Calendar.DAY_OF_MONTH) +
+                "/" + startDateTime.get(Calendar.YEAR));
+        startDateInput.setText(currentDate);
+        endDateInput.setText(currentDate);
+
+
 
         Button saveButton = (Button) findViewById(R.id.event_creation_button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -92,14 +107,16 @@ public class EventCreationActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                textView.setText(String.valueOf(hourOfDay + ":" + String.valueOf(minute)));
+                textView.setText(String.valueOf(calendar.get(Calendar.HOUR)) +
+                        ":" + String.valueOf(minute) +
+                        " " + (calendar.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM"));
             }
         };
 
         View.OnClickListener onTimeClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new TimePickerDialog(getApplicationContext(),
+                new TimePickerDialog(EventCreationActivity.this,
                         timeSetListener,
                         calendar.get(Calendar.HOUR_OF_DAY),
                         calendar.get(Calendar.MINUTE), false)
@@ -121,7 +138,7 @@ public class EventCreationActivity extends AppCompatActivity {
         View.OnClickListener onDateClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(getApplicationContext(),
+                new DatePickerDialog(EventCreationActivity.this,
                         dateSetListener,
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
