@@ -52,8 +52,9 @@ public class RSVPListFragment extends Fragment {
         Event event = new Event(
                 "The Crazy Rave", "The Rave Boys",
                 "The craziest rave you've ever been to. Strap on your leaderhosen. It's about to get bumpy.",
+                "$5.00 at the door. Glowsticks are a must.",
                 raveStartDate, raveEndDate,
-                "$5.00 at the door. Glowsticks are a must.", 33.3775468, -111.9811847, 0, 0);
+                33.3775468, -111.9811847, 0, 0);
         mRecyclerAdapter.add(event);
     }
 }

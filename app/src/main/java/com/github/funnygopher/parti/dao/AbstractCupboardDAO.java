@@ -3,10 +3,13 @@ package com.github.funnygopher.parti.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
- * Created by Kyle on 11/21/2015.
+ * Created by FunnyGopher
  */
 public abstract class AbstractCupboardDAO<E extends IEntity> implements IDAO<E> {
 
@@ -43,5 +46,20 @@ public abstract class AbstractCupboardDAO<E extends IEntity> implements IDAO<E> 
     public void delete(Long id) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         cupboard().withDatabase(db).delete(entityClass);
+    }
+
+    public List<E> list() {
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        List<E> list = cupboard().withDatabase(db).query(entityClass).list();
+        return list;
+    }
+
+    public int count() {
+        return list().size();
+    }
+
+    public E query(String query, String... args) {
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        return cupboard().withDatabase(db).query(entityClass).withSelection(query, args).get();
     }
 }

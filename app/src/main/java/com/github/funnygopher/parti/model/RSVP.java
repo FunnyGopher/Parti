@@ -1,7 +1,7 @@
 package com.github.funnygopher.parti.model;
 
 /**
- * Created by Kyle on 11/21/2015.
+ * Created by FunnyGopher
  */
 
 import com.github.funnygopher.parti.dao.IEntity;
@@ -14,6 +14,8 @@ public class RSVP implements IEntity {
     private Long _id;
     private Long eventId;
     private boolean attending;
+
+    public RSVP() {}
 
     public RSVP(Long eventId, boolean attending) {
         this.eventId = eventId;

@@ -23,9 +23,19 @@ import java.util.Locale;
 
 public class EventCreationActivity extends AppCompatActivity {
 
+    // Activity modes
+    public static final String MODE = "mode";
+    public static final int MODE_CREATE = 0;
+    public static final int MODE_EDIT = 1;
+
+    private int mode = MODE_CREATE;
+    private Event eventToEdit;
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
+
+    // Views
     private Toolbar mToolbar;
 
-    // View Elements
     private EditText eventNameInput;
     private EditText hostNameInput;
     private EditText addressInput;
@@ -39,13 +49,10 @@ public class EventCreationActivity extends AppCompatActivity {
     private TextView startTimeInput;
     private TextView endTimeInput;
 
-    private EditText eventDescriptionInput;
+    private EditText descriptionInput;
     private EditText additionalInfoInput;
 
     private Button mSaveButton;
-    private boolean hasName = false;
-
-    private SimpleDateFormat timeFormat, dateFormat;
 
 
     @Override
@@ -54,62 +61,84 @@ public class EventCreationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_creation);
 
         mToolbar = (Toolbar) findViewById(R.id.event_creation_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("New Event");
-
         eventNameInput = (EditText) findViewById(R.id.event_creation_name_input);
         hostNameInput = (EditText) findViewById(R.id.event_creation_host_input);
+        descriptionInput = (EditText) findViewById(R.id.event_creation_description_input);
+        additionalInfoInput = (EditText) findViewById(R.id.event_creation_additional_info_input);
         addressInput = (EditText) findViewById(R.id.event_creation_address_input);
         startDateInput = (TextView) findViewById(R.id.event_creation_start_date_input);
         endDateInput = (TextView) findViewById(R.id.event_creation_end_date_input);
         startTimeInput = (TextView) findViewById(R.id.event_creation_start_time_input);
         endTimeInput = (TextView) findViewById(R.id.event_creation_end_time_input);
-        eventDescriptionInput = (EditText) findViewById(R.id.event_creation_description_input);
-        additionalInfoInput = (EditText) findViewById(R.id.event_creation_additional_info_input);
         mSaveButton = (Button) findViewById(R.id.event_creation_button_save);
 
-        timeFormat = new SimpleDateFormat ("h:mm a", Locale.getDefault());
-        dateFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
+        // Sets up the action bar
+        setSupportActionBar(mToolbar);
 
-        startDateTime = Calendar.getInstance();
-        endDateTime = Calendar.getInstance();
+        // Check the mode
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null && !extras.isEmpty()) {
+            mode = extras.getInt(MODE, MODE_CREATE);
+            if (mode == MODE_EDIT) {
+                eventToEdit = extras.getParcelable(Event.EVENT);
+                fillFormWithEvent(eventToEdit);
+                mToolbar.setTitle("Edit Event");
+            }
+        }
 
+        if (mode == MODE_CREATE) {
+            // Initializes the start and end date and time with the current date and time
+            startDateTime = Calendar.getInstance();
+            endDateTime = Calendar.getInstance();
+            updateDateTimeText();
+            mToolbar.setTitle("Create Event");
+        }
+
+        // Allows the ImeOptions to still be actionNext while allowing more than one line of text
+        descriptionInput.setHorizontallyScrolling(false);
+        descriptionInput.setMaxLines(Integer.MAX_VALUE);
+
+        additionalInfoInput.setHorizontallyScrolling(false);
+        additionalInfoInput.setMaxLines(Integer.MAX_VALUE);
+
+        // Sets click listeners for date and time
         setOnClickForDate(startDateInput, startDateTime);
         setOnClickForDate(endDateInput, endDateTime);
         setOnClickForTime(startTimeInput, startDateTime);
         setOnClickForTime(endTimeInput, endDateTime);
 
-        startTimeInput.setText(timeFormat.format(startDateTime.getTime()));
-        endTimeInput.setText(timeFormat.format(endDateTime.getTime()));
-
-        startDateInput.setText(dateFormat.format(startDateTime.getTime()));
-        endDateInput.setText(dateFormat.format(endDateTime.getTime()));
-
-        Button saveButton = (Button) findViewById(R.id.event_creation_button_save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        // Click listener for the save button
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-
-                if (hasName) {
-                    Event event = createEvent();
-
-                    //TODO: Need to make Event class implement parcalable
-                    /*
-                    Bundle b = new Bundle();
-                    b.putParcelable("event", event);
-                    intent.putExtras(b);
-                    */
-                    setResult(Activity.RESULT_OK, intent);
-                } else {
-                    setResult(Activity.RESULT_CANCELED, intent);
+                if (mode == MODE_CREATE) {
+                    saveEvent(createEvent());
+                } else if (mode == MODE_EDIT) {
+                    saveEvent(eventToEdit);
                 }
-
-                finish();
             }
         });
+    }
 
-        updateSaveButton("");
+    private void fillFormWithEvent(Event event) {
+        eventNameInput.setText(event.getName());
+        hostNameInput.setText(event.getHost());
+        descriptionInput.setText(event.getDescription());
+        additionalInfoInput.setText(event.getAdditionalInfo());
+
+        startDateTime = event.getStartTime();
+        endDateTime = event.getEndTime();
+        updateDateTimeText();
+
+        // TODO: Get address from longitude and latitude
+    }
+
+    private void updateDateTimeText() {
+        startDateInput.setText(dateFormat.format(startDateTime.getTime()));
+        startTimeInput.setText(timeFormat.format(startDateTime.getTime()));
+        endDateInput.setText(dateFormat.format(endDateTime.getTime()));
+        endTimeInput.setText(timeFormat.format(endDateTime.getTime()));
     }
 
     private void setOnClickForTime(final TextView textView, final Calendar calendar) {
@@ -129,7 +158,7 @@ public class EventCreationActivity extends AppCompatActivity {
                         timeSetListener,
                         calendar.get(Calendar.HOUR_OF_DAY),
                         calendar.get(Calendar.MINUTE), false)
-                    .show();
+                        .show();
             }
         };
         textView.setOnClickListener(onTimeClick);
@@ -152,55 +181,51 @@ public class EventCreationActivity extends AppCompatActivity {
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH))
-                    .show();
+                        .show();
             }
         };
         textView.setOnClickListener(onDateClick);
     }
 
-    private boolean validateEventInformation() {
-        boolean validate = true;
-
-        if (eventNameInput.getText().toString().isEmpty()){
-            // TODO: tell user of issue
-            validate = false;
-        }
-        if (hostNameInput.getText().toString().isEmpty()){
-            // TODO: tell user of issue
-            validate = false;
-        }
-        if (addressInput.getText().toString().isEmpty()){
-            // TODO: tell user of issue
-            validate = false;
-        }
-        validate = true;
-        return validate;
-    }
-
-    private void onCreateEventButtonClick() {
-        if (!validateEventInformation()){
+    private void saveEvent(Event event) {
+        if (!validate()) {
             return;
         }
+
+        Intent intent = new Intent();
+        Bundle extras = new Bundle();
+        extras.putParcelable(Event.EVENT, event);
+        intent.putExtras(extras);
+
+        setResult(Activity.RESULT_OK, intent);
+
+        finish();
     }
 
-    private void updateSaveButton(String s) {
-        hasName = s.length() > 0;
-        if(hasName) {
-            mSaveButton.setText("Save");
-        } else {
-            mSaveButton.setText("Cancel");
+    private boolean validate() {
+        boolean valid = true;
+
+        String name = eventNameInput.getText().toString();
+        if (name.isEmpty()) {
+            eventNameInput.setError("The event needs a name!");
+            valid = false;
         }
+
+        // TODO: Validate other things!
+
+        return valid;
     }
 
     private Event createEvent() {
-        // Get all the information into variables
-        // Store object in database
         String name = eventNameInput.getText().toString();
         String host = hostNameInput.getText().toString();
-        String description = eventDescriptionInput.getText().toString();
+        String description = descriptionInput.getText().toString();
         String additionalInfo = additionalInfoInput.getText().toString();
-        
-        Event event = new Event(name, host, description, startDateTime, endDateTime, additionalInfo, 33.3774338, -111.9759768, 0, 0);
+        // TODO: Get longitude and latitude from address
+
+        Event event = new Event(
+                name, host, description, additionalInfo, startDateTime, endDateTime,
+                33.3774338, -111.9759768, 0, 0);
         return event;
     }
 }

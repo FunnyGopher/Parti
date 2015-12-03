@@ -52,8 +52,8 @@ public class InvitationListFragment extends Fragment {
         Event event = new Event(
                 "The Crazy Rave", "The Rave Boys",
                 "The craziest rave you've ever been to. Strap on your leaderhosen. It's about to get bumpy.",
-                raveStartDate, raveEndDate,
-                "$5.00 at the door. Glowsticks are a must.", 0, 0, 0, 0);
+                "$5.00 at the door. Glowsticks are a must.",
+                raveStartDate, raveEndDate, 0, 0, 0, 0);
         mRecyclerAdapter.add(event);
     }
 }

@@ -1,7 +1,7 @@
 package com.github.funnygopher.parti.model;
 
 /**
- * Created by Kyle on 11/21/2015.
+ * Created by FunnyGopher
  */
 
 import com.github.funnygopher.parti.dao.IEntity;
@@ -13,6 +13,8 @@ public class HostedEvent implements IEntity {
 
     private Long _id;
     private Long eventId;
+
+    public HostedEvent() {}
 
     public HostedEvent(Long eventId) {
         this.eventId = eventId;

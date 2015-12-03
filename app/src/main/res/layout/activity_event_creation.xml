@@ -156,7 +156,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
-            android:inputType="number"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
             android:hint="@string/description" />
 
     </android.support.design.widget.TextInputLayout>
@@ -175,7 +176,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
-            android:inputType="number"
+            android:imeOptions="actionDone"
+            android:inputType="textCapSentences"
             android:hint="@string/additional_info" />
 
     </android.support.design.widget.TextInputLayout>

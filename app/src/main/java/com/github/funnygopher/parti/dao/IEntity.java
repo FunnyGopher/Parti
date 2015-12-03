@@ -1,7 +1,7 @@
 package com.github.funnygopher.parti.dao;
 
 /**
- * Created by Kyle on 11/21/2015.
+ * Created by FunnyGopher
  */
 public interface IEntity {
     Long getId();

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by Kyle on 11/9/2015.
+ * Created by FunnyGopher
  */
 public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRecyclerAdapter.InvitationViewHolder> {
 

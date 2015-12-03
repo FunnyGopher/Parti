@@ -5,7 +5,7 @@ import android.content.Context;
 import com.github.funnygopher.parti.model.RSVP;
 
 /**
- * Created by Kyle on 11/21/2015.
+ * Created by FunnyGopher
  */
 public class RSVPDAO extends AbstractCupboardDAO<RSVP> {
 

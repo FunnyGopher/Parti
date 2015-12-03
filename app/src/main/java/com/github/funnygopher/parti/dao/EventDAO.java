@@ -7,13 +7,23 @@ import com.github.funnygopher.parti.dao.tasks.UpdateEventTask;
 import com.github.funnygopher.parti.model.Event;
 
 /**
- * Created by Kyle on 11/21/2015.
+ * Created by FunnyGopher
  */
 public class EventDAO {
 
-    public void create(Event entity, CreateEventTask.OnCreateEventListener callback) {
-        CreateEventTask task = new CreateEventTask(entity);
+    public void create(Event event) {
+        CreateEventTask task = new CreateEventTask(event);
+        task.execute();
+    }
+
+    public void create(Event event, CreateEventTask.OnCreateEventListener callback) {
+        CreateEventTask task = new CreateEventTask(event);
         task.setOnCreateEventListener(callback);
+        task.execute();
+    }
+
+    public void get(Long id) {
+        GetEventTask task = new GetEventTask(id);
         task.execute();
     }
 
@@ -23,9 +33,19 @@ public class EventDAO {
         task.execute();
     }
 
-    public void update(Event entity, UpdateEventTask.OnUpdateEventListener callback) {
-        UpdateEventTask task = new UpdateEventTask(entity);
+    public void update(Event event) {
+        UpdateEventTask task = new UpdateEventTask(event);
+        task.execute();
+    }
+
+    public void update(Event event, UpdateEventTask.OnUpdateEventListener callback) {
+        UpdateEventTask task = new UpdateEventTask(event);
         task.setOnUpdateEventListener(callback);
+        task.execute();
+    }
+
+    public void delete(Long id) {
+        DeleteEventTask task = new DeleteEventTask(id);
         task.execute();
     }
 

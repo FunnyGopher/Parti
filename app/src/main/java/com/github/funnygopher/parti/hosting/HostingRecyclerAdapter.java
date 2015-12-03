@@ -1,5 +1,7 @@
 package com.github.funnygopher.parti.hosting;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,9 +12,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.funnygopher.parti.R;
+import com.github.funnygopher.parti.dao.CupboardSQLiteHelper;
+import com.github.funnygopher.parti.dao.HostedEventDAO;
+import com.github.funnygopher.parti.dao.LocalEventDAO;
 import com.github.funnygopher.parti.model.Event;
+import com.github.funnygopher.parti.model.HostedEvent;
+import com.github.funnygopher.parti.model.LocalEvent;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -22,10 +30,14 @@ import java.util.Locale;
  */
 public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecyclerAdapter.HostingViewHolder> {
 
-    public List<Event> mHostedEventList;
+    private Context context;
+    private List<Event> mHostedEventList;
 
-    public HostingRecyclerAdapter(List<Event> hostedEvents) {
+    public HostingRecyclerAdapter(Context context, List<Event> hostedEvents) {
+        this.context = context;
         this.mHostedEventList = hostedEvents;
+
+        update();
     }
 
     @Override
@@ -61,13 +73,33 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
                 hostingViewHolder.endDate.setText(dateFormat.format(endDate.getTime()));
             }
         }
-        hostingViewHolder.acceptedTotal.setText(currentEvent.getAttending());
-        hostingViewHolder.declinedTotal.setText(currentEvent.getDeclined());
+        hostingViewHolder.acceptedTotal.setText(Integer.toString(currentEvent.getAttending()));
+        hostingViewHolder.declinedTotal.setText(Integer.toString(currentEvent.getDeclined()));
     }
 
     @Override
     public int getItemCount() {
         return mHostedEventList.size();
+    }
+
+    public void update() {
+        HostedEventDAO hostedDAO = new HostedEventDAO(context);
+        List<HostedEvent> hostedEvents = hostedDAO.list();
+
+        // Adds each hosted event to a new list
+        LocalEventDAO localEventDAO = new LocalEventDAO(context);
+        List<Event> newEvents = new ArrayList<Event>();
+        for(HostedEvent hostedEvent : hostedEvents) {
+            LocalEvent event = localEventDAO.query("remoteId = ?", hostedEvent.getEventId().toString());
+            if(event != null) {
+                newEvents.add(event.toEvent());
+            }
+        }
+
+        // Updates the hosted event list with the new list
+        mHostedEventList.clear();
+        mHostedEventList.addAll(newEvents);
+        this.notifyDataSetChanged();
     }
 
     public static class HostingViewHolder extends RecyclerView.ViewHolder{

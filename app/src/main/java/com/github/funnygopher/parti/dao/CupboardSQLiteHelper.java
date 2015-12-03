@@ -6,18 +6,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.github.funnygopher.parti.model.HostedEvent;
 import com.github.funnygopher.parti.model.Invitation;
+import com.github.funnygopher.parti.model.LocalEvent;
 import com.github.funnygopher.parti.model.RSVP;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
- * Created by Kyle on 11/14/2015.
+ * Created by FunnyGopher
  */
 public class CupboardSQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "parti.db";
     private static final int DATABASE_VERSION = 1;
 
     static {
+        cupboard().register(LocalEvent.class);
         cupboard().register(RSVP.class);
         cupboard().register(Invitation.class);
         cupboard().register(HostedEvent.class);
