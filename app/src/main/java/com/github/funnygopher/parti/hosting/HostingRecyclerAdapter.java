@@ -1,7 +1,10 @@
 package com.github.funnygopher.parti.hosting;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,8 +52,9 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
         return new HostingViewHolder(itemView);
     }
 
+
     @Override
-    public void onBindViewHolder(HostingViewHolder hostingViewHolder, int position) {
+    public void onBindViewHolder(final HostingViewHolder hostingViewHolder, final int position) {
         Event currentEvent = mHostedEventList.get(position);
         Log.d("HostingRecyclerAdapter", "CurrentEventName: " + currentEvent.getName());
         hostingViewHolder.title.setText(currentEvent.getName());
@@ -75,6 +79,14 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
         }
         hostingViewHolder.acceptedTotal.setText(Integer.toString(currentEvent.getAttending()));
         hostingViewHolder.declinedTotal.setText(Integer.toString(currentEvent.getDeclined()));
+
+        hostingViewHolder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Event event = mHostedEventList.get(hostingViewHolder.getAdapterPosition());
+                openForEdit(event);
+            }
+        });
     }
 
     @Override
@@ -102,7 +114,16 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
         this.notifyDataSetChanged();
     }
 
-    public static class HostingViewHolder extends RecyclerView.ViewHolder{
+    private void openForEdit(Event event) {
+        Intent intent = new Intent(context, EventCreationActivity.class);
+        Bundle b = new Bundle();
+        b.putParcelable(Event.EVENT, event);
+        b.putInt(EventCreationActivity.MODE, EventCreationActivity.MODE_EDIT);
+        intent.putExtras(b);
+        ((Activity) context).startActivityForResult(intent, HostingListFragment.REQUEST_CODE_EDIT_EVENT);
+    }
+
+    public static class HostingViewHolder extends RecyclerView.ViewHolder {
         private CardView card;
         private TextView title;
         private TextView startDate;

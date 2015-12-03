@@ -18,6 +18,7 @@ import com.github.funnygopher.parti.dao.HostedEventDAO;
 import com.github.funnygopher.parti.dao.LocalEventDAO;
 import com.github.funnygopher.parti.dao.tasks.CreateEventTask;
 import com.github.funnygopher.parti.dao.tasks.GetEventTask;
+import com.github.funnygopher.parti.dao.tasks.UpdateEventTask;
 import com.github.funnygopher.parti.model.Event;
 import com.github.funnygopher.parti.model.HostedEvent;
 import com.github.funnygopher.parti.model.LocalEvent;
@@ -31,7 +32,7 @@ import java.util.List;
 /*
 Created by Jackkell
  */
-public class HostingListFragment extends Fragment implements CreateEventTask.OnCreateEventListener, GetEventTask.OnGetEventListener {
+public class HostingListFragment extends Fragment implements CreateEventTask.OnCreateEventListener, GetEventTask.OnGetEventListener, UpdateEventTask.OnUpdateEventListener {
 
     public static final int REQUEST_CODE_CREATE_EVENT = 0;
     public static final int REQUEST_CODE_EDIT_EVENT = 1;
@@ -68,16 +69,6 @@ public class HostingListFragment extends Fragment implements CreateEventTask.OnC
         startActivityForResult(intent, REQUEST_CODE_CREATE_EVENT);
     }
 
-    // TODO: This method probably belongs in RecyclerAdapter
-    private void openForEdit(Event event) {
-        Intent intent = new Intent(getContext(), EventCreationActivity.class);
-        Bundle b = new Bundle();
-        b.putParcelable(Event.EVENT, event);
-        b.putInt(EventCreationActivity.MODE, EventCreationActivity.MODE_CREATE);
-        intent.putExtras(b);
-        startActivityForResult(intent, REQUEST_CODE_EDIT_EVENT);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -104,14 +95,8 @@ public class HostingListFragment extends Fragment implements CreateEventTask.OnC
             if(extras != null && !extras.isEmpty()) {
                 Event event = extras.getParcelable(Event.EVENT);
                 saveEventToRemoteDB(event);
-                Toast.makeText(getActivity(), "Successfully created an event", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void saveEventToRemoteDB(Event event) {
-        EventDAO dao = new EventDAO();
-        dao.create(event, this);
     }
 
     private void onEditEventResult(int resultCode, Intent data) {
@@ -124,9 +109,38 @@ public class HostingListFragment extends Fragment implements CreateEventTask.OnC
             Bundle extras = data.getExtras();
             if(extras != null && !extras.isEmpty()) {
                 Event event = extras.getParcelable(Event.EVENT);
-                // TODO: Update the event
+                updateEventInRemoteDB(event);
             }
         }
+    }
+
+    private void saveEventToRemoteDB(Event event) {
+        EventDAO dao = new EventDAO();
+        dao.create(event, this);
+    }
+
+    private void saveEventToLocalDB(Event event) {
+        HostedEvent hostedEvent = new HostedEvent(event.getId());
+        HostedEventDAO hostedDAO = new HostedEventDAO(getActivity());
+        hostedDAO.create(hostedEvent);
+
+        LocalEventDAO localEventDAO = new LocalEventDAO(getActivity());
+        LocalEvent localEvent = new LocalEvent(event);
+        localEventDAO.create(localEvent);
+        mRecyclerAdapter.update();
+    }
+
+    private void updateEventInRemoteDB(Event event) {
+        EventDAO dao = new EventDAO();
+        dao.update(event, this);
+    }
+
+    private void updateEventInLocalDB(Event event) {
+        LocalEventDAO dao = new LocalEventDAO(getActivity());
+        LocalEventDAO localEventDAO = new LocalEventDAO(getActivity());
+        LocalEvent localEvent = new LocalEvent(event);
+        localEventDAO.update(localEvent);
+        mRecyclerAdapter.update();
     }
 
     @Override
@@ -135,9 +149,8 @@ public class HostingListFragment extends Fragment implements CreateEventTask.OnC
             JSONObject json = new JSONObject(response);
             Long id = json.getLong(Event.REMOTE_ID_KEY);
 
-            HostedEvent hostedEvent = new HostedEvent(id);
-            HostedEventDAO hostedDAO = new HostedEventDAO(getActivity());
-            hostedDAO.create(hostedEvent);
+            // Notify the user the event has been created
+            Toast.makeText(getActivity(), "Successfully created an event", Toast.LENGTH_SHORT).show();
 
             EventDAO eventDAO = new EventDAO();
             eventDAO.get(id, this);
@@ -154,15 +167,14 @@ public class HostingListFragment extends Fragment implements CreateEventTask.OnC
             JSONObject result = json.getJSONArray("result").getJSONObject(0);
             Event event = new Event(result);
 
-            // Save event to local database
-            LocalEventDAO localEventDAO = new LocalEventDAO(getActivity());
-            LocalEvent localEvent = new LocalEvent(event);
-            localEventDAO.create(localEvent);
-            List<LocalEvent> localEvents = localEventDAO.list();
-
-            mRecyclerAdapter.update();
+            saveEventToLocalDB(event);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onUpdateEvent(String response) {
+        Toast.makeText(getActivity(), "Successfully updated event", Toast.LENGTH_SHORT).show();
     }
 }
