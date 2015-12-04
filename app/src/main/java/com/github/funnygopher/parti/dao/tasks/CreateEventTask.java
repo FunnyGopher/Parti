@@ -2,8 +2,8 @@ package com.github.funnygopher.parti.dao.tasks;
 
 import android.os.AsyncTask;
 
+import com.github.funnygopher.gopherhttp.HttpRequest;
 import com.github.funnygopher.parti.model.Event;
-import com.github.funnygopher.parti.util.HttpRequest;
 
 import java.io.IOException;
 
