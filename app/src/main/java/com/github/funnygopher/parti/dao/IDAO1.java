@@ -3,7 +3,7 @@ package com.github.funnygopher.parti.dao;
 /**
  * Created by FunnyGopher
  */
-public interface IDAO<E extends IEntity> {
+public interface IDAO1<E extends IEntity> {
     E create(E entity);
     E get(Long id);
     E update(E entity);

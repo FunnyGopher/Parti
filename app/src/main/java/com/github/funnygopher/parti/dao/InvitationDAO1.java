@@ -7,9 +7,9 @@ import com.github.funnygopher.parti.model.Invitation;
 /**
  * Created by FunnyGopher
  */
-public class InvitationDAO extends AbstractCupboardDAO<Invitation> {
+public class InvitationDAO1 extends AbstractCupboardDAO1<Invitation> {
 
-    public InvitationDAO(Context context) {
+    public InvitationDAO1(Context context) {
         super(Invitation.class, context);
     }
 

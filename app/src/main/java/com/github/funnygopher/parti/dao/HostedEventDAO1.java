@@ -4,14 +4,12 @@ import android.content.Context;
 
 import com.github.funnygopher.parti.model.HostedEvent;
 
-import java.util.List;
-
 /**
  * Created by FunnyGopher
  */
-public class HostedEventDAO extends AbstractCupboardDAO<HostedEvent> {
+public class HostedEventDAO1 extends AbstractCupboardDAO1<HostedEvent> {
 
-    public HostedEventDAO(Context context) {
+    public HostedEventDAO1(Context context) {
         super(HostedEvent.class, context);
     }
 

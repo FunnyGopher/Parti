@@ -18,12 +18,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class RSVPRecyclerAdapter extends RecyclerView.Adapter<RSVPRecyclerAdapter.EventViewHolder> {
+public class RSVPRecyclerAdapter1 extends RecyclerView.Adapter<RSVPRecyclerAdapter1.EventViewHolder> {
 
     private List<Event> mRsvpList;
     private Context mContext;
 
-    public RSVPRecyclerAdapter(Context context, List<Event> list) {
+    public RSVPRecyclerAdapter1(Context context, List<Event> list) {
         this.mRsvpList = list;
         this.mContext = context;
     }

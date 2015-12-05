@@ -3,7 +3,6 @@ package com.github.funnygopher.parti.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
@@ -11,12 +10,12 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 /**
  * Created by FunnyGopher
  */
-public abstract class AbstractCupboardDAO<E extends IEntity> implements IDAO<E> {
+public abstract class AbstractCupboardDAO1<E extends IEntity> implements IDAO1<E> {
 
     protected Class<E> entityClass;
     protected CupboardSQLiteHelper mHelper;
 
-    public AbstractCupboardDAO(Class<E> entityClass, Context context) {
+    public AbstractCupboardDAO1(Class<E> entityClass, Context context) {
         this.entityClass = entityClass;
         mHelper = new CupboardSQLiteHelper(context);
     }

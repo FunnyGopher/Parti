@@ -2,29 +2,29 @@ package com.github.funnygopher.parti.dao;
 
 import android.content.Context;
 
-import com.github.funnygopher.parti.model.RSVP;
+import com.github.funnygopher.parti.model.RSVP1;
 
 /**
  * Created by FunnyGopher
  */
-public class RSVPDAO extends AbstractCupboardDAO<RSVP> {
+public class RSVPDAO1 extends AbstractCupboardDAO1<RSVP1> {
 
-    public RSVPDAO(Context context) {
-        super(RSVP.class, context);
+    public RSVPDAO1(Context context) {
+        super(RSVP1.class, context);
     }
 
     @Override
-    public RSVP create(RSVP entity) {
+    public RSVP1 create(RSVP1 entity) {
         return super.create(entity);
     }
 
     @Override
-    public RSVP get(Long id) {
+    public RSVP1 get(Long id) {
         return super.get(id);
     }
 
     @Override
-    public RSVP update(RSVP entity) {
+    public RSVP1 update(RSVP1 entity) {
         return super.update(entity);
     }
 

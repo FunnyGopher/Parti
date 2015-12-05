@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.github.funnygopher.parti.model.LocalEvent;
 
-public class LocalEventDAO extends AbstractCupboardDAO<LocalEvent> {
+public class LocalEventDAO1 extends AbstractCupboardDAO1<LocalEvent> {
 
-    public LocalEventDAO(Context context) {
+    public LocalEventDAO1(Context context) {
         super(LocalEvent.class, context);
     }
 }
