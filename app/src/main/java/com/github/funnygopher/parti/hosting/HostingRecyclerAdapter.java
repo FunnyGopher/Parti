@@ -93,14 +93,14 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     }
 
     public void update() {
-        HostedEventDao hostedDAO = new HostedEventDao(context);
-        List<HostedEvent> hostedEvents = hostedDAO.list();
+        HostedEventDao hostedDao = new HostedEventDao(context);
+        List<HostedEvent> hostedEvents = hostedDao.list();
 
         // Adds each hosted event to a new list
-        LocalEventDao localEventDAO = new LocalEventDao(context);
+        LocalEventDao localEventDao = new LocalEventDao(context);
         List<Event> newEvents = new ArrayList<Event>();
         for(HostedEvent hostedEvent : hostedEvents) {
-            LocalEvent event = localEventDAO.query("remoteId = ?", hostedEvent.getEventId().toString());
+            LocalEvent event = localEventDao.query("remoteId = ?", hostedEvent.getEventId().toString());
             if(event != null) {
                 newEvents.add(event.toEvent());
             }

@@ -42,7 +42,7 @@ public class Event implements IEntity, Parcelable {
     };
 
     private Long remoteId = -1L; // Remote id on remote database
-    private Long _id = -1L; // Local id for Cupboard API
+    private Long _id = -1L; // Local id for Cupboard API TODO: Why is this here??
     private String name;
     private String host;
     private String description;

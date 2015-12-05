@@ -13,18 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.github.funnygopher.parti.R;
-import com.github.funnygopher.parti.dao.EventDao;
-import com.github.funnygopher.parti.dao.LocalEventDao;
-import com.github.funnygopher.parti.dao.tasks.UpdateEventTask;
 import com.github.funnygopher.parti.model.Event;
-import com.github.funnygopher.parti.model.LocalEvent;
 
 import java.util.ArrayList;
 
 /*
 Created by Jackkell
  */
-public class HostingListFragment extends Fragment implements UpdateEventTask.OnUpdateEventListener {
+public class HostingListFragment extends Fragment {
 
     public static final int REQUEST_CODE_CREATE_EVENT = 0;
     public static final int REQUEST_CODE_EDIT_EVENT = 1;
@@ -41,7 +37,8 @@ public class HostingListFragment extends Fragment implements UpdateEventTask.OnU
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.hosting_list_create_event);
+        FloatingActionButton fab = (FloatingActionButton)
+                view.findViewById(R.id.hosting_list_create_event);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +62,7 @@ public class HostingListFragment extends Fragment implements UpdateEventTask.OnU
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch(requestCode) {
+        switch (requestCode) {
             case REQUEST_CODE_CREATE_EVENT:
                 onCreateEventResult(resultCode, data);
                 break;
@@ -77,48 +74,32 @@ public class HostingListFragment extends Fragment implements UpdateEventTask.OnU
     }
 
     private void onCreateEventResult(int resultCode, Intent data) {
-        switch(resultCode) {
-            case Activity.RESULT_CANCELED:
-                Toast.makeText(getActivity(), "Event creation was cancelled", Toast.LENGTH_SHORT).show();
-                break;
-
+        switch (resultCode) {
             case Activity.RESULT_OK:
                 mRecyclerAdapter.update();
-                Toast.makeText(getActivity(), "Event creation was successful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Event creation was successful!", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+
+            case Activity.RESULT_CANCELED:
+                Toast.makeText(getActivity(), "Event creation was cancelled", Toast.LENGTH_SHORT)
+                        .show();
                 break;
         }
     }
 
     private void onEditEventResult(int resultCode, Intent data) {
-        if(resultCode == Activity.RESULT_CANCELED) {
-            Toast.makeText(getActivity(), "Event edit was cancelled", Toast.LENGTH_SHORT).show();
-            return;
+        switch (resultCode) {
+            case Activity.RESULT_OK:
+                mRecyclerAdapter.update();
+                Toast.makeText(getActivity(), "Event update was successful!", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+
+            case Activity.RESULT_CANCELED:
+                Toast.makeText(getActivity(), "Event update was cancelled", Toast.LENGTH_SHORT)
+                        .show();
+                break;
         }
-
-        if(resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            if(extras != null && !extras.isEmpty()) {
-                Event event = extras.getParcelable(Event.EVENT);
-                updateEventInRemoteDB(event);
-            }
-        }
-    }
-
-    private void updateEventInRemoteDB(Event event) {
-        EventDao dao = new EventDao();
-        dao.update(event, this);
-    }
-
-    private void updateEventInLocalDB(Event event) {
-        LocalEventDao dao = new LocalEventDao(getActivity());
-        LocalEventDao localEventDAO = new LocalEventDao(getActivity());
-        LocalEvent localEvent = new LocalEvent(event);
-        localEventDAO.update(localEvent);
-        mRecyclerAdapter.update();
-    }
-
-    @Override
-    public void onUpdateEvent(String response) {
-        Toast.makeText(getActivity(), "Successfully updated event", Toast.LENGTH_SHORT).show();
     }
 }
