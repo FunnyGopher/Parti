@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.github.funnygopher.parti.model.HostedEvent;
 import com.github.funnygopher.parti.model.Invitation;
 import com.github.funnygopher.parti.model.LocalEvent;
-import com.github.funnygopher.parti.model.RSVP1;
+import com.github.funnygopher.parti.model.Rsvp;
 
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
@@ -20,7 +20,7 @@ public class CupboardSQLiteHelper extends SQLiteOpenHelper {
 
     static {
         cupboard().register(LocalEvent.class);
-        cupboard().register(RSVP1.class);
+        cupboard().register(Rsvp.class);
         cupboard().register(Invitation.class);
         cupboard().register(HostedEvent.class);
     }

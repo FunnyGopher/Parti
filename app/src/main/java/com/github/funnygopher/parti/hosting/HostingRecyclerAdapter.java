@@ -3,7 +3,6 @@ package com.github.funnygopher.parti.hosting;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.funnygopher.parti.R;
-import com.github.funnygopher.parti.dao.CupboardSQLiteHelper;
-import com.github.funnygopher.parti.dao.HostedEventDAO;
-import com.github.funnygopher.parti.dao.LocalEventDAO;
+import com.github.funnygopher.parti.dao.HostedEventDao;
+import com.github.funnygopher.parti.dao.LocalEventDao;
 import com.github.funnygopher.parti.model.Event;
 import com.github.funnygopher.parti.model.HostedEvent;
 import com.github.funnygopher.parti.model.LocalEvent;
@@ -95,11 +93,11 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     }
 
     public void update() {
-        HostedEventDAO hostedDAO = new HostedEventDAO(context);
+        HostedEventDao hostedDAO = new HostedEventDao(context);
         List<HostedEvent> hostedEvents = hostedDAO.list();
 
         // Adds each hosted event to a new list
-        LocalEventDAO localEventDAO = new LocalEventDAO(context);
+        LocalEventDao localEventDAO = new LocalEventDao(context);
         List<Event> newEvents = new ArrayList<Event>();
         for(HostedEvent hostedEvent : hostedEvents) {
             LocalEvent event = localEventDAO.query("remoteId = ?", hostedEvent.getEventId().toString());

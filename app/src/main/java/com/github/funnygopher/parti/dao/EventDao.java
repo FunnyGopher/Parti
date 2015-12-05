@@ -9,7 +9,7 @@ import com.github.funnygopher.parti.model.Event;
 /**
  * Created by FunnyGopher
  */
-public class EventDAO1 {
+public class EventDao {
 
     public void create(Event event) {
         CreateEventTask task = new CreateEventTask(event);

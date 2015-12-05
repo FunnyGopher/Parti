@@ -2,55 +2,69 @@ package com.github.funnygopher.parti.hosting;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.github.funnygopher.parti.R;
+import com.github.funnygopher.parti.dao.EventDao;
+import com.github.funnygopher.parti.dao.HostedEventDao;
+import com.github.funnygopher.parti.dao.LocalEventDao;
+import com.github.funnygopher.parti.dao.tasks.CreateEventTask;
+import com.github.funnygopher.parti.dao.tasks.GetEventTask;
 import com.github.funnygopher.parti.model.Event;
+import com.github.funnygopher.parti.model.HostedEvent;
+import com.github.funnygopher.parti.model.LocalEvent;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class EventCreationActivity extends AppCompatActivity {
+public class EventCreationActivity extends AppCompatActivity
+        implements CreateEventTask.OnCreateEventListener, GetEventTask.OnGetEventListener {
 
     // Activity modes
     public static final String MODE = "mode";
     public static final int MODE_CREATE = 0;
     public static final int MODE_EDIT = 1;
 
-    private int mode = MODE_CREATE;
-    private Event eventToEdit;
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
+    private int mMode = MODE_CREATE;
+    private Event mEventToEdit;
+
+    private Calendar mStartDateTime;
+    private Calendar mEndDateTime;
+    private SimpleDateFormat mTimeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+    private SimpleDateFormat mDateFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
+
+    private ProgressDialog mProgressDialog;
 
     // Views
     private Toolbar mToolbar;
 
-    private EditText eventNameInput;
-    private EditText hostNameInput;
-    private EditText addressInput;
+    private EditText mNameText;
+    private EditText mHostText;
+    private EditText mDescriptionText;
+    private EditText mAdditionalInfoText;
+    private EditText mAddressView;
 
-    private Calendar startDateTime;
-    private Calendar endDateTime;
-
-    private TextView startDateInput;
-    private TextView endDateInput;
-
-    private TextView startTimeInput;
-    private TextView endTimeInput;
-
-    private EditText descriptionInput;
-    private EditText additionalInfoInput;
+    private TextView mStartDateView;
+    private TextView mEndDateView;
+    private TextView mStartTimeView;
+    private TextView mEndTimeView;
 
     private Button mSaveButton;
 
@@ -60,85 +74,87 @@ public class EventCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_creation);
 
+        mProgressDialog = new ProgressDialog(this);
+
         mToolbar = (Toolbar) findViewById(R.id.event_creation_toolbar);
-        eventNameInput = (EditText) findViewById(R.id.event_creation_name_input);
-        hostNameInput = (EditText) findViewById(R.id.event_creation_host_input);
-        descriptionInput = (EditText) findViewById(R.id.event_creation_description_input);
-        additionalInfoInput = (EditText) findViewById(R.id.event_creation_additional_info_input);
-        addressInput = (EditText) findViewById(R.id.event_creation_address_input);
-        startDateInput = (TextView) findViewById(R.id.event_creation_start_date_input);
-        endDateInput = (TextView) findViewById(R.id.event_creation_end_date_input);
-        startTimeInput = (TextView) findViewById(R.id.event_creation_start_time_input);
-        endTimeInput = (TextView) findViewById(R.id.event_creation_end_time_input);
+        mNameText = (EditText) findViewById(R.id.event_creation_name_input);
+        mHostText = (EditText) findViewById(R.id.event_creation_host_input);
+        mDescriptionText = (EditText) findViewById(R.id.event_creation_description_input);
+        mAdditionalInfoText = (EditText) findViewById(R.id.event_creation_additional_info_input);
+        mAddressView = (EditText) findViewById(R.id.event_creation_address_input);
+        mStartDateView = (TextView) findViewById(R.id.event_creation_start_date_input);
+        mEndDateView = (TextView) findViewById(R.id.event_creation_end_date_input);
+        mStartTimeView = (TextView) findViewById(R.id.event_creation_start_time_input);
+        mEndTimeView = (TextView) findViewById(R.id.event_creation_end_time_input);
         mSaveButton = (Button) findViewById(R.id.event_creation_button_save);
 
         // Sets up the action bar
         setSupportActionBar(mToolbar);
 
-        // Check the mode
+        // Check the mMode
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null && !extras.isEmpty()) {
-            mode = extras.getInt(MODE, MODE_CREATE);
-            if (mode == MODE_EDIT) {
-                eventToEdit = extras.getParcelable(Event.EVENT);
-                fillFormWithEvent(eventToEdit);
+            mMode = extras.getInt(MODE, MODE_CREATE);
+            if (mMode == MODE_EDIT) {
+                mEventToEdit = extras.getParcelable(Event.EVENT);
+                fillFormWithEvent(mEventToEdit);
                 mToolbar.setTitle("Edit Event");
             }
         }
 
-        if (mode == MODE_CREATE) {
+        if (mMode == MODE_CREATE) {
             // Initializes the start and end date and time with the current date and time
-            startDateTime = Calendar.getInstance();
-            endDateTime = Calendar.getInstance();
+            mStartDateTime = Calendar.getInstance();
+            mEndDateTime = Calendar.getInstance();
             updateDateTimeText();
             mToolbar.setTitle("Create Event");
         }
 
         // Allows the ImeOptions to still be actionNext while allowing more than one line of text
-        descriptionInput.setHorizontallyScrolling(false);
-        descriptionInput.setMaxLines(Integer.MAX_VALUE);
+        mDescriptionText.setHorizontallyScrolling(false);
+        mDescriptionText.setMaxLines(Integer.MAX_VALUE);
 
-        additionalInfoInput.setHorizontallyScrolling(false);
-        additionalInfoInput.setMaxLines(Integer.MAX_VALUE);
+        mAdditionalInfoText.setHorizontallyScrolling(false);
+        mAdditionalInfoText.setMaxLines(Integer.MAX_VALUE);
 
         // Sets click listeners for date and time
-        setOnClickForDate(startDateInput, startDateTime);
-        setOnClickForDate(endDateInput, endDateTime);
-        setOnClickForTime(startTimeInput, startDateTime);
-        setOnClickForTime(endTimeInput, endDateTime);
+        setOnClickForDate(mStartDateView, mStartDateTime);
+        setOnClickForDate(mEndDateView, mEndDateTime);
+        setOnClickForTime(mStartTimeView, mStartDateTime);
+        setOnClickForTime(mEndTimeView, mEndDateTime);
 
         // Click listener for the save button
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mode == MODE_CREATE) {
-                    saveEvent(createEvent());
-                } else if (mode == MODE_EDIT) {
-                    saveEvent(eventToEdit);
+                if (mMode == MODE_CREATE) {
+                    saveEvent(getEventFromForm());
+                } else if (mMode == MODE_EDIT) {
+                    saveEvent(mEventToEdit);
                 }
             }
         });
     }
 
     private void fillFormWithEvent(Event event) {
-        eventNameInput.setText(event.getName());
-        hostNameInput.setText(event.getHost());
-        descriptionInput.setText(event.getDescription());
-        additionalInfoInput.setText(event.getAdditionalInfo());
+        mNameText.setText(event.getName());
+        mHostText.setText(event.getHost());
+        mDescriptionText.setText(event.getDescription());
+        mAdditionalInfoText.setText(event.getAdditionalInfo());
 
-        startDateTime = event.getStartTime();
-        endDateTime = event.getEndTime();
+        mStartDateTime = event.getStartTime();
+        mEndDateTime = event.getEndTime();
         updateDateTimeText();
 
         // TODO: Get address from longitude and latitude
     }
 
     private void updateDateTimeText() {
-        startDateInput.setText(dateFormat.format(startDateTime.getTime()));
-        startTimeInput.setText(timeFormat.format(startDateTime.getTime()));
-        endDateInput.setText(dateFormat.format(endDateTime.getTime()));
-        endTimeInput.setText(timeFormat.format(endDateTime.getTime()));
+        mStartDateView.setText(mDateFormat.format(mStartDateTime.getTime()));
+        mStartTimeView.setText(mTimeFormat.format(mStartDateTime.getTime()));
+        mEndDateView.setText(mDateFormat.format(mEndDateTime.getTime()));
+        mEndTimeView.setText(mTimeFormat.format(mEndDateTime.getTime()));
     }
 
     private void setOnClickForTime(final TextView textView, final Calendar calendar) {
@@ -147,7 +163,7 @@ public class EventCreationActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                textView.setText(timeFormat.format(calendar.getTime()));
+                textView.setText(mTimeFormat.format(calendar.getTime()));
             }
         };
 
@@ -169,7 +185,7 @@ public class EventCreationActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 calendar.set(year, monthOfYear, dayOfMonth);
-                textView.setText(dateFormat.format(calendar.getTime()));
+                textView.setText(mDateFormat.format(calendar.getTime()));
             }
         };
 
@@ -192,22 +208,21 @@ public class EventCreationActivity extends AppCompatActivity {
             return;
         }
 
-        Intent intent = new Intent();
-        Bundle extras = new Bundle();
-        extras.putParcelable(Event.EVENT, event);
-        intent.putExtras(extras);
+        // Shows a progress dialog
+        mProgressDialog.setMessage("Creating event...");
+        mProgressDialog.show();
 
-        setResult(Activity.RESULT_OK, intent);
-
-        finish();
+        // Creates the event in the remote DB
+        EventDao dao = new EventDao();
+        dao.create(event, this);
     }
 
     private boolean validate() {
         boolean valid = true;
 
-        String name = eventNameInput.getText().toString();
+        String name = mNameText.getText().toString();
         if (name.isEmpty()) {
-            eventNameInput.setError("The event needs a name!");
+            mNameText.setError("The event needs a name!");
             valid = false;
         }
 
@@ -216,16 +231,87 @@ public class EventCreationActivity extends AppCompatActivity {
         return valid;
     }
 
-    private Event createEvent() {
-        String name = eventNameInput.getText().toString();
-        String host = hostNameInput.getText().toString();
-        String description = descriptionInput.getText().toString();
-        String additionalInfo = additionalInfoInput.getText().toString();
+    private Event getEventFromForm() {
+        String name = mNameText.getText().toString();
+        String host = mHostText.getText().toString();
+        String description = mDescriptionText.getText().toString();
+        String additionalInfo = mAdditionalInfoText.getText().toString();
         // TODO: Get longitude and latitude from address
 
         Event event = new Event(
-                name, host, description, additionalInfo, startDateTime, endDateTime,
+                name, host, description, additionalInfo, mStartDateTime, mEndDateTime,
                 33.3774338, -111.9759768, 0, 0);
         return event;
+    }
+
+    private void saveLocalEvent(Event event) {
+        HostedEvent hostedEvent = new HostedEvent(event.getId());
+        HostedEventDao hostedDAO = new HostedEventDao(this);
+        hostedDAO.create(hostedEvent);
+
+        LocalEventDao localEventDAO = new LocalEventDao(this);
+        LocalEvent localEvent = new LocalEvent(event);
+        localEventDAO.create(localEvent);
+    }
+
+    private void returnResult() {
+        if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+
+        Intent intent = new Intent();
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void onCreateEvent(String response) {
+        try {
+            JSONObject json = new JSONObject(response);
+
+            // Check if something bad happened
+            if (json.getInt("success") == 0) {
+                if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+
+                Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
+                Log.e("OnCreateEvent", json.getString("error"));
+                return;
+            }
+
+            // Get the event we just saved in the DB
+            Long id = json.getLong(Event.REMOTE_ID_KEY);
+            EventDao eventDao = new EventDao();
+            eventDao.get(id, this);
+
+        } catch (JSONException e) {
+            if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+            Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onGetEvent(String response) {
+        try {
+            JSONObject json = new JSONObject(response);
+
+            // Check if something bad happened
+            if (json.getInt("success") == 0) {
+                if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+
+                Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
+                Log.e("OnGetEvent", json.getString("error"));
+                return;
+            }
+
+            // Now with the event, save it in the local DB
+            JSONObject result = json.getJSONArray("result").getJSONObject(0);
+            Event event = new Event(result);
+            saveLocalEvent(event);
+
+            returnResult();
+        } catch (JSONException e) {
+            if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+            Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 }

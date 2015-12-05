@@ -10,12 +10,12 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 /**
  * Created by FunnyGopher
  */
-public abstract class AbstractCupboardDAO1<E extends IEntity> implements IDAO1<E> {
+public abstract class AbstractCupboardDao<E extends IEntity> implements IDao<E> {
 
     protected Class<E> entityClass;
     protected CupboardSQLiteHelper mHelper;
 
-    public AbstractCupboardDAO1(Class<E> entityClass, Context context) {
+    public AbstractCupboardDao(Class<E> entityClass, Context context) {
         this.entityClass = entityClass;
         mHelper = new CupboardSQLiteHelper(context);
     }

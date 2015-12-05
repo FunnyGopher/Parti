@@ -7,9 +7,9 @@ import com.github.funnygopher.parti.model.HostedEvent;
 /**
  * Created by FunnyGopher
  */
-public class HostedEventDAO1 extends AbstractCupboardDAO1<HostedEvent> {
+public class HostedEventDao extends AbstractCupboardDao<HostedEvent> {
 
-    public HostedEventDAO1(Context context) {
+    public HostedEventDao(Context context) {
         super(HostedEvent.class, context);
     }
 

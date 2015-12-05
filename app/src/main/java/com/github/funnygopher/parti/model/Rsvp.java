@@ -9,15 +9,15 @@ import com.github.funnygopher.parti.dao.IEntity;
 /***
  * This class acts as a schema for a bridge table with the Events table.
  */
-public class RSVP1 implements IEntity {
+public class Rsvp implements IEntity {
 
     private Long _id;
     private Long eventId;
     private boolean attending;
 
-    public RSVP1() {}
+    public Rsvp() {}
 
-    public RSVP1(Long eventId, boolean attending) {
+    public Rsvp(Long eventId, boolean attending) {
         this.eventId = eventId;
         this.attending = attending;
     }

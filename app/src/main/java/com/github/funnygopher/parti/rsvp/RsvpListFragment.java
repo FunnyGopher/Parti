@@ -15,9 +15,9 @@ import com.github.funnygopher.parti.model.Event;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RSVPListFragment1 extends Fragment {
+public class RsvpListFragment extends Fragment {
 
-    private RSVPRecyclerAdapter1 mRecyclerAdapter;
+    private RsvpRecyclerAdapter mRecyclerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class RSVPListFragment1 extends Fragment {
             }
         });
 
-        mRecyclerAdapter = new RSVPRecyclerAdapter1(getContext(), new ArrayList<Event>());
+        mRecyclerAdapter = new RsvpRecyclerAdapter(getContext(), new ArrayList<Event>());
         recyclerView.setAdapter(mRecyclerAdapter);
 
         return view;
