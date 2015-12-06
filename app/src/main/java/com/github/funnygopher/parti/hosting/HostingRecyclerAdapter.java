@@ -31,11 +31,11 @@ import java.util.Locale;
  */
 public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecyclerAdapter.HostingViewHolder> {
 
-    private Context context;
+    private Context mContext;
     private List<Event> mHostedEventList;
 
     public HostingRecyclerAdapter(Context context, List<Event> hostedEvents) {
-        this.context = context;
+        this.mContext = context;
         this.mHostedEventList = hostedEvents;
 
         update();
@@ -46,7 +46,7 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
         View itemView = LayoutInflater.
                 from(parent.getContext()).
                 inflate(R.layout.hosting_cardview, parent, false);
-
+        mContext = parent.getContext();
         return new HostingViewHolder(itemView);
     }
 
@@ -93,11 +93,11 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     }
 
     public void update() {
-        HostedEventDao hostedDao = new HostedEventDao(context);
+        HostedEventDao hostedDao = new HostedEventDao(mContext);
         List<HostedEvent> hostedEvents = hostedDao.list();
 
         // Adds each hosted event to a new list
-        LocalEventDao localEventDao = new LocalEventDao(context);
+        LocalEventDao localEventDao = new LocalEventDao(mContext);
         List<Event> newEvents = new ArrayList<Event>();
         for(HostedEvent hostedEvent : hostedEvents) {
             LocalEvent event = localEventDao.query("remoteId = ?", hostedEvent.getEventId().toString());
@@ -113,13 +113,16 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     }
 
     private void openForEdit(Event event) {
-        Intent intent = new Intent(context, EventCreationActivity.class);
+        Intent intent = new Intent(mContext, EventCreationActivity.class);
         Bundle b = new Bundle();
         b.putParcelable(Event.EVENT, event);
         b.putInt(EventCreationActivity.MODE, EventCreationActivity.MODE_EDIT);
         intent.putExtras(b);
-        ((Activity) context).startActivityForResult(intent, HostingListFragment.REQUEST_CODE_EDIT_EVENT);
+        ((Activity) mContext).startActivityForResult(intent, HostingListFragment
+                .REQUEST_CODE_EDIT_EVENT);
     }
+
+
 
     public static class HostingViewHolder extends RecyclerView.ViewHolder {
         private CardView card;

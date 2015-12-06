@@ -16,7 +16,6 @@ public class Event implements IEntity, Parcelable {
     public static final String EVENT = "event";
 
     public static final String REMOTE_ID_KEY = "id";
-    public static final String LOCAL_ID_KEY = "local_id";
     private static final String NAME_KEY = "name";
     private static final String HOST_KEY = "host";
     private static final String DESC_KEY = "description";
@@ -41,8 +40,7 @@ public class Event implements IEntity, Parcelable {
         }
     };
 
-    private Long remoteId = -1L; // Remote id on remote database
-    private Long _id = -1L; // Local id for Cupboard API TODO: Why is this here??
+    private Long id; // Remote id on remote database
     private String name;
     private String host;
     private String description;
@@ -72,9 +70,22 @@ public class Event implements IEntity, Parcelable {
         this.declined = declined;
     }
 
+    public void copy(Event event) {
+        name = event.getName();
+        host = event.getHost();
+        description = event.description;
+        additionalInfo = event.additionalInfo;
+        startTime = event.startTime;
+        endTime = event.endTime;
+        longitude = event.longitude;
+        latitude = event.latitude;
+        attending = event.attending;
+        declined = event.declined;
+    }
+
     // Create and Event from a json file
     public Event(JSONObject json) throws JSONException {
-        remoteId = json.getLong(REMOTE_ID_KEY);
+        id = json.getLong(REMOTE_ID_KEY);
         name = json.getString(NAME_KEY);
         host = json.getString(HOST_KEY);
         description = json.getString(DESC_KEY);
@@ -89,8 +100,7 @@ public class Event implements IEntity, Parcelable {
 
     // Create an event from a parcel
     public Event(Parcel parcel) {
-        remoteId = parcel.readLong();
-        _id = parcel.readLong();
+        id = parcel.readLong();
         name = parcel.readString();
         host = parcel.readString();
         description = parcel.readString();
@@ -105,20 +115,12 @@ public class Event implements IEntity, Parcelable {
 
     @Override
     public Long getId() {
-        return remoteId;
+        return id;
     }
 
     @Override
     public void setId(Long id) {
-        remoteId = id;
-    }
-
-    public Long getLocalId() {
-        return _id;
-    }
-
-    public void setLocalId(Long id) {
-        _id = remoteId;
+        this.id = id;
     }
 
     public String getName() {
@@ -204,8 +206,7 @@ public class Event implements IEntity, Parcelable {
     public String toJSON() {
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put(REMOTE_ID_KEY, remoteId);
-            jsonObject.put(LOCAL_ID_KEY, _id);
+            jsonObject.put(REMOTE_ID_KEY, id);
             jsonObject.put(NAME_KEY, name);
             jsonObject.put(HOST_KEY, host);
             jsonObject.put(DESC_KEY, description);
@@ -233,8 +234,7 @@ public class Event implements IEntity, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(remoteId);
-        dest.writeLong(_id);
+        dest.writeLong(id);
         dest.writeString(name);
         dest.writeString(host);
         dest.writeString(description);

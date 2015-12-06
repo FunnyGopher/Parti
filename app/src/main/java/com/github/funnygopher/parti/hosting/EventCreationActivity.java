@@ -22,7 +22,6 @@ import com.github.funnygopher.parti.dao.EventDao;
 import com.github.funnygopher.parti.dao.HostedEventDao;
 import com.github.funnygopher.parti.dao.LocalEventDao;
 import com.github.funnygopher.parti.dao.tasks.CreateEventTask;
-import com.github.funnygopher.parti.dao.tasks.GetEventTask;
 import com.github.funnygopher.parti.dao.tasks.UpdateEventTask;
 import com.github.funnygopher.parti.model.Event;
 import com.github.funnygopher.parti.model.HostedEvent;
@@ -36,8 +35,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class EventCreationActivity extends AppCompatActivity implements
-        CreateEventTask.OnCreateEventListener, GetEventTask.OnGetEventListener,
-        UpdateEventTask.OnUpdateEventListener {
+        CreateEventTask.OnCreateEventListener, UpdateEventTask.OnUpdateEventListener {
 
     // Activity modes
     public static final String MODE = "mode";
@@ -45,10 +43,10 @@ public class EventCreationActivity extends AppCompatActivity implements
     public static final int MODE_EDIT = 1;
 
     private int mMode = MODE_CREATE;
-    private Event mEventToEdit = new Event();
+    private Event mEventToSave = new Event();
 
-    private Calendar mStartDateTime;
-    private Calendar mEndDateTime;
+    private Calendar mStartDateTime = Calendar.getInstance();
+    private Calendar mEndDateTime = Calendar.getInstance();
     private SimpleDateFormat mTimeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
 
@@ -99,16 +97,14 @@ public class EventCreationActivity extends AppCompatActivity implements
         if (extras != null && !extras.isEmpty()) {
             mMode = extras.getInt(MODE, MODE_CREATE);
             if (mMode == MODE_EDIT) {
-                mEventToEdit = extras.getParcelable(Event.EVENT);
-                fillFormWithEvent(mEventToEdit);
+                mEventToSave = extras.getParcelable(Event.EVENT);
+                fillFormWithEvent(mEventToSave);
                 mToolbar.setTitle("Edit Event");
             }
         }
 
         if (mMode == MODE_CREATE) {
             // Initializes the start and end date and time with the current date and time
-            mStartDateTime = Calendar.getInstance();
-            mEndDateTime = Calendar.getInstance();
             updateDateTimeText();
             mToolbar.setTitle("Create Event");
         }
@@ -130,8 +126,7 @@ public class EventCreationActivity extends AppCompatActivity implements
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Event event = getEventFromForm();
-                saveEvent(event);
+                saveEvent();
             }
         });
     }
@@ -202,30 +197,31 @@ public class EventCreationActivity extends AppCompatActivity implements
         textView.setOnClickListener(onDateClick);
     }
 
-    private void saveEvent(Event event) {
+    private void saveEvent() {
         if (!validate()) {
             return;
         }
 
+        EventDao dao = new EventDao();
         if(mMode == MODE_CREATE) {
+            mEventToSave = getEventFromForm();
+
             // Shows a progress dialog
             mProgressDialog.setMessage("Creating event...");
             mProgressDialog.show();
 
             // Creates the event in the remote DB
-            EventDao dao = new EventDao();
-            dao.create(event, this);
+            dao.create(mEventToSave, this);
         }
 
         if(mMode == MODE_EDIT) {
+            mEventToSave.copy(getEventFromForm());
+
             // Shows a progress dialog
             mProgressDialog.setMessage("Updating event...");
             mProgressDialog.show();
 
-            EventDao dao = new EventDao();
-            event.setId(mEventToEdit.getId());
-            event.setLocalId(mEventToEdit.getLocalId());
-            dao.update(event, this);
+            dao.update(mEventToSave, this);
         }
     }
 
@@ -256,19 +252,20 @@ public class EventCreationActivity extends AppCompatActivity implements
         return event;
     }
 
-    private void saveLocalEvent(Event event) {
-        HostedEvent hostedEvent = new HostedEvent(event.getId());
+    private void createLocal() {
+        HostedEvent hostedEvent = new HostedEvent(mEventToSave.getId());
         HostedEventDao hostedDao = new HostedEventDao(this);
         hostedDao.create(hostedEvent);
 
         LocalEventDao localEventDao = new LocalEventDao(this);
-        LocalEvent localEvent = new LocalEvent(event);
+        LocalEvent localEvent = new LocalEvent(mEventToSave);
         localEventDao.create(localEvent);
     }
 
-    private void updateLocalEvent(Event event) {
+    private void updateLocal() {
         LocalEventDao localEventDao = new LocalEventDao(this);
-        LocalEvent localEvent = new LocalEvent(event);
+        LocalEvent localEvent = localEventDao.find(mEventToSave);
+        localEvent.copy(mEventToSave);
         localEventDao.update(localEvent);
     }
 
@@ -294,44 +291,16 @@ public class EventCreationActivity extends AppCompatActivity implements
                 return;
             }
 
-            // Get the event we just saved in the DB
+            // Save give the event the remote id and save it locally
             Long id = json.getLong(Event.REMOTE_ID_KEY);
-            EventDao eventDao = new EventDao();
-            eventDao.get(id, this);
-
-        } catch (JSONException e) {
-            if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
-            Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
-            Log.e("OnCreateEvent", e.toString());
-        }
-    }
-
-    @Override
-    public void onGetEvent(String response) {
-        try {
-            JSONObject json = new JSONObject(response);
-
-            // Check if something bad happened
-            if (json.getInt("success") == 0) {
-                if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
-
-                Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
-                Log.e("OnGetEvent", json.getString("error"));
-                return;
-            }
-
-            // Now with the event, save it in the local DB
-            JSONObject result = json.getJSONArray("result").getJSONObject(0);
-            Event event = new Event(result);
-
-            if(mMode == MODE_CREATE) saveLocalEvent(event);
-            if(mMode == MODE_EDIT) updateLocalEvent(event);
+            mEventToSave.setId(id);
+            createLocal();
 
             returnResult();
         } catch (JSONException e) {
             if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
             Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
-            Log.e("OnGetEvent", e.toString());
+            Log.e("OnCreateEvent", e.toString());
         }
     }
 
@@ -349,11 +318,10 @@ public class EventCreationActivity extends AppCompatActivity implements
                 return;
             }
 
-            // Get the event we just saved in the DB
-            Long id = json.getLong(Event.REMOTE_ID_KEY);
-            EventDao eventDao = new EventDao();
-            eventDao.get(id, this);
+            // Update the event locally
+            updateLocal();
 
+            returnResult();
         } catch (JSONException e) {
             if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
             Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();

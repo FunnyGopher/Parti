@@ -1,7 +1,9 @@
 package com.github.funnygopher.parti;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +16,10 @@ import com.github.funnygopher.parti.rsvp.RsvpListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private ViewPagerAdapter mViewPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,16 +28,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.main_viewpager);
-        setupViewPager(viewPager);
+        mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        setupViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tablayout);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -47,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new RsvpListFragment(), "RSVP");
-        adapter.addFragment(new InvitationListFragment(), "INVITATIONS");
-        adapter.addFragment(new HostingListFragment(), "HOSTING");
-        viewPager.setAdapter(adapter);
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPagerAdapter.addFragment(new RsvpListFragment(), "RSVP");
+        mViewPagerAdapter.addFragment(new InvitationListFragment(), "INVITATIONS");
+        mViewPagerAdapter.addFragment(new HostingListFragment(), "HOSTING");
+        viewPager.setAdapter(mViewPagerAdapter);
     }
 
     @Override
@@ -74,5 +80,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        int tabPosition = mTabLayout.getSelectedTabPosition();
+        Fragment fragment = mViewPagerAdapter.getItem(tabPosition);
+        fragment.onActivityResult(requestCode, resultCode, data);
     }
 }

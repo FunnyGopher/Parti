@@ -60,8 +60,6 @@ public class HostingListFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case REQUEST_CODE_CREATE_EVENT:
                 onCreateEventResult(resultCode, data);
@@ -71,6 +69,8 @@ public class HostingListFragment extends Fragment {
                 onEditEventResult(resultCode, data);
                 break;
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void onCreateEventResult(int resultCode, Intent data) {

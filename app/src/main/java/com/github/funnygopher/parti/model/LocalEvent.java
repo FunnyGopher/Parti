@@ -10,7 +10,7 @@ import java.util.Calendar;
 public class LocalEvent implements IEntity {
 
     private Long _id; // Local id for Cupboard API
-    private Long remoteId = -1L; // Remote id on remote database
+    private Long remoteId; // Remote id on remote database
     private String name;
     private String host;
     private String description;
@@ -39,10 +39,22 @@ public class LocalEvent implements IEntity {
         declined = event.getDeclined();
     }
 
+    public void copy(Event event) {
+        remoteId = event.getId();
+        name = event.getName();
+        host = event.getHost();
+        description = event.getDescription();
+        additionalInfo = event.getAdditionalInfo();
+        // TODO: Have the calendars represented as strings or something
+        longitude = event.getLongitude();
+        latitude = event.getLatitude();
+        attending = event.getAttending();
+        declined = event.getDeclined();
+    }
+
     // TODO: Replace Calendar.getInstance() with conversions to the save dates and times
     public Event toEvent() {
         Event event = new Event(name, host, description, additionalInfo, Calendar.getInstance(), Calendar.getInstance(), longitude, latitude, attending, declined);
-        event.setLocalId(_id);
         event.setId(remoteId);
         return event;
     }
