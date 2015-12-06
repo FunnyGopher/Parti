@@ -45,7 +45,7 @@ public class EventCreationActivity extends AppCompatActivity implements
     public static final int MODE_EDIT = 1;
 
     private int mMode = MODE_CREATE;
-    private Event mEventToEdit;
+    private Event mEventToEdit = new Event();
 
     private Calendar mStartDateTime;
     private Calendar mEndDateTime;
@@ -130,11 +130,8 @@ public class EventCreationActivity extends AppCompatActivity implements
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMode == MODE_CREATE) {
-                    saveEvent(getEventFromForm());
-                } else if (mMode == MODE_EDIT) {
-                    saveEvent(mEventToEdit);
-                }
+                Event event = getEventFromForm();
+                saveEvent(event);
             }
         });
     }
@@ -226,8 +223,9 @@ public class EventCreationActivity extends AppCompatActivity implements
             mProgressDialog.show();
 
             EventDao dao = new EventDao();
+            event.setId(mEventToEdit.getId());
+            event.setLocalId(mEventToEdit.getLocalId());
             dao.update(event, this);
-            // update local db
         }
     }
 
