@@ -222,7 +222,7 @@ public class EventCreationActivity extends AppCompatActivity implements
 
         if(mMode == MODE_EDIT) {
             // Shows a progress dialog
-            mProgressDialog.setMessage("Editing event...");
+            mProgressDialog.setMessage("Updating event...");
             mProgressDialog.show();
 
             EventDao dao = new EventDao();
