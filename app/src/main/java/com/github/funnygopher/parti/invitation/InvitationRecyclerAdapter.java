@@ -1,5 +1,6 @@
 package com.github.funnygopher.parti.invitation;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -10,10 +11,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.funnygopher.parti.R;
+import com.github.funnygopher.parti.dao.HostedEventDao;
+import com.github.funnygopher.parti.dao.InvitationDao;
+import com.github.funnygopher.parti.dao.LocalEventDao;
 import com.github.funnygopher.parti.dao.tasks.DeleteEventTask;
 import com.github.funnygopher.parti.model.Event;
+import com.github.funnygopher.parti.model.HostedEvent;
+import com.github.funnygopher.parti.model.Invitation;
+import com.github.funnygopher.parti.model.LocalEvent;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -23,9 +31,11 @@ import java.util.Locale;
  */
 public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRecyclerAdapter.InvitationViewHolder> {
 
+    private Context mContext;
     private List<Event> mInvitationList;
 
-    public InvitationRecyclerAdapter(List<Event> invitations) {
+    public InvitationRecyclerAdapter(Context context, List<Event> invitations) {
+        this.mContext = context;
         this.mInvitationList = invitations;
     }
 
@@ -112,6 +122,26 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
     @Override
     public int getItemCount() {
         return mInvitationList.size();
+    }
+
+    public void update() {
+        InvitationDao invDao = new InvitationDao(mContext);
+        List<Invitation> invitations = invDao.list();
+
+        // Adds each hosted event to a new list
+        LocalEventDao localEventDao = new LocalEventDao(mContext);
+        List<Event> newEvents = new ArrayList<Event>();
+        for(Invitation invitation : invitations) {
+            LocalEvent event = localEventDao.query("remoteId = ?", invitation.getEventId().toString());
+            if(event != null) {
+                newEvents.add(event.toEvent());
+            }
+        }
+
+        // Updates the hosted event list with the new list
+        mInvitationList.clear();
+        mInvitationList.addAll(newEvents);
+        this.notifyDataSetChanged();
     }
 
     public class InvitationViewHolder extends RecyclerView.ViewHolder {
