@@ -89,6 +89,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         holder.date.setText(dateString.toString());
         holder.requirements.setText(event.getAdditionalInfo());
 
+        // TODO: Move event to Rsvp when user presses accept or decline
         // When the user presses the attend button
         holder.actionAccept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +99,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
             }
         });
 
+        // TODO: Move event to Rsvp when user presses accept or decline
         // When the user presses the decline button
         holder.actionDecline.setOnClickListener(new View.OnClickListener() {
             @Override
