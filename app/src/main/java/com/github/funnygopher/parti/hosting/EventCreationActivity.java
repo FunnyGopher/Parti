@@ -26,13 +26,12 @@ import com.github.funnygopher.parti.dao.tasks.UpdateEventTask;
 import com.github.funnygopher.parti.model.Event;
 import com.github.funnygopher.parti.model.HostedEvent;
 import com.github.funnygopher.parti.model.LocalEvent;
+import com.github.funnygopher.parti.util.DateUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class EventCreationActivity extends AppCompatActivity implements
         CreateEventTask.OnCreateEventListener, UpdateEventTask.OnUpdateEventListener {
@@ -47,8 +46,6 @@ public class EventCreationActivity extends AppCompatActivity implements
 
     private Calendar mStartDateTime = Calendar.getInstance();
     private Calendar mEndDateTime = Calendar.getInstance();
-    private SimpleDateFormat mTimeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-    private SimpleDateFormat mDateFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
 
     private ProgressDialog mProgressDialog;
 
@@ -145,10 +142,10 @@ public class EventCreationActivity extends AppCompatActivity implements
     }
 
     private void updateDateTimeText() {
-        mStartDateView.setText(mDateFormat.format(mStartDateTime.getTime()));
-        mStartTimeView.setText(mTimeFormat.format(mStartDateTime.getTime()));
-        mEndDateView.setText(mDateFormat.format(mEndDateTime.getTime()));
-        mEndTimeView.setText(mTimeFormat.format(mEndDateTime.getTime()));
+        mStartDateView.setText(DateUtil.dateToString(mStartDateTime));
+        mStartTimeView.setText(DateUtil.timeToString(mStartDateTime));
+        mEndDateView.setText(DateUtil.dateToString(mEndDateTime));
+        mEndTimeView.setText(DateUtil.timeToString(mEndDateTime));
     }
 
     private void setOnClickForTime(final TextView textView, final Calendar calendar) {
@@ -157,7 +154,7 @@ public class EventCreationActivity extends AppCompatActivity implements
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                textView.setText(mTimeFormat.format(calendar.getTime()));
+                textView.setText(DateUtil.timeToString(calendar));
             }
         };
 
@@ -179,7 +176,7 @@ public class EventCreationActivity extends AppCompatActivity implements
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 calendar.set(year, monthOfYear, dayOfMonth);
-                textView.setText(mDateFormat.format(calendar.getTime()));
+                textView.setText(DateUtil.dateToString(calendar));
             }
         };
 

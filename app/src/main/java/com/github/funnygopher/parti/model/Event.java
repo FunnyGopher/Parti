@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.github.funnygopher.parti.dao.IEntity;
+import com.github.funnygopher.parti.util.DateUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +20,8 @@ public class Event implements IEntity, Parcelable {
     private static final String NAME_KEY = "name";
     private static final String HOST_KEY = "host";
     private static final String DESC_KEY = "description";
-    private static final String STARTTIME_KEY = "starttime";
-    private static final String ENDTIME_KEY = "endtime";
+    private static final String START_TIME_KEY = "start_time";
+    private static final String END_TIME_KEY = "end_time";
     private static final String ADDITIONAL_INFO_KEY = "additional_info";
     private static final String LONGITUDE_KEY = "longitude";
     private static final String LATITUDE_KEY = "latitude";
@@ -71,8 +72,8 @@ public class Event implements IEntity, Parcelable {
     }
 
     public void copy(Event event) {
-        name = event.getName();
-        host = event.getHost();
+        name = event.name;
+        host = event.host;
         description = event.description;
         additionalInfo = event.additionalInfo;
         startTime = event.startTime;
@@ -90,8 +91,13 @@ public class Event implements IEntity, Parcelable {
         host = json.getString(HOST_KEY);
         description = json.getString(DESC_KEY);
         additionalInfo = json.getString(ADDITIONAL_INFO_KEY);
-        startTime = Calendar.getInstance(); // TODO: Read startTime from JSON
-        endTime = Calendar.getInstance(); // TODO: Read endTime from JSON
+
+        String startTimeString = json.getString(START_TIME_KEY);
+        setStartTime(startTimeString);
+
+        String endTimeString = json.getString(END_TIME_KEY);
+        setEndTime(endTimeString);
+
         longitude = json.getDouble(LONGITUDE_KEY);
         latitude = json.getDouble(LATITUDE_KEY);
         attending = json.getInt(ATTENDING_KEY);
@@ -105,8 +111,13 @@ public class Event implements IEntity, Parcelable {
         host = parcel.readString();
         description = parcel.readString();
         additionalInfo = parcel.readString();
-        startTime = Calendar.getInstance(); // TODO: Read startTime from JSON
-        endTime = Calendar.getInstance(); // TODO: Read endTime from JSON
+
+        String startTimeString = parcel.readString();
+        setStartTime(startTimeString);
+
+        String endTimeString = parcel.readString();
+        setEndTime(endTimeString);
+
         longitude = parcel.readDouble();
         latitude = parcel.readDouble();
         attending = parcel.readInt();
@@ -159,16 +170,32 @@ public class Event implements IEntity, Parcelable {
         return startTime;
     }
 
+    public String getStartTimeString() {
+        return DateUtil.calendarToString(startTime);
+    }
+
     public void setStartTime(Calendar startTime) {
         this.startTime = startTime;
+    }
+
+    public void setStartTime(String timeString) {
+        startTime = DateUtil.stringToCalendar(timeString);
     }
 
     public Calendar getEndTime() {
         return endTime;
     }
 
+    public String getEndTimeString() {
+        return DateUtil.calendarToString(endTime);
+    }
+
     public void setEndTime(Calendar endTime) {
         this.endTime = endTime;
+    }
+
+    public void setEndTime(String timeString) {
+        endTime = DateUtil.stringToCalendar(timeString);
     }
 
     public double getLongitude() {
@@ -211,8 +238,8 @@ public class Event implements IEntity, Parcelable {
             jsonObject.put(HOST_KEY, host);
             jsonObject.put(DESC_KEY, description);
             jsonObject.put(ADDITIONAL_INFO_KEY, additionalInfo);
-            // TODO: Add startTime to JSON
-            // TODO: Add endTime to JSON
+            jsonObject.put(START_TIME_KEY, getStartTimeString());
+            jsonObject.put(END_TIME_KEY, getEndTimeString());
             jsonObject.put(LONGITUDE_KEY, Double.toString(longitude));
             jsonObject.put(LATITUDE_KEY, Double.toString(latitude));
             jsonObject.put(ATTENDING_KEY, Double.toString(attending));
@@ -239,8 +266,10 @@ public class Event implements IEntity, Parcelable {
         dest.writeString(host);
         dest.writeString(description);
         dest.writeString(additionalInfo);
-        // TODO: Add startTime to Parcel
-        // TODO: Add endTime to Parcel
+
+        dest.writeString(getStartTimeString());
+        dest.writeString(getEndTimeString());
+
         dest.writeDouble(longitude);
         dest.writeDouble(latitude);
         dest.writeInt(attending);

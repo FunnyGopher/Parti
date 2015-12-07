@@ -1,8 +1,7 @@
 package com.github.funnygopher.parti.model;
 
 import com.github.funnygopher.parti.dao.IEntity;
-
-import java.util.Calendar;
+import com.github.funnygopher.parti.util.DateUtil;
 
 /***
  * This class acts as a schema for a bridge table with the Events table on the remote database.
@@ -16,7 +15,8 @@ public class LocalEvent implements IEntity {
     private String description;
     private String additionalInfo;
 
-    // TODO: Have the calendars represented as strings or something
+    private String startTime;
+    private String endTime;
 
     private double longitude;
     private double latitude;
@@ -32,7 +32,8 @@ public class LocalEvent implements IEntity {
         host = event.getHost();
         description = event.getDescription();
         additionalInfo = event.getAdditionalInfo();
-        // TODO: Have the calendars represented as strings or something
+        startTime = event.getStartTimeString();
+        endTime = event.getEndTimeString();
         longitude = event.getLongitude();
         latitude = event.getLatitude();
         attending = event.getAttending();
@@ -45,16 +46,18 @@ public class LocalEvent implements IEntity {
         host = event.getHost();
         description = event.getDescription();
         additionalInfo = event.getAdditionalInfo();
-        // TODO: Have the calendars represented as strings or something
+        startTime = event.getStartTimeString();
+        endTime = event.getEndTimeString();
         longitude = event.getLongitude();
         latitude = event.getLatitude();
         attending = event.getAttending();
         declined = event.getDeclined();
     }
 
-    // TODO: Replace Calendar.getInstance() with conversions to the save dates and times
     public Event toEvent() {
-        Event event = new Event(name, host, description, additionalInfo, Calendar.getInstance(), Calendar.getInstance(), longitude, latitude, attending, declined);
+        Event event = new Event(name, host, description, additionalInfo,
+                DateUtil.stringToCalendar(startTime), DateUtil.stringToCalendar(endTime),
+                longitude, latitude, attending, declined);
         event.setId(remoteId);
         return event;
     }
