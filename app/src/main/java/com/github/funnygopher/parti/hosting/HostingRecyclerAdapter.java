@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.funnygopher.parti.R;
 import com.github.funnygopher.parti.dao.HostedEventDao;
@@ -37,7 +38,6 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     public HostingRecyclerAdapter(Context context, List<Event> hostedEvents) {
         this.mContext = context;
         this.mHostedEventList = hostedEvents;
-
         update();
     }
 
@@ -49,7 +49,6 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
         mContext = parent.getContext();
         return new HostingViewHolder(itemView);
     }
-
 
     @Override
     public void onBindViewHolder(final HostingViewHolder hostingViewHolder, final int position) {
@@ -83,6 +82,16 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
             public void onClick(View v) {
                 Event event = mHostedEventList.get(hostingViewHolder.getAdapterPosition());
                 openForEdit(event);
+            }
+        });
+
+        hostingViewHolder.inviteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Replace this with code that selects contacts to send SMS messages to
+                Event event = mHostedEventList.get(hostingViewHolder.getAdapterPosition());
+                Toast.makeText(mContext, "This event's ID is " + Long.toString(event.getId()),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -121,8 +130,6 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
         ((Activity) mContext).startActivityForResult(intent, HostingListFragment
                 .REQUEST_CODE_EDIT_EVENT);
     }
-
-
 
     public static class HostingViewHolder extends RecyclerView.ViewHolder {
         private CardView card;

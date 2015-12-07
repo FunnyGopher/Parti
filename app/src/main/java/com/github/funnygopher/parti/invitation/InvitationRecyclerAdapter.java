@@ -11,12 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.funnygopher.parti.R;
-import com.github.funnygopher.parti.dao.HostedEventDao;
 import com.github.funnygopher.parti.dao.InvitationDao;
 import com.github.funnygopher.parti.dao.LocalEventDao;
 import com.github.funnygopher.parti.dao.tasks.DeleteEventTask;
 import com.github.funnygopher.parti.model.Event;
-import com.github.funnygopher.parti.model.HostedEvent;
 import com.github.funnygopher.parti.model.Invitation;
 import com.github.funnygopher.parti.model.LocalEvent;
 
@@ -37,6 +35,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
     public InvitationRecyclerAdapter(Context context, List<Event> invitations) {
         this.mContext = context;
         this.mInvitationList = invitations;
+        update();
     }
 
     @Override

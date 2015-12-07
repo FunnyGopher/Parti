@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class InvitationListFragment extends Fragment implements GetEventTask.OnGetEventListener {
 
@@ -66,6 +66,7 @@ public class InvitationListFragment extends Fragment implements GetEventTask.OnG
 
         // Set the default text to a link of the Queen
         idInput.setHint("Parti ID Number...");
+        idInput.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Import Invite")
@@ -87,8 +88,7 @@ public class InvitationListFragment extends Fragment implements GetEventTask.OnG
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                     }
-                })
-                .show();
+                }).show();
     }
 
     @Override
