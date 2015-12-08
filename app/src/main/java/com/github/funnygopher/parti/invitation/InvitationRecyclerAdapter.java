@@ -121,27 +121,15 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         });
     }
 
-    public void add(Event event) {
+    private void remove(Event event) {
         LocalEventDao localEventDao = new LocalEventDao(mContext);
-        LocalEvent localEvent = new LocalEvent(event);
-        localEventDao.create(localEvent);
-
-        InvitationDao invDao = new InvitationDao(mContext);
-        Invitation invitation = new Invitation(event.getId());
-        invDao.create(invitation);
-
-        notifyItemInserted(mInvitationList.indexOf(event));
-    }
-
-    public void remove(Event event) {
-        mInvitationList.remove(event);
-
-        LocalEventDao localEventDao = new LocalEventDao(mContext);
-        InvitationDao invDao = new InvitationDao(mContext);
         LocalEvent localEvent = localEventDao.find(event);
+        localEventDao.delete(localEvent.getId());
 
+        InvitationDao invDao = new InvitationDao(mContext);
         invDao.delete(localEvent.getId());
-        notifyItemRemoved(mInvitationList.indexOf(event));
+
+        update();
     }
 
     @Override
@@ -155,6 +143,8 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
 
         // Adds each invitation to a new list
         LocalEventDao localEventDao = new LocalEventDao(mContext);
+        List<LocalEvent> localEvents = localEventDao.list();
+
         List<Event> newEvents = new ArrayList<Event>();
         for(Invitation invitation : invitations) {
             LocalEvent event = localEventDao.query("remoteId = ?", invitation.getEventId().toString());

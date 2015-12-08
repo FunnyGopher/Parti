@@ -52,6 +52,12 @@ public class HostingListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mRecyclerAdapter.update();
+    }
+
     private void openForCreate() {
         Intent intent = new Intent(getContext(), EventCreationActivity.class);
         intent.putExtra(EventCreationActivity.MODE, EventCreationActivity.MODE_CREATE);

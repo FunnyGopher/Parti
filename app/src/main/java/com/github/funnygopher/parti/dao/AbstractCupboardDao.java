@@ -44,7 +44,7 @@ public abstract class AbstractCupboardDao<E extends IEntity> implements IDao<E> 
     @Override
     public void delete(Long id) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        cupboard().withDatabase(db).delete(entityClass);
+        cupboard().withDatabase(db).delete(entityClass, id);
     }
 
     public List<E> list() {

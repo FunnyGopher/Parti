@@ -102,6 +102,8 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
 
         // Adds each rsvp to a new list
         LocalEventDao localEventDao = new LocalEventDao(mContext);
+        List<LocalEvent> localEvents = localEventDao.list();
+
         List<Event> newEvents = new ArrayList<Event>();
         for (Rsvp rsvp: rsvpList){
             LocalEvent event = localEventDao.query("remoteId = ?", rsvp.getEventId().toString());
