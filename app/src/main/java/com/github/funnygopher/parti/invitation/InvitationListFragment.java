@@ -18,19 +18,18 @@ import android.widget.Toast;
 
 import com.github.funnygopher.parti.R;
 import com.github.funnygopher.parti.dao.EventDao;
-import com.github.funnygopher.parti.dao.InvitationDao;
-import com.github.funnygopher.parti.dao.LocalEventDao;
+import com.github.funnygopher.parti.dao.RsvpDao;
 import com.github.funnygopher.parti.dao.tasks.GetEventTask;
 import com.github.funnygopher.parti.model.Event;
-import com.github.funnygopher.parti.model.Invitation;
-import com.github.funnygopher.parti.model.LocalEvent;
+import com.github.funnygopher.parti.model.Rsvp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class InvitationListFragment extends Fragment implements GetEventTask.OnGetEventListener {
+public class InvitationListFragment extends Fragment implements GetEventTask.OnGetEventListener,
+        InvitationRecyclerAdapter.OnAcceptListener, InvitationRecyclerAdapter.OnDeclineListener {
 
     private InvitationRecyclerAdapter mRecyclerAdapter;
     private ProgressDialog mProgressDialog;
@@ -54,6 +53,8 @@ public class InvitationListFragment extends Fragment implements GetEventTask.OnG
         recyclerView.setLayoutManager(linearLayoutManager);
 
         mRecyclerAdapter = new InvitationRecyclerAdapter(getActivity(), new ArrayList<Event>());
+        mRecyclerAdapter.setOnAcceptListener(this);
+        mRecyclerAdapter.setOnDeclineListener(this);
         recyclerView.setAdapter(mRecyclerAdapter);
 
         mProgressDialog = new ProgressDialog(getActivity());
@@ -91,6 +92,12 @@ public class InvitationListFragment extends Fragment implements GetEventTask.OnG
                 }).show();
     }
 
+    private void createLocalRsvp(Long id, boolean attending) {
+        Rsvp rsvp = new Rsvp(id, attending);
+        RsvpDao rsvpDao = new RsvpDao(getActivity());
+        rsvpDao.create(rsvp);
+    }
+
     @Override
     public void onGetEvent(String response) {
         try {
@@ -107,20 +114,30 @@ public class InvitationListFragment extends Fragment implements GetEventTask.OnG
 
             JSONObject result = json.getJSONArray("result").getJSONObject(0);
             Event event = new Event(result);
-            LocalEventDao localEventDao = new LocalEventDao(getActivity());
-            LocalEvent localEvent = new LocalEvent(event);
-            localEventDao.create(localEvent);
+            mRecyclerAdapter.add(event);
 
-            InvitationDao invDao = new InvitationDao(getActivity());
-            Invitation invitation = new Invitation(event.getId());
-            invDao.create(invitation);
-
-            mRecyclerAdapter.update();
             if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
         } catch (JSONException e) {
             if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
             Toast.makeText(getActivity(), "Something really bad just happened...", Toast.LENGTH_SHORT).show();
             Log.e("OnCreateEvent", e.toString());
         }
+    }
+
+    @Override
+    public void onAccept(Event event) {
+        AttendEventTask task = new AttendEventTask(event.getId());
+        task.execute();
+
+        createLocalRsvp(event.getId(), true);
+        mRecyclerAdapter.remove(event);
+    }
+
+    @Override
+    public void onDecline(Event event) {
+        DeclineEventTask task = new DeclineEventTask(event.getId());
+        task.execute();
+
+        mRecyclerAdapter.remove(event);
     }
 }

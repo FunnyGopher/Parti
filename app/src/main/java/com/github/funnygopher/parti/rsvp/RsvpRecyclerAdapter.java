@@ -11,9 +11,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.funnygopher.parti.R;
+import com.github.funnygopher.parti.dao.LocalEventDao;
+import com.github.funnygopher.parti.dao.RsvpDao;
 import com.github.funnygopher.parti.model.Event;
+import com.github.funnygopher.parti.model.LocalEvent;
+import com.github.funnygopher.parti.model.Rsvp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +31,7 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
     public RsvpRecyclerAdapter(Context context, List<Event> list) {
         this.mRsvpList = list;
         this.mContext = context;
+        update();
     }
 
     @Override
@@ -46,16 +52,16 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
         holder.hostName.setText("Hosted by: " + event.getHost());
 
         // Formats the date and time
-        SimpleDateFormat ft = new SimpleDateFormat ("MMM d, yyyy", Locale.US);
+        SimpleDateFormat ft = new SimpleDateFormat("MMM d, yyyy", Locale.US);
         Calendar startDate = event.getStartTime();
         Calendar endDate = event.getEndTime();
         StringBuilder dateString = new StringBuilder();
         dateString.append(ft.format(startDate.getTime()));
-        if(endDate != null) {
+        if (endDate != null) {
             boolean sameDay = startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR) &&
                     startDate.get(Calendar.DAY_OF_YEAR) == endDate.get(Calendar.DAY_OF_YEAR);
 
-            if(!sameDay) {
+            if (!sameDay) {
                 dateString.append(" - " + ft.format(endDate.getTime()));
             }
         }
@@ -67,7 +73,7 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
             @Override
             public void onClick(View v) {
                 String uriString = "geo:" + longitude + "," + latitude;
-                Intent searchAddress = new  Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
+                Intent searchAddress = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
                 mContext.startActivity(searchAddress);
             }
         });
@@ -88,6 +94,26 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
     @Override
     public int getItemCount() {
         return mRsvpList.size();
+    }
+
+    public void update() {
+        RsvpDao rsvpDao = new RsvpDao(mContext);
+        List<Rsvp> rsvpList = rsvpDao.list();
+
+        // Adds each rsvp to a new list
+        LocalEventDao localEventDao = new LocalEventDao(mContext);
+        List<Event> newEvents = new ArrayList<Event>();
+        for (Rsvp rsvp: rsvpList){
+            LocalEvent event = localEventDao.query("remoteId = ?", rsvp.getEventId().toString());
+            if (event != null) {
+                newEvents.add(event.toEvent());
+            }
+        }
+
+        // Updates the rsvp list with the new list
+        mRsvpList.clear();
+        mRsvpList.addAll(newEvents);
+        this.notifyDataSetChanged();
     }
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {

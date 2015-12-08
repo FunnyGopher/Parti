@@ -32,6 +32,19 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
     private Context mContext;
     private List<Event> mInvitationList;
 
+    private OnAcceptListener mAcceptListener = new OnAcceptListener() {
+        @Override
+        public void onAccept(Event event) {
+            // Do nothing...
+        }
+    };
+    private OnDeclineListener mDeclineListener = new OnDeclineListener() {
+        @Override
+        public void onDecline(Event event) {
+            // Do nothing...
+        }
+    };
+
     public InvitationRecyclerAdapter(Context context, List<Event> invitations) {
         this.mContext = context;
         this.mInvitationList = invitations;
@@ -70,17 +83,17 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         holder.hostName.setText("Hosted by: " + event.getHost());
 
         // Formats the date and time
-        SimpleDateFormat ft = new SimpleDateFormat ("E MMM d, yyyy '@' h:mm a", Locale.US);
+        SimpleDateFormat ft = new SimpleDateFormat("E MMM d, yyyy '@' h:mm a", Locale.US);
         Calendar startDate = event.getStartTime();
         Calendar endDate = event.getEndTime();
         StringBuilder dateString = new StringBuilder();
         dateString.append(ft.format(startDate.getTime()));
-        if(endDate != null) {
+        if (endDate != null) {
             boolean sameDay = startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR) &&
                     startDate.get(Calendar.DAY_OF_YEAR) == endDate.get(Calendar.DAY_OF_YEAR);
 
-            if(sameDay) {
-                SimpleDateFormat timeFormat = new SimpleDateFormat ("h:mm a", Locale.US);
+            if (sameDay) {
+                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.US);
                 dateString.append(" - " + timeFormat.format(endDate.getTime()));
             } else {
                 dateString.append(" - " + ft.format(endDate.getTime()));
@@ -94,8 +107,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         holder.actionAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AttendEventTask task = new AttendEventTask(event.getId());
-                task.execute();
+                mAcceptListener.onAccept(event);
             }
         });
 
@@ -104,19 +116,31 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         holder.actionDecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeclineEventTask task = new DeclineEventTask(event.getId());
-                task.execute();
+                mDeclineListener.onDecline(event);
             }
         });
     }
 
     public void add(Event event) {
-        mInvitationList.add(event);
+        LocalEventDao localEventDao = new LocalEventDao(mContext);
+        LocalEvent localEvent = new LocalEvent(event);
+        localEventDao.create(localEvent);
+
+        InvitationDao invDao = new InvitationDao(mContext);
+        Invitation invitation = new Invitation(event.getId());
+        invDao.create(invitation);
+
         notifyItemInserted(mInvitationList.indexOf(event));
     }
 
     public void remove(Event event) {
         mInvitationList.remove(event);
+
+        LocalEventDao localEventDao = new LocalEventDao(mContext);
+        InvitationDao invDao = new InvitationDao(mContext);
+        LocalEvent localEvent = localEventDao.find(event);
+
+        invDao.delete(localEvent.getId());
         notifyItemRemoved(mInvitationList.indexOf(event));
     }
 
@@ -129,7 +153,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         InvitationDao invDao = new InvitationDao(mContext);
         List<Invitation> invitations = invDao.list();
 
-        // Adds each hosted event to a new list
+        // Adds each invitation to a new list
         LocalEventDao localEventDao = new LocalEventDao(mContext);
         List<Event> newEvents = new ArrayList<Event>();
         for(Invitation invitation : invitations) {
@@ -139,10 +163,18 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
             }
         }
 
-        // Updates the hosted event list with the new list
+        // Updates the invitation list with the new list
         mInvitationList.clear();
         mInvitationList.addAll(newEvents);
         this.notifyDataSetChanged();
+    }
+
+    public void setOnAcceptListener(OnAcceptListener listener) {
+        mAcceptListener = listener;
+    }
+
+    public void setOnDeclineListener(OnDeclineListener listener) {
+        mDeclineListener = listener;
     }
 
     public class InvitationViewHolder extends RecyclerView.ViewHolder {
@@ -168,5 +200,13 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
             actionDecline = (Button) itemView.findViewById(R.id.invitation_card_action_decline);
             actionDecline.setText(R.string.invitation_card_action_decline);
         }
+    }
+
+    public interface OnAcceptListener {
+        void onAccept(Event event);
+    }
+
+    public interface OnDeclineListener {
+        void onDecline(Event event);
     }
 }
