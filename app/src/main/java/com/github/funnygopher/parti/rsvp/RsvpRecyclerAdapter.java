@@ -45,7 +45,7 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        Event event = mRsvpList.get(position);
+        final Event event = mRsvpList.get(position);
 
         holder.eventName.setText(event.getName());
         holder.desc.setText(event.getDescription());
@@ -66,13 +66,12 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
             }
         }
 
-        final double longitude = event.getLongitude();
-        final double latitude = event.getLatitude();
+        final String address = event.getAddress();
 
         holder.directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uriString = "geo:" + longitude + "," + latitude;
+                String uriString = "geo:0,0?q=" + address;
                 Intent searchAddress = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
                 mContext.startActivity(searchAddress);
             }

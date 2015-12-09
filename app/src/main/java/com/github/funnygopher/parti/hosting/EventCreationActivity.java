@@ -49,7 +49,8 @@ public class EventCreationActivity extends AppCompatActivity implements
     private Calendar mStartDateTime = Calendar.getInstance();
     private Calendar mEndDateTime = Calendar.getInstance();
 
-    private ProgressDialog mProgressDialog;
+    private ProgressDialog mCreatingEventDialog;
+    private ProgressDialog mVerifyAddressDialog;
 
     private InputMethodManager mImm;
 
@@ -78,7 +79,11 @@ public class EventCreationActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_event_creation);
 
-        mProgressDialog = new ProgressDialog(this);
+        // Initializes the progress dialogs
+        mCreatingEventDialog = new ProgressDialog(this);
+        mVerifyAddressDialog = new ProgressDialog(this);
+        mVerifyAddressDialog.setCancelable(false);
+        mVerifyAddressDialog.setMessage("Verifying address...");
 
         mToolbar = (Toolbar) findViewById(R.id.event_creation_toolbar);
         mNameText = (EditText) findViewById(R.id.event_creation_name_input);
@@ -133,6 +138,8 @@ public class EventCreationActivity extends AppCompatActivity implements
                 saveEvent();
             }
         });
+
+        mAddressView.setText("1600 Pennsylvania Ave NW, Washington, DC");
     }
 
     private void fillFormWithEvent(Event event) {
@@ -230,8 +237,8 @@ public class EventCreationActivity extends AppCompatActivity implements
             mEventToSave = getEventFromForm();
 
             // Shows a progress dialog
-            mProgressDialog.setMessage("Creating event...");
-            mProgressDialog.show();
+            mCreatingEventDialog.setMessage("Creating event...");
+            mCreatingEventDialog.show();
 
             // Creates the event in the remote DB
             dao.create(mEventToSave, this);
@@ -241,8 +248,8 @@ public class EventCreationActivity extends AppCompatActivity implements
             mEventToSave.copy(getEventFromForm());
 
             // Shows a progress dialog
-            mProgressDialog.setMessage("Updating event...");
-            mProgressDialog.show();
+            mCreatingEventDialog.setMessage("Updating event...");
+            mCreatingEventDialog.show();
 
             dao.update(mEventToSave, this);
         }
@@ -251,10 +258,22 @@ public class EventCreationActivity extends AppCompatActivity implements
     private boolean validate() {
         boolean valid = true;
 
+        // Verify the name of the event is filled out
         String name = mNameText.getText().toString();
         if (name.isEmpty()) {
             mNameText.setError("The event needs a name!");
             valid = false;
+        } else {
+            mNameText.setError(null);
+        }
+
+        // Verify the address is filled out and valid
+        String address = mAddressView.getText().toString();
+        if (address.isEmpty()) {
+            mAddressView.setError("The event needs a location!");
+            valid = false;
+        } else {
+            mAddressView.setError(null);
         }
 
         // TODO: Validate other things!
@@ -267,11 +286,11 @@ public class EventCreationActivity extends AppCompatActivity implements
         String host = mHostText.getText().toString();
         String description = mDescriptionText.getText().toString();
         String additionalInfo = mAdditionalInfoText.getText().toString();
+        String address = mAddressView.getText().toString();
 
-        // TODO: Get longitude and latitude from address
         Event event = new Event(
                 name, host, description, additionalInfo, mStartDateTime, mEndDateTime,
-                33.3774338, -111.9759768, 0, 0);
+                address, 0, 0);
         return event;
     }
 
@@ -293,7 +312,7 @@ public class EventCreationActivity extends AppCompatActivity implements
     }
 
     private void returnResult() {
-        if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+        if(mCreatingEventDialog.isShowing()) mCreatingEventDialog.dismiss();
 
         Intent intent = new Intent();
         setResult(Activity.RESULT_OK, intent);
@@ -307,7 +326,7 @@ public class EventCreationActivity extends AppCompatActivity implements
 
             // Check if something bad happened
             if (json.getInt("success") == 0) {
-                if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+                if(mCreatingEventDialog.isShowing()) mCreatingEventDialog.dismiss();
 
                 Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
                 Log.e("OnCreateEvent", json.getString("error"));
@@ -321,7 +340,7 @@ public class EventCreationActivity extends AppCompatActivity implements
 
             returnResult();
         } catch (JSONException e) {
-            if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+            if(mCreatingEventDialog.isShowing()) mCreatingEventDialog.dismiss();
             Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
             Log.e("OnCreateEvent", e.toString());
         }
@@ -334,7 +353,7 @@ public class EventCreationActivity extends AppCompatActivity implements
 
             // Check if something bad happened
             if (json.getInt("success") == 0) {
-                if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+                if(mCreatingEventDialog.isShowing()) mCreatingEventDialog.dismiss();
 
                 Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
                 Log.e("OnUpdateEvent", json.getString("error"));
@@ -346,7 +365,7 @@ public class EventCreationActivity extends AppCompatActivity implements
 
             returnResult();
         } catch (JSONException e) {
-            if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+            if(mCreatingEventDialog.isShowing()) mCreatingEventDialog.dismiss();
             Toast.makeText(this, "Something really bad just happened...", Toast.LENGTH_SHORT).show();
             Log.e("OnUpdateEvent", e.toString());
         }
