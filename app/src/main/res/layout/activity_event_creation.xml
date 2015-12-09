@@ -26,7 +26,6 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/black"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp">
@@ -35,162 +34,122 @@
             android:id="@+id/event_creation_name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:inputType="textCapWords"
-            android:hint="@string/event_name" />
+            android:hint="@string/event_name"
+            android:inputType="textCapWords" />
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/black"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="8dp">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/event_creation_host_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:inputType="textCapWords"
-            android:hint="@string/host_name" />
+            android:hint="@string/host_name"
+            android:inputType="textCapWords"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/black"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="8dp">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/event_creation_address_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:inputType="textPostalAddress"
-            android:hint="@string/address" />
+            android:hint="@string/address"
+            android:inputType="textPostalAddress"/>
 
     </android.support.design.widget.TextInputLayout>
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/from"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/event_creation_start_time_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:gravity="center"
+        android:text="00:00 am"
+        android:textSize="40sp" />
 
-        <TextView
-            android:id="@+id/event_creation_start_date_input"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:hint="@string/start_date"
-            android:textSize="16dp"/>
-
-        <TextView
-            android:id="@+id/event_creation_end_date_input"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:hint="@string/end_date"
-            android:textSize="16dp"/>
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/event_creation_start_date_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
+        android:gravity="center"
+        android:text="December 31st, 2015"
+        android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:text="@string/to"
+        android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/event_creation_start_time_input"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:hint="@string/start_time"
-            android:textSize="16dp"/>
+    <TextView
+        android:id="@+id/event_creation_end_time_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="00:00 am"
+        android:textSize="40sp" />
 
-        <TextView
-            android:id="@+id/event_creation_end_time_input"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:hint="@string/end_time"
-            android:textSize="16dp"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/event_creation_end_date_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="December 31st, 2015"
+        android:textSize="20dp" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/black"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="8dp">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/event_creation_description_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
+            android:hint="@string/description"
             android:imeOptions="actionNext"
-            android:inputType="textCapSentences"
-            android:hint="@string/description" />
+            android:inputType="textCapSentences" />
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/black"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="8dp">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/event_creation_additional_info_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
+            android:hint="@string/additional_info"
             android:imeOptions="actionDone"
-            android:inputType="textCapSentences"
-            android:hint="@string/additional_info" />
+            android:inputType="textCapSentences" />
 
     </android.support.design.widget.TextInputLayout>
-
-    <!-- Unused, but I don't know if we want it still...
-    <android.widget.Button
-        android:id="@+id/create_event_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start the Partí!"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"/>-->
-
 </LinearLayout>

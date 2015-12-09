@@ -8,6 +8,8 @@
     <string name="event_name">Event Name</string>
     <string name="host_name">Host Name</string>
     <string name="address">Address</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
     <string name="start_time">Start Time</string>
     <string name="start_date">Start Date</string>
     <string name="end_time">End Time</string>
