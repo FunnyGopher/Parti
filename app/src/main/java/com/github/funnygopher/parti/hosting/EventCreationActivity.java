@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -49,6 +51,8 @@ public class EventCreationActivity extends AppCompatActivity implements
 
     private ProgressDialog mProgressDialog;
 
+    private InputMethodManager mImm;
+
     // Views
     private Toolbar mToolbar;
 
@@ -69,6 +73,9 @@ public class EventCreationActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mImm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
         setContentView(R.layout.activity_event_creation);
 
         mProgressDialog = new ProgressDialog(this);
@@ -116,8 +123,8 @@ public class EventCreationActivity extends AppCompatActivity implements
         // Sets click listeners for date and time
         setOnClickForDate(mStartDateView, mStartDateTime);
         setOnClickForDate(mEndDateView, mEndDateTime);
-        setOnClickForTime(mStartTimeView, mStartDateTime);
-        setOnClickForTime(mEndTimeView, mEndDateTime);
+        setOnClickForTime(mStartTimeView, mStartDateView, mStartDateTime);
+        setOnClickForTime(mEndTimeView, mEndDateView, mEndDateTime);
 
         // Click listener for the save button
         mSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -148,13 +155,28 @@ public class EventCreationActivity extends AppCompatActivity implements
         mEndTimeView.setText(DateUtil.timeToString(mEndDateTime));
     }
 
-    private void setOnClickForTime(final TextView textView, final Calendar calendar) {
+    private void setOnClickForTime(final TextView timeTextView, final TextView dateTextView, final Calendar calendar) {
+        final DatePickerDialog.OnDateSetListener dateSetListener= new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendar.set(year, monthOfYear, dayOfMonth);
+                dateTextView.setText(DateUtil.dateToString(calendar));
+            }
+        };
+
         final TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                textView.setText(DateUtil.timeToString(calendar));
+                timeTextView.setText(DateUtil.timeToString(calendar));
+
+                new DatePickerDialog(EventCreationActivity.this,
+                        dateSetListener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH))
+                        .show();
             }
         };
 
@@ -166,17 +188,19 @@ public class EventCreationActivity extends AppCompatActivity implements
                         calendar.get(Calendar.HOUR_OF_DAY),
                         calendar.get(Calendar.MINUTE), false)
                         .show();
+
+                mImm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         };
-        textView.setOnClickListener(onTimeClick);
+        timeTextView.setOnClickListener(onTimeClick);
     }
 
-    private void setOnClickForDate(final TextView textView, final Calendar calendar) {
+    private void setOnClickForDate(final TextView dateTextView,  final Calendar calendar) {
         final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 calendar.set(year, monthOfYear, dayOfMonth);
-                textView.setText(DateUtil.dateToString(calendar));
+                dateTextView.setText(DateUtil.dateToString(calendar));
             }
         };
 
@@ -189,9 +213,11 @@ public class EventCreationActivity extends AppCompatActivity implements
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH))
                         .show();
+
+                mImm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         };
-        textView.setOnClickListener(onDateClick);
+        dateTextView.setOnClickListener(onDateClick);
     }
 
     private void saveEvent() {
