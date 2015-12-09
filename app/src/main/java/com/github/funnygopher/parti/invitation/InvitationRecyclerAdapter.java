@@ -83,7 +83,7 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
         holder.hostName.setText("Hosted by: " + event.getHost());
 
         // Formats the date and time
-        SimpleDateFormat ft = new SimpleDateFormat("E MMM d, yyyy '@' h:mm a", Locale.US);
+        SimpleDateFormat ft = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
         Calendar startDate = event.getStartTime();
         Calendar endDate = event.getEndTime();
         StringBuilder dateString = new StringBuilder();
@@ -92,14 +92,12 @@ public class InvitationRecyclerAdapter extends RecyclerView.Adapter<InvitationRe
             boolean sameDay = startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR) &&
                     startDate.get(Calendar.DAY_OF_YEAR) == endDate.get(Calendar.DAY_OF_YEAR);
 
-            if (sameDay) {
-                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.US);
-                dateString.append(" - " + timeFormat.format(endDate.getTime()));
-            } else {
+            if (!sameDay) {
                 dateString.append(" - " + ft.format(endDate.getTime()));
             }
         }
         holder.date.setText(dateString.toString());
+
         holder.requirements.setText(event.getAdditionalInfo());
 
         // TODO: Move event to Rsvp when user presses accept or decline

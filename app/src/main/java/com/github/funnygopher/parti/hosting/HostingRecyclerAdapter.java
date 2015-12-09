@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,29 +51,29 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     @Override
     public void onBindViewHolder(final HostingViewHolder hostingViewHolder, final int position) {
         Event currentEvent = mHostedEventList.get(position);
-        Log.d("HostingRecyclerAdapter", "CurrentEventName: " + currentEvent.getName());
+
         hostingViewHolder.title.setText(currentEvent.getName());
+        hostingViewHolder.host.setText(currentEvent.getHost());
+        hostingViewHolder.description.setText(currentEvent.getDescription());
+        hostingViewHolder.requirements.setText(currentEvent.getAdditionalInfo());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("E MMM d, yyyy '@' h:mm a", Locale.US);
-
+        // Formats the date and time
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
         Calendar startDate = currentEvent.getStartTime();
         Calendar endDate = currentEvent.getEndTime();
-
-        hostingViewHolder.startDate.setText(dateFormat.format(startDate.getTime()));
-
-        if(endDate != null) {
+        StringBuilder dateString = new StringBuilder();
+        dateString.append(dateFormat.format(startDate.getTime()));
+        if (endDate != null) {
             boolean sameDay = startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR) &&
                     startDate.get(Calendar.DAY_OF_YEAR) == endDate.get(Calendar.DAY_OF_YEAR);
 
-            if(sameDay) {
-                SimpleDateFormat timeFormat = new SimpleDateFormat ("h:mm a", Locale.US);
-                hostingViewHolder.endDate.setText(timeFormat.format(endDate.getTime()));
-            } else {
-                hostingViewHolder.endDate.setText(dateFormat.format(endDate.getTime()));
+            if (!sameDay) {
+                dateString.append(" - " + dateFormat.format(endDate.getTime()));
             }
         }
-        hostingViewHolder.acceptedTotal.setText(Integer.toString(currentEvent.getAttending()));
-        hostingViewHolder.declinedTotal.setText(Integer.toString(currentEvent.getDeclined()));
+        hostingViewHolder.date.setText(dateString);
+        hostingViewHolder.acceptedTotal.setText(currentEvent.getAttending() + "");
+        hostingViewHolder.declinedTotal.setText(currentEvent.getDeclined() + "");
 
         hostingViewHolder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,10 +130,11 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     }
 
     public static class HostingViewHolder extends RecyclerView.ViewHolder {
-        private CardView card;
         private TextView title;
-        private TextView startDate;
-        private TextView endDate;
+        private TextView host;
+        private TextView date;
+        private TextView description;
+        private TextView requirements;
         private TextView acceptedTotal;
         private TextView declinedTotal;
         private Button inviteButton;
@@ -143,10 +142,11 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
 
         public HostingViewHolder(View itemView) {
             super(itemView);
-            card = (CardView) itemView.findViewById(R.id.host_card);
             title = (TextView) itemView.findViewById(R.id.host_detail_card_title);
-            startDate = (TextView) itemView.findViewById(R.id.host_start_date);
-            endDate = (TextView) itemView.findViewById(R.id.host_end_date);
+            host = (TextView) itemView.findViewById(R.id.host_card_host);
+            date = (TextView) itemView.findViewById(R.id.host_card_date);
+            description = (TextView) itemView.findViewById(R.id.host_card_desc);
+            requirements = (TextView) itemView.findViewById(R.id.host_card_requirements);
             acceptedTotal = (TextView) itemView.findViewById(R.id.host_accepted_total);
             declinedTotal = (TextView) itemView.findViewById(R.id.host_declined_total);
             inviteButton = (Button) itemView.findViewById(R.id.host_detail_card_invite_button);

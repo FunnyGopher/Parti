@@ -52,7 +52,7 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
         holder.hostName.setText("Hosted by: " + event.getHost());
 
         // Formats the date and time
-        SimpleDateFormat ft = new SimpleDateFormat("MMM d, yyyy", Locale.US);
+        SimpleDateFormat ft = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
         Calendar startDate = event.getStartTime();
         Calendar endDate = event.getEndTime();
         StringBuilder dateString = new StringBuilder();
@@ -65,6 +65,7 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
                 dateString.append(" - " + ft.format(endDate.getTime()));
             }
         }
+        holder.date.setText(dateString.toString());
 
         final String address = event.getAddress();
 
@@ -77,7 +78,7 @@ public class RsvpRecyclerAdapter extends RecyclerView.Adapter<RsvpRecyclerAdapte
             }
         });
         holder.additional_info.setText(event.getAdditionalInfo());
-        holder.date.setText(dateString.toString());
+
     }
 
     public void add(Event event) {

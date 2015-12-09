@@ -31,47 +31,94 @@ Author: Jackkell
             android:textSize="24sp"
             android:textColor="@color/primary_text"/>
 
+        <TextView
+            android:id="@+id/host_card_host"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="6dp"
+            android:text="Hosted by: Jim"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#1F000000"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-            <TextView
-                android:id="@+id/host_start_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="4dp"
-                android:text="Start Date Time"
-                android:textSize="14sp"
-                android:textColor="@color/secondary_text" />
+        <TextView
+            android:id="@+id/host_card_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:text="It's Jim's birthday! Everybody come out for some fun and good food!"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="-"
-                android:textSize="14sp"
-                android:textColor="@color/secondary_text" />
+        <TextView
+            android:id="@+id/host_card_requirements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Bring a bathing suit and towel!"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/host_end_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="End Date Time"
-                android:textSize="14sp"
-                android:textColor="@color/secondary_text" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/host_card_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:text="Oct 31, 2015 - Nov 06, 2015"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text" />
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+        <!-- -->
+            <!--<TextView-->
+                <!--android:id="@+id/host_start_date"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="8dp"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingRight="4dp"-->
+                <!--android:text="Start Date Time"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textColor="@color/secondary_text" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="8dp"-->
+                <!--android:paddingLeft="4dp"-->
+                <!--android:paddingRight="4dp"-->
+                <!--android:text="-"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textColor="@color/secondary_text" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/host_end_date"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="8dp"-->
+                <!--android:paddingLeft="4dp"-->
+                <!--android:paddingRight="4dp"-->
+                <!--android:text="End Date Time"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textColor="@color/secondary_text" />-->
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
