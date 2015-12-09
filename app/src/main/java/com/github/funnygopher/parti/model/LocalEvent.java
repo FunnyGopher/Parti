@@ -18,8 +18,7 @@ public class LocalEvent implements IEntity {
     private String startTime;
     private String endTime;
 
-    private double longitude;
-    private double latitude;
+    private String address;
 
     private int attending;
     private int declined;
@@ -34,8 +33,7 @@ public class LocalEvent implements IEntity {
         additionalInfo = event.getAdditionalInfo();
         startTime = event.getStartTimeString();
         endTime = event.getEndTimeString();
-        longitude = event.getLongitude();
-        latitude = event.getLatitude();
+        address = event.getAddress();
         attending = event.getAttending();
         declined = event.getDeclined();
     }
@@ -48,8 +46,7 @@ public class LocalEvent implements IEntity {
         additionalInfo = event.getAdditionalInfo();
         startTime = event.getStartTimeString();
         endTime = event.getEndTimeString();
-        longitude = event.getLongitude();
-        latitude = event.getLatitude();
+        address = event.getAddress();
         attending = event.getAttending();
         declined = event.getDeclined();
     }
@@ -57,7 +54,7 @@ public class LocalEvent implements IEntity {
     public Event toEvent() {
         Event event = new Event(name, host, description, additionalInfo,
                 DateUtil.stringToCalendar(startTime), DateUtil.stringToCalendar(endTime),
-                longitude, latitude, attending, declined);
+                address, attending, declined);
         event.setId(remoteId);
         return event;
     }

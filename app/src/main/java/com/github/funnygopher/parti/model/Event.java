@@ -23,8 +23,7 @@ public class Event implements IEntity, Parcelable {
     private static final String START_TIME_KEY = "start_time";
     private static final String END_TIME_KEY = "end_time";
     private static final String ADDITIONAL_INFO_KEY = "additional_info";
-    private static final String LONGITUDE_KEY = "longitude";
-    private static final String LATITUDE_KEY = "latitude";
+    private static final String ADDRESS_KEY = "address";
     private static final String ATTENDING_KEY = "attending";
     private static final String DECLINED_KEY = "declined";
 
@@ -50,6 +49,7 @@ public class Event implements IEntity, Parcelable {
     private Calendar startTime;
     private Calendar endTime;
 
+    private String address;
     private double longitude;
     private double latitude;
 
@@ -58,7 +58,23 @@ public class Event implements IEntity, Parcelable {
 
     public Event() {}
 
-    public Event(String name, String host, String description, String additionalInfo, Calendar startTime, Calendar endTime, double longitude, double latitude, int attending, int declined) {
+    public Event(String name, String host, String description, String additionalInfo,
+                 Calendar startTime, Calendar endTime, String address, int attending,
+                 int declined) {
+        this.name = name;
+        this.host = host;
+        this.description = description;
+        this.additionalInfo = additionalInfo;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.address = address;
+        this.attending = attending;
+        this.declined = declined;
+    }
+
+    public Event(String name, String host, String description, String additionalInfo,
+                 Calendar startTime, Calendar endTime, double longitude, double latitude,
+                 int attending, int declined) {
         this.name = name;
         this.host = host;
         this.description = description;
@@ -78,8 +94,7 @@ public class Event implements IEntity, Parcelable {
         additionalInfo = event.additionalInfo;
         startTime = event.startTime;
         endTime = event.endTime;
-        longitude = event.longitude;
-        latitude = event.latitude;
+        address = event.address;
         attending = event.attending;
         declined = event.declined;
     }
@@ -98,8 +113,7 @@ public class Event implements IEntity, Parcelable {
         String endTimeString = json.getString(END_TIME_KEY);
         setEndTime(endTimeString);
 
-        longitude = json.getDouble(LONGITUDE_KEY);
-        latitude = json.getDouble(LATITUDE_KEY);
+        address = json.getString(ADDRESS_KEY);
         attending = json.getInt(ATTENDING_KEY);
         declined = json.getInt(DECLINED_KEY);
     }
@@ -118,8 +132,7 @@ public class Event implements IEntity, Parcelable {
         String endTimeString = parcel.readString();
         setEndTime(endTimeString);
 
-        longitude = parcel.readDouble();
-        latitude = parcel.readDouble();
+        address = parcel.readString();
         attending = parcel.readInt();
         declined = parcel.readInt();
     }
@@ -198,6 +211,10 @@ public class Event implements IEntity, Parcelable {
         endTime = DateUtil.stringToCalendar(timeString);
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public double getLongitude() {
         return longitude;
     }
@@ -240,8 +257,7 @@ public class Event implements IEntity, Parcelable {
             jsonObject.put(ADDITIONAL_INFO_KEY, additionalInfo);
             jsonObject.put(START_TIME_KEY, getStartTimeString());
             jsonObject.put(END_TIME_KEY, getEndTimeString());
-            jsonObject.put(LONGITUDE_KEY, Double.toString(longitude));
-            jsonObject.put(LATITUDE_KEY, Double.toString(latitude));
+            jsonObject.put(ADDRESS_KEY, address);
             jsonObject.put(ATTENDING_KEY, Double.toString(attending));
             jsonObject.put(DECLINED_KEY, Double.toString(declined));
             Log.i("Event#toJSON", jsonObject.toString());
@@ -270,8 +286,7 @@ public class Event implements IEntity, Parcelable {
         dest.writeString(getStartTimeString());
         dest.writeString(getEndTimeString());
 
-        dest.writeDouble(longitude);
-        dest.writeDouble(latitude);
+        dest.writeString(address);
         dest.writeInt(attending);
         dest.writeInt(declined);
     }

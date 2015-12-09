@@ -20,7 +20,6 @@
             android:layout_gravity="right|end"
             android:text="Save"
             android:textColor="@color/icons" />
-
     </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.TextInputLayout
@@ -36,7 +35,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/event_name"
             android:inputType="textCapWords" />
-
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -52,7 +50,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/host_name"
             android:inputType="textCapWords"/>
-
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -68,7 +65,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/address"
             android:inputType="textPostalAddress"/>
-
     </android.support.design.widget.TextInputLayout>
 
     <TextView
@@ -133,7 +129,6 @@
             android:hint="@string/description"
             android:imeOptions="actionNext"
             android:inputType="textCapSentences" />
-
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -150,6 +145,5 @@
             android:hint="@string/additional_info"
             android:imeOptions="actionDone"
             android:inputType="textCapSentences" />
-
     </android.support.design.widget.TextInputLayout>
 </LinearLayout>
