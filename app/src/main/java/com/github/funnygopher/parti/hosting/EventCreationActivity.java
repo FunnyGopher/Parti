@@ -162,7 +162,9 @@ public class EventCreationActivity extends AppCompatActivity implements
         mEndTimeView.setText(DateUtil.timeToString(mEndDateTime));
     }
 
+    // Set the click listing for a time text view
     private void setOnClickForTime(final TextView timeTextView, final TextView dateTextView, final Calendar calendar) {
+        // Set the calendar to the given date when a date is choosen
         final DatePickerDialog.OnDateSetListener dateSetListener= new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -171,6 +173,7 @@ public class EventCreationActivity extends AppCompatActivity implements
             }
         };
 
+        // Set the calendar to the given time when a time is choosen
         final TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -178,6 +181,7 @@ public class EventCreationActivity extends AppCompatActivity implements
                 calendar.set(Calendar.MINUTE, minute);
                 timeTextView.setText(DateUtil.timeToString(calendar));
 
+                // Launch a date picker right after the time picker is set
                 new DatePickerDialog(EventCreationActivity.this,
                         dateSetListener,
                         calendar.get(Calendar.YEAR),
@@ -187,6 +191,7 @@ public class EventCreationActivity extends AppCompatActivity implements
             }
         };
 
+        // Launch a time dialog box when the given text view is clicked
         View.OnClickListener onTimeClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,10 +204,12 @@ public class EventCreationActivity extends AppCompatActivity implements
                 mImm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         };
+        // Set the on click listener for the text view
         timeTextView.setOnClickListener(onTimeClick);
     }
 
     private void setOnClickForDate(final TextView dateTextView,  final Calendar calendar) {
+        // Set the calendar to the given date when a date is choosen
         final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -211,6 +218,7 @@ public class EventCreationActivity extends AppCompatActivity implements
             }
         };
 
+        // Launch a date dialog box when the given text view is clicked
         View.OnClickListener onDateClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,6 +232,7 @@ public class EventCreationActivity extends AppCompatActivity implements
                 mImm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         };
+        // Set the on click listener for the text view
         dateTextView.setOnClickListener(onDateClick);
     }
 
