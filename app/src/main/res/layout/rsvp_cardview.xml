@@ -11,6 +11,11 @@
     card_view:cardCornerRadius="2dp"
     card_view:cardElevation="4dp">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/rsvp_card_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -108,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?android:borderlessButtonStyle"
-                    android:text="Directions"
+                    android:text="Map"
                     android:textColor="@color/primary_dark"/>
 
             <!--</LinearLayout>-->

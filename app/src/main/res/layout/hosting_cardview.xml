@@ -15,6 +15,11 @@ Author: Jackkell
     card_view:cardElevation="2dp"
     card_view:cardCornerRadius="2dp">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/hosting_card_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"

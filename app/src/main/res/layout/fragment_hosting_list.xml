@@ -23,7 +23,6 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_dialog_email"
         app:backgroundTint="@color/primary"
         app:layout_anchor="@id/hosting_list_recyclerview"
         app:rippleColor="@color/accent" />

@@ -138,8 +138,6 @@ public class EventCreationActivity extends AppCompatActivity implements
                 saveEvent();
             }
         });
-
-        mAddressView.setText("1600 Pennsylvania Ave NW, Washington, DC");
     }
 
     private void fillFormWithEvent(Event event) {

@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.github.funnygopher.parti.R;
 import com.github.funnygopher.parti.dao.HostedEventDao;
 import com.github.funnygopher.parti.dao.LocalEventDao;
+import com.github.funnygopher.parti.dao.tasks.DeleteEventTask;
 import com.github.funnygopher.parti.model.Event;
 import com.github.funnygopher.parti.model.HostedEvent;
 import com.github.funnygopher.parti.model.LocalEvent;
@@ -50,7 +53,21 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
 
     @Override
     public void onBindViewHolder(final HostingViewHolder hostingViewHolder, final int position) {
-        Event currentEvent = mHostedEventList.get(position);
+        final Event currentEvent = mHostedEventList.get(position);
+
+        hostingViewHolder.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_invitation_card_delete:
+                        remove(currentEvent);
+                        DeleteEventTask deleteTask = new DeleteEventTask(currentEvent.getId());
+                        deleteTask.execute();
+                        break;
+                }
+                return false;
+            }
+        });
 
         hostingViewHolder.title.setText(currentEvent.getName());
         hostingViewHolder.host.setText(currentEvent.getHost());
@@ -94,6 +111,17 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
         });
     }
 
+    public void remove(Event event) {
+        LocalEventDao localEventDao = new LocalEventDao(mContext);
+        LocalEvent localEvent = localEventDao.find(event);
+        localEventDao.delete(localEvent.getId());
+
+        HostedEventDao hostedEventDao = new HostedEventDao(mContext);
+        hostedEventDao.delete(localEvent.getId());
+
+        update();
+    }
+
     @Override
     public int getItemCount() {
         return mHostedEventList.size();
@@ -130,6 +158,7 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
     }
 
     public static class HostingViewHolder extends RecyclerView.ViewHolder {
+        private Toolbar toolbar;
         private TextView title;
         private TextView host;
         private TextView date;
@@ -142,6 +171,10 @@ public class HostingRecyclerAdapter extends RecyclerView.Adapter<HostingRecycler
 
         public HostingViewHolder(View itemView) {
             super(itemView);
+
+            toolbar = (Toolbar) itemView.findViewById(R.id.hosting_card_toolbar);
+            toolbar.inflateMenu(R.menu.menu_invitation_card);
+
             title = (TextView) itemView.findViewById(R.id.host_detail_card_title);
             host = (TextView) itemView.findViewById(R.id.host_card_host);
             date = (TextView) itemView.findViewById(R.id.host_card_date);
